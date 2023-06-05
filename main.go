@@ -8,6 +8,7 @@ import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/extension-gatling/config"
+	"github.com/steadybit/extension-gatling/extgatling"
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthealth"
 	"github.com/steadybit/extension-kit/exthttp"
@@ -25,7 +26,7 @@ func main() {
 
 	exthttp.RegisterHttpHandler("/", exthttp.GetterAsHandler(getExtensionList))
 
-	//action_kit_sdk.RegisterAction(extgatling.NewGatlingLoadTestRunAction())
+	action_kit_sdk.RegisterAction(extgatling.NewGatlingLoadTestRunAction())
 
 	action_kit_sdk.InstallSignalHandler()
 
