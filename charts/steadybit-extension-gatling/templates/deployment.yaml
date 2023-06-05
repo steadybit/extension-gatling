@@ -38,22 +38,32 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
+            - name: tmp-dir
+              mountPath: /tmp
             {{- include "extensionlib.deployment.volumeMounts" (list .) | nindent 12 }}
+            {{- with .Values.extraVolumeMounts  }}
+            {{ toYaml . | nindent 12 }}
+            {{- end }}
           livenessProbe:
             httpGet:
               path: /health/liveness
-              port: 8081
+              port: 8088
           readinessProbe:
             httpGet:
               path: /health/readiness
-              port: 8081
+              port: 8088
           securityContext:
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 10000
             runAsGroup: 10000
       volumes:
+        - name: tmp-dir
+          emptyDir: { }
         {{- include "extensionlib.deployment.volumes" (list .) | nindent 8 }}
+        {{- with .Values.extraVolumes  }}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
       {{- toYaml . | nindent 8 }}
