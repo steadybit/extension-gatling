@@ -39,8 +39,8 @@ manifest should match snapshot with TLS:
                   port: 8088
               resources:
                 limits:
-                  cpu: 200m
-                  memory: 256Mi
+                  cpu: 500m
+                  memory: 512Mi
                 requests:
                   cpu: 50m
                   memory: 64Mi
@@ -52,12 +52,16 @@ manifest should match snapshot with TLS:
               volumeMounts:
                 - mountPath: /tmp
                   name: tmp-dir
+                - mountPath: /opt/gatling/target
+                  name: gatling-target-dir
                 - mountPath: /etc/extension/certificates/server-cert
                   name: certificate-server-cert
                   readOnly: true
           volumes:
             - emptyDir: {}
               name: tmp-dir
+            - emptyDir: {}
+              name: gatling-target-dir
             - name: certificate-server-cert
               secret:
                 optional: false
@@ -106,8 +110,8 @@ manifest should match snapshot with extra env vars:
                   port: 8088
               resources:
                 limits:
-                  cpu: 200m
-                  memory: 256Mi
+                  cpu: 500m
+                  memory: 512Mi
                 requests:
                   cpu: 50m
                   memory: 64Mi
@@ -119,9 +123,13 @@ manifest should match snapshot with extra env vars:
               volumeMounts:
                 - mountPath: /tmp
                   name: tmp-dir
+                - mountPath: /opt/gatling/target
+                  name: gatling-target-dir
           volumes:
             - emptyDir: {}
               name: tmp-dir
+            - emptyDir: {}
+              name: gatling-target-dir
 manifest should match snapshot with mutual TLS:
   1: |
     apiVersion: apps/v1
@@ -165,8 +173,8 @@ manifest should match snapshot with mutual TLS:
                   port: 8088
               resources:
                 limits:
-                  cpu: 200m
-                  memory: 256Mi
+                  cpu: 500m
+                  memory: 512Mi
                 requests:
                   cpu: 50m
                   memory: 64Mi
@@ -178,6 +186,8 @@ manifest should match snapshot with mutual TLS:
               volumeMounts:
                 - mountPath: /tmp
                   name: tmp-dir
+                - mountPath: /opt/gatling/target
+                  name: gatling-target-dir
                 - mountPath: /etc/extension/certificates/client-cert-a
                   name: certificate-client-cert-a
                   readOnly: true
@@ -187,6 +197,8 @@ manifest should match snapshot with mutual TLS:
           volumes:
             - emptyDir: {}
               name: tmp-dir
+            - emptyDir: {}
+              name: gatling-target-dir
             - name: certificate-client-cert-a
               secret:
                 optional: false
@@ -232,8 +244,8 @@ manifest should match snapshot without TLS:
                   port: 8088
               resources:
                 limits:
-                  cpu: 200m
-                  memory: 256Mi
+                  cpu: 500m
+                  memory: 512Mi
                 requests:
                   cpu: 50m
                   memory: 64Mi
@@ -245,6 +257,10 @@ manifest should match snapshot without TLS:
               volumeMounts:
                 - mountPath: /tmp
                   name: tmp-dir
+                - mountPath: /opt/gatling/target
+                  name: gatling-target-dir
           volumes:
             - emptyDir: {}
               name: tmp-dir
+            - emptyDir: {}
+              name: gatling-target-dir

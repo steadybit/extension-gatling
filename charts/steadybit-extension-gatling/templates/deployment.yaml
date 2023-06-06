@@ -40,6 +40,8 @@ spec:
           volumeMounts:
             - name: tmp-dir
               mountPath: /tmp
+            - name: gatling-target-dir
+              mountPath: /opt/gatling/target
             {{- include "extensionlib.deployment.volumeMounts" (list .) | nindent 12 }}
             {{- with .Values.extraVolumeMounts  }}
             {{ toYaml . | nindent 12 }}
@@ -59,6 +61,8 @@ spec:
             runAsGroup: 10000
       volumes:
         - name: tmp-dir
+          emptyDir: { }
+        - name: gatling-target-dir
           emptyDir: { }
         {{- include "extensionlib.deployment.volumes" (list .) | nindent 8 }}
         {{- with .Values.extraVolumes  }}
