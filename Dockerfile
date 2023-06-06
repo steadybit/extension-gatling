@@ -30,17 +30,35 @@ RUN go build \
 ##
 ## Runtime
 ##
-FROM openjdk:21-slim
+FROM debian:bullseye-slim
+
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+
+ARG ZULU_REPO_VER=1.0.0-3
+
+RUN apt-get -qq update && \
+    apt-get -qq -y --no-install-recommends install gnupg software-properties-common locales curl tzdata procps unzip zip && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    locale-gen en_US.UTF-8 && \
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xB1998361219BD9C9 && \
+    curl -sLO https://cdn.azul.com/zulu/bin/zulu-repo_${ZULU_REPO_VER}_all.deb && dpkg -i zulu-repo_${ZULU_REPO_VER}_all.deb && \
+# add testing repository to install newer packages
+    add-apt-repository "deb http://httpredir.debian.org/debian testing main" && \
+    apt-get -qq update && \
+    mkdir -p /usr/share/man/man1 && \
+    apt-get -qq -y --no-install-recommends install zulu17-jdk/stable && \
+# install updates from testing due to CVE for libxml2 < 2.9.13 && libexpat1 < 2.4.5
+    apt-get -qq -y --no-install-recommends -t testing install libxml2 libexpat1 && \
+    apt-get -qq -y purge gnupg software-properties-common curl && \
+    apt -y autoremove && \
+    rm -rf /var/lib/apt/lists/* zulu-repo_${ZULU_REPO_VER}_all.deb
+
+ENV JAVA_HOME=/usr/lib/jvm/zulu17
 
 ENV GATLING_VERSION 3.9.5
 ENV GATLING_HOME /opt/gatling
 ENV GATLING_BIN ${GATLING_HOME}/bin
 ENV PATH ${GATLING_BIN}:$PATH
-
-## Installing dependencies
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends wget coreutils unzip zip bash curl procps
 
 # Installing jmeter
 RUN mkdir -p /opt/
