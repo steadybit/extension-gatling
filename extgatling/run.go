@@ -77,7 +77,7 @@ func (l *GatlingLoadTestRunAction) Describe() action_kit_api.ActionDescription {
 			{
 				Name:        "parameter",
 				Label:       "Parameter",
-				Description: extutil.Ptr("Parameters will be accessible from your Gatling Source via Java System Properties, e.g. System.getProperty(\"myParameter\""),
+				Description: extutil.Ptr("Parameters will be accessible from your Gatling Source via Java System Properties, e.g. System.getProperty(\"myParameter\")"),
 				Type:        action_kit_api.KeyValue,
 				Required:    extutil.Ptr(true),
 			},
