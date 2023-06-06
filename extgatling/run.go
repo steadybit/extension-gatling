@@ -118,6 +118,7 @@ func (l *GatlingLoadTestRunAction) Prepare(_ context.Context, state *GatlingLoad
 	}
 
 	if filepath.Ext(config.File) == ".zip" {
+		log.Info().Msgf("Unzip with command: %s %s %s %s", "unzip", config.File, "-d", srcFolder)
 		if err := exec.Command("unzip", config.File, "-d", srcFolder).Run(); err != nil {
 			return nil, extension_kit.ToError("Failed to unzip file.", err)
 		}
@@ -268,6 +269,7 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 			_, err = os.Stat(simulationLog)
 			if err == nil { // file exists
 				zippedReport := fmt.Sprintf("%v/report.zip", reportFolder)
+				log.Info().Msgf("Zip report with command: %s %s %s %s", "zip", "-r", zippedReport, ".")
 				zipCommand := exec.Command("zip", "-r", zippedReport, ".")
 				zipCommand.Dir = fmt.Sprintf("%v/%v", reportFolder, file.Name())
 				zipErr := zipCommand.Run()

@@ -40,7 +40,7 @@ ENV PATH ${GATLING_BIN}:$PATH
 ## Installing dependencies
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends wget coreutils unzip bash curl procps
+    apt-get install -y --no-install-recommends wget coreutils unzip zip bash curl procps
 
 # Installing jmeter
 RUN mkdir -p /opt/
