@@ -237,27 +237,7 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 	extcmd.RemoveCmdState(state.CmdStateID)
 
 	// kill Gatling if it is still running
-	exitCode := cmdState.Cmd.ProcessState.ExitCode()
-	if exitCode == -1 {
-		log.Info().Msg("Gatling process running - send SIGTERM.")
-		_ = syscall.Kill(-state.Pid, syscall.SIGTERM)
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		defer cancel()
-		for {
-			select {
-			case <-ctx.Done():
-				log.Info().Msg("Gatling process still running - send SIGKILL.")
-				_ = syscall.Kill(-state.Pid, syscall.SIGKILL)
-				break
-			case <-time.After(1000 * time.Millisecond):
-				exitCode = cmdState.Cmd.ProcessState.ExitCode()
-				if exitCode != -1 {
-					log.Info().Msg("Gatling process stopped (SIGTERM).")
-					break
-				}
-			}
-		}
-	}
+	gracefulKill(state.Pid, cmdState)
 
 	// read Stout and Stderr and send it as Messages
 	stdOut := cmdState.GetLines(true)
@@ -265,6 +245,7 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 	messages := stdOutToMessages(stdOut)
 
 	// read return code and send it as Message
+	exitCode := cmdState.Cmd.ProcessState.ExitCode()
 	if exitCode != 0 && exitCode != -1 {
 		messages = append(messages, action_kit_api.Message{
 			Level:   extutil.Ptr(action_kit_api.Error),
@@ -310,4 +291,29 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 		Artifacts: extutil.Ptr(artifacts),
 		Messages:  extutil.Ptr(messages),
 	}, nil
+}
+
+func gracefulKill(pid int, cmdState *extcmd.CmdState) {
+	exitCode := cmdState.Cmd.ProcessState.ExitCode()
+	if exitCode == -1 {
+
+		log.Info().Msg("Gatling process running - send SIGTERM.")
+		_ = syscall.Kill(-pid, syscall.SIGTERM)
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		for {
+			select {
+			case <-ctx.Done():
+				log.Info().Msg("Gatling process still running - send SIGKILL.")
+				_ = syscall.Kill(-pid, syscall.SIGKILL)
+				return
+			case <-time.After(1000 * time.Millisecond):
+				exitCode = cmdState.Cmd.ProcessState.ExitCode()
+				if exitCode != -1 {
+					log.Info().Msg("Gatling process stopped (SIGTERM).")
+					return
+				}
+			}
+		}
+	}
 }
