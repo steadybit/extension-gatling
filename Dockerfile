@@ -77,6 +77,12 @@ RUN adduser --uid $USER_UID $USERNAME
 RUN chown -R steadybit /opt/gatling
 USER $USERNAME
 
+RUN mkdir -p /tmp/.java/.systemPrefs \
+ && mkdir /tmp/.java/.userPrefs \
+ && chmod -R 755 /tmp/.java
+
+ENV JAVA_OPTS "-Djava.util.prefs.systemRoot=/tmp/.java -Djava.util.prefs.userRoot=/tmp/.java/.userPrefs"
+
 WORKDIR /
 
 COPY --from=build /app/extension /extension
