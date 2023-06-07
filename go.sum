@@ -111,12 +111,12 @@ github.com/steadybit/action-kit/go/action_kit_api/v2 v2.6.1 h1:+2hNanjQhyPEW3R6o
 github.com/steadybit/action-kit/go/action_kit_api/v2 v2.6.1/go.mod h1:ZF094T/qu+po7BBm7peXedds6Fr5/cfioBNCUqCV07Y=
 github.com/steadybit/action-kit/go/action_kit_sdk v1.1.2 h1:I4+XRJuItskcrDnuCL/jMOQXZg/3DgEyrQqpQXYNYIs=
 github.com/steadybit/action-kit/go/action_kit_sdk v1.1.2/go.mod h1:fRKc0RTkFljjzGA20kfinw0f1hDScWVpJM7KONmdl50=
-github.com/steadybit/action-kit/go/action_kit_test v1.0.0 h1:gjPQSaEIyMZfhwJe8gwIwRY6uMyUwK30qo89lRMe5RY=
-github.com/steadybit/action-kit/go/action_kit_test v1.0.0/go.mod h1:sHazlPKMeN/5wK5qlW8Dxm05MW27abCao7R3q1jw+yE=
+github.com/steadybit/action-kit/go/action_kit_test v1.0.2 h1:x5e+/MGnNK0wxTEcoRQhfwtYihppwnZy3aaTwkWyJvE=
+github.com/steadybit/action-kit/go/action_kit_test v1.0.2/go.mod h1:sHazlPKMeN/5wK5qlW8Dxm05MW27abCao7R3q1jw+yE=
 github.com/steadybit/discovery-kit/go/discovery_kit_api v1.3.0 h1:HwvovoYbAYpJ5PnMeiJUgrjwVkV5EpveAjeHH9pPDMQ=
 github.com/steadybit/discovery-kit/go/discovery_kit_api v1.3.0/go.mod h1:OnIfjrBhmMQCYxriHmr8mT1wCpvqIZxwBHWnanFhgNA=
-github.com/steadybit/extension-kit v1.7.18 h1:DV7kisvnvelY5QxO62i9z5/3KpwIQck/SUqsK9NkfAw=
-github.com/steadybit/extension-kit v1.7.18/go.mod h1:zC5Tw+wrJTx4xvOlsIY+MfMoRYoglj83vR15Xr3aP5c=
+github.com/steadybit/extension-kit v1.7.19 h1:bP9BxdHG5DtIv7hWt1H1jrGf3lLvIcX0hzSA5+uB7RA=
+github.com/steadybit/extension-kit v1.7.19/go.mod h1:zC5Tw+wrJTx4xvOlsIY+MfMoRYoglj83vR15Xr3aP5c=
 github.com/stoewer/go-strcase v1.2.0/go.mod h1:IBiWB2sKIp3wVVQ3Y035++gc+knqhUQag1KpM8ahLw8=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=

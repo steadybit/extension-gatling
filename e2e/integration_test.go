@@ -7,6 +7,7 @@ import (
 	"github.com/steadybit/action-kit/go/action_kit_test/e2e"
 	"github.com/stretchr/testify/require"
 	"testing"
+	"time"
 )
 
 func TestWithMinikube(t *testing.T) {
@@ -42,6 +43,6 @@ func testRunGatling(t *testing.T, m *e2e.Minikube, e *e2e.Extension) {
 	exec, err := e.RunActionWithFiles("com.github.steadybit.extension_gatling.run", nil, config, nil, files)
 	require.NoError(t, err)
 	e2e.AssertProcessRunningInContainer(t, m, e.Pod, "extension", "gatling.sh", true)
-	e2e.AssertLogContains(t, m, e.Pod, "Simulation com.steadybit.gatling.BasicScalaSimulation started")
+	e2e.AssertLogContainsWithTimeout(t, m, e.Pod, "Simulation com.steadybit.gatling.BasicScalaSimulation started", 90*time.Second)
 	require.NoError(t, exec.Cancel())
 }
