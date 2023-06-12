@@ -8,6 +8,7 @@ FROM golang:1.20-bullseye AS build
 ARG NAME
 ARG VERSION
 ARG REVISION
+ARG ADDITIONAL_BUILD_PARAMS
 
 WORKDIR /app
 
@@ -25,7 +26,8 @@ RUN go build \
     -X 'github.com/steadybit/extension-kit/extbuild.ExtensionName=${NAME}' \
     -X 'github.com/steadybit/extension-kit/extbuild.Version=${VERSION}' \
     -X 'github.com/steadybit/extension-kit/extbuild.Revision=${REVISION}'" \
-    -o ./extension
+    -o ./extension \
+    ${ADDITIONAL_BUILD_PARAMS}
 
 ##
 ## Runtime

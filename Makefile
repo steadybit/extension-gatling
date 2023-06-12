@@ -58,4 +58,4 @@ run: tidy build
 ## container: build the container image
 .PHONY: container
 container:
-	docker build -t extension-gatling:latest .
+	docker build --build-arg ADDITIONAL_BUILD_PARAMS="-cover" -t extension-gatling:latest .
