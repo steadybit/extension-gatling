@@ -7,7 +7,7 @@ require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/rs/zerolog v1.29.1
 	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.6.1
-	github.com/steadybit/action-kit/go/action_kit_sdk v1.1.3
+	github.com/steadybit/action-kit/go/action_kit_sdk v1.1.4
 	github.com/steadybit/action-kit/go/action_kit_test v1.0.4
 	github.com/steadybit/extension-kit v1.7.19
 	github.com/stretchr/testify v1.8.2
