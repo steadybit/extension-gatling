@@ -12,16 +12,6 @@ The extension supports all environment variables provided by [steadybit/extensio
 
 ## Installation
 
-### Using Docker
-
-```sh
-docker run \
-  --rm \
-  -p 8087 \
-  --name steadybit-extension-gatling \
-  ghcr.io/steadybit/extension-gatling:latest
-```
-
 ### Using Helm in Kubernetes
 
 ```sh
@@ -35,6 +25,20 @@ helm upgrade steadybit-extension-gatling \
     --namespace steadybit-extension \
     steadybit-extension-gatling/steadybit-extension-gatling
 ```
+
+### Using Docker
+
+```sh
+docker run \
+  --rm \
+  -p 8087 \
+  --name steadybit-extension-gatling \
+  ghcr.io/steadybit/extension-gatling:latest
+```
+
+### Linux Package
+
+This extension is currently not available as a Linux package.
 
 ## Register the extension
 
