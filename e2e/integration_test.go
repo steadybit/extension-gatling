@@ -40,7 +40,7 @@ func testRunGatling(t *testing.T, m *e2e.Minikube, e *e2e.Extension) {
 				"package com.steadybit.gatling\n\nimport scala.concurrent.duration._\n\n\nimport io.gatling.core.Predef._\nimport io.gatling.http.Predef._\n\nclass BasicScalaSimulation extends Simulation {\n\n  val httpProtocol = http\n    .baseUrl(\"http://demo.steadybit.io/products\")\n    .acceptHeader(\"application/json\")\n    .acceptEncodingHeader(\"gzip, deflate\")\n\n  val scn = scenario(\"ExampleScalaSimulation\")\n    .exec(http(\"fetch-products\")\n      .get(\"/\"))\n    .pause(5)\n\n  setUp(\n    scn.inject(atOnceUsers(1))\n  ).protocols(httpProtocol)\n}"),
 		},
 	}
-	exec, err := e.RunActionWithFiles("com.github.steadybit.extension_gatling.run", nil, config, nil, files)
+	exec, err := e.RunActionWithFiles("com.steadybit.extension_gatling.run", nil, config, nil, files)
 	require.NoError(t, err)
 	e2e.AssertProcessRunningInContainer(t, m, e.Pod, "extension", "gatling.sh", true)
 	e2e.AssertLogContainsWithTimeout(t, m, e.Pod, "Simulation com.steadybit.gatling.BasicScalaSimulation started", 90*time.Second)
