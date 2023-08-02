@@ -4,7 +4,7 @@
 
 A [Steadybit](https://www.steadybit.com/) action implementation to integrate gatling load tests into Steadybit experiments.
 
-Learn about the capabilities of this extension in our [Reliability Hub](https://hub.steadybit.com/extension/com.github.steadybit.extension_gatling).
+Learn about the capabilities of this extension in our [Reliability Hub](https://hub.steadybit.com/extension/com.steadybit.extension_gatling).
 
 ## Configuration
 
