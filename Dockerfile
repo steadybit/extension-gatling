@@ -34,6 +34,8 @@ RUN go build \
 ##
 FROM debian:bullseye-slim
 
+LABEL "steadybit.com.discovery-enabled"="false"
+
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
 ARG ZULU_REPO_VER=1.0.0-3
