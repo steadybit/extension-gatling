@@ -34,7 +34,7 @@ RUN go build \
 ##
 FROM debian:bullseye-slim
 
-LABEL "steadybit.com.discovery-enabled"="false"
+LABEL "steadybit.com.discovery-disabled"="true"
 
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
