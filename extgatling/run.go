@@ -57,7 +57,7 @@ func (l *GatlingLoadTestRunAction) Describe() action_kit_api.ActionDescription {
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(actionIcon),
 		Kind:        action_kit_api.LoadTest,
-		TimeControl: action_kit_api.Internal,
+		TimeControl: action_kit_api.TimeControlInternal,
 		Hint: &action_kit_api.ActionHint{
 			Content: "Please note that load tests are executed by the gatling extension participating in the experiment, consuming resources of the system that it is installed in.",
 			Type:    action_kit_api.HintWarning,
