@@ -55,6 +55,7 @@ manifest should match snapshot using podAnnotations and Labels:
                   name: tmp-dir
                 - mountPath: /opt/gatling/target
                   name: gatling-target-dir
+          serviceAccountName: steadybit-extension-gatling
           volumes:
             - emptyDir: {}
               name: tmp-dir
@@ -122,6 +123,7 @@ manifest should match snapshot with TLS:
                 - mountPath: /etc/extension/certificates/server-cert
                   name: certificate-server-cert
                   readOnly: true
+          serviceAccountName: steadybit-extension-gatling
           volumes:
             - emptyDir: {}
               name: tmp-dir
@@ -193,6 +195,7 @@ manifest should match snapshot with extra env vars:
                   name: tmp-dir
                 - mountPath: /opt/gatling/target
                   name: gatling-target-dir
+          serviceAccountName: steadybit-extension-gatling
           volumes:
             - emptyDir: {}
               name: tmp-dir
@@ -255,6 +258,7 @@ manifest should match snapshot with extra labels:
                   name: tmp-dir
                 - mountPath: /opt/gatling/target
                   name: gatling-target-dir
+          serviceAccountName: steadybit-extension-gatling
           volumes:
             - emptyDir: {}
               name: tmp-dir
@@ -327,6 +331,7 @@ manifest should match snapshot with mutual TLS:
                 - mountPath: /etc/extension/certificates/server-cert
                   name: certificate-server-cert
                   readOnly: true
+          serviceAccountName: steadybit-extension-gatling
           volumes:
             - emptyDir: {}
               name: tmp-dir
@@ -401,6 +406,7 @@ manifest should match snapshot with mutual TLS using containerPaths:
                   name: tmp-dir
                 - mountPath: /opt/gatling/target
                   name: gatling-target-dir
+          serviceAccountName: steadybit-extension-gatling
           volumes:
             - emptyDir: {}
               name: tmp-dir
@@ -461,6 +467,7 @@ manifest should match snapshot without TLS:
                   name: tmp-dir
                 - mountPath: /opt/gatling/target
                   name: gatling-target-dir
+          serviceAccountName: steadybit-extension-gatling
           volumes:
             - emptyDir: {}
               name: tmp-dir

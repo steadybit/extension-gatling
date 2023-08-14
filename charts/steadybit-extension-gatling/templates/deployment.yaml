@@ -80,6 +80,7 @@ spec:
         {{- with .Values.extraVolumes  }}
         {{ toYaml . | nindent 8 }}
         {{- end }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
       {{- toYaml . | nindent 8 }}
