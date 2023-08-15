@@ -8,8 +8,13 @@ require (
 	github.com/rs/zerolog v1.30.0
 	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.7.1
 	github.com/steadybit/action-kit/go/action_kit_sdk v1.1.5
+<<<<<<< Updated upstream
 	github.com/steadybit/action-kit/go/action_kit_test v1.0.9
 	github.com/steadybit/extension-kit v1.8.4
+=======
+	github.com/steadybit/action-kit/go/action_kit_test v1.0.7
+	github.com/steadybit/extension-kit v1.8.5
+>>>>>>> Stashed changes
 	github.com/stretchr/testify v1.8.4
 )
 
@@ -20,13 +25,21 @@ require (
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.13.4 // indirect
+<<<<<<< Updated upstream
 	github.com/emicklei/go-restful/v3 v3.10.2 // indirect
+=======
+	github.com/emicklei/go-restful/v3 v3.10.1 // indirect
+>>>>>>> Stashed changes
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.9.1 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-openapi/jsonpointer v0.20.0 // indirect
+<<<<<<< Updated upstream
 	github.com/go-openapi/jsonreference v0.20.2 // indirect
+=======
+	github.com/go-openapi/jsonreference v0.20.1 // indirect
+>>>>>>> Stashed changes
 	github.com/go-openapi/swag v0.22.4 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
@@ -64,7 +77,11 @@ require (
 	golang.org/x/arch v0.4.0 // indirect
 	golang.org/x/crypto v0.12.0 // indirect
 	golang.org/x/net v0.14.0 // indirect
+<<<<<<< Updated upstream
 	golang.org/x/oauth2 v0.11.0 // indirect
+=======
+	golang.org/x/oauth2 v0.4.0 // indirect
+>>>>>>> Stashed changes
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/term v0.11.0 // indirect
 	golang.org/x/text v0.12.0 // indirect
