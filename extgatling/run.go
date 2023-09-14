@@ -253,7 +253,7 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 		})
 	}
 
-	var artifacts []action_kit_api.Artifact
+	artifacts := make([]action_kit_api.Artifact, 0)
 	executionRoot := fmt.Sprintf("/tmp/steadybit/%v", state.ExecutionId) //Folder is managed by action_kit_sdk's file download handling
 	reportFolder := fmt.Sprintf("%v/report", executionRoot)
 	files, err := os.ReadDir(reportFolder)

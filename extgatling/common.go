@@ -22,7 +22,7 @@ func stdOutToLog(lines []string) {
 }
 
 func stdOutToMessages(lines []string) []action_kit_api.Message {
-	var messages []action_kit_api.Message
+	messages := make([]action_kit_api.Message, 0)
 	for _, line := range lines {
 		trimmed := strings.TrimSpace(strings.ReplaceAll(line, "\n", ""))
 		if len(trimmed) > 0 {
