@@ -5,6 +5,7 @@ manifest should match snapshot using podAnnotations and Labels:
     metadata:
       labels:
         steadybit.com/discovery-disabled: "true"
+        steadybit.com/extension: "true"
       name: RELEASE-NAME-steadybit-extension-gatling
       namespace: NAMESPACE
     spec:
@@ -22,6 +23,7 @@ manifest should match snapshot using podAnnotations and Labels:
             app.kubernetes.io/name: steadybit-extension-gatling
             some-label: some-label-value
             steadybit.com/discovery-disabled: "true"
+            steadybit.com/extension: "true"
         spec:
           containers:
             - env:
@@ -74,6 +76,7 @@ manifest should match snapshot with TLS:
     metadata:
       labels:
         steadybit.com/discovery-disabled: "true"
+        steadybit.com/extension: "true"
       name: RELEASE-NAME-steadybit-extension-gatling
       namespace: NAMESPACE
     spec:
@@ -89,6 +92,7 @@ manifest should match snapshot with TLS:
             app.kubernetes.io/instance: RELEASE-NAME
             app.kubernetes.io/name: steadybit-extension-gatling
             steadybit.com/discovery-disabled: "true"
+            steadybit.com/extension: "true"
         spec:
           containers:
             - env:
@@ -152,6 +156,7 @@ manifest should match snapshot with extra env vars:
     metadata:
       labels:
         steadybit.com/discovery-disabled: "true"
+        steadybit.com/extension: "true"
       name: RELEASE-NAME-steadybit-extension-gatling
       namespace: NAMESPACE
     spec:
@@ -167,6 +172,7 @@ manifest should match snapshot with extra env vars:
             app.kubernetes.io/instance: RELEASE-NAME
             app.kubernetes.io/name: steadybit-extension-gatling
             steadybit.com/discovery-disabled: "true"
+            steadybit.com/extension: "true"
         spec:
           containers:
             - env:
@@ -226,6 +232,7 @@ manifest should match snapshot with extra labels:
     metadata:
       labels:
         steadybit.com/discovery-disabled: "true"
+        steadybit.com/extension: "true"
         tags.datadoghq.com/service: steadybit-extension
       name: RELEASE-NAME-steadybit-extension-gatling
       namespace: NAMESPACE
@@ -242,6 +249,7 @@ manifest should match snapshot with extra labels:
             app.kubernetes.io/instance: RELEASE-NAME
             app.kubernetes.io/name: steadybit-extension-gatling
             steadybit.com/discovery-disabled: "true"
+            steadybit.com/extension: "true"
             tags.datadoghq.com/service: steadybit-extension
         spec:
           containers:
@@ -295,6 +303,7 @@ manifest should match snapshot with mutual TLS:
     metadata:
       labels:
         steadybit.com/discovery-disabled: "true"
+        steadybit.com/extension: "true"
       name: RELEASE-NAME-steadybit-extension-gatling
       namespace: NAMESPACE
     spec:
@@ -310,6 +319,7 @@ manifest should match snapshot with mutual TLS:
             app.kubernetes.io/instance: RELEASE-NAME
             app.kubernetes.io/name: steadybit-extension-gatling
             steadybit.com/discovery-disabled: "true"
+            steadybit.com/extension: "true"
         spec:
           containers:
             - env:
@@ -382,6 +392,7 @@ manifest should match snapshot with mutual TLS using containerPaths:
     metadata:
       labels:
         steadybit.com/discovery-disabled: "true"
+        steadybit.com/extension: "true"
       name: RELEASE-NAME-steadybit-extension-gatling
       namespace: NAMESPACE
     spec:
@@ -397,6 +408,7 @@ manifest should match snapshot with mutual TLS using containerPaths:
             app.kubernetes.io/instance: RELEASE-NAME
             app.kubernetes.io/name: steadybit-extension-gatling
             steadybit.com/discovery-disabled: "true"
+            steadybit.com/extension: "true"
         spec:
           containers:
             - env:
@@ -455,6 +467,7 @@ manifest should match snapshot with podSecurityContext:
     metadata:
       labels:
         steadybit.com/discovery-disabled: "true"
+        steadybit.com/extension: "true"
       name: RELEASE-NAME-steadybit-extension-gatling
       namespace: NAMESPACE
     spec:
@@ -470,6 +483,7 @@ manifest should match snapshot with podSecurityContext:
             app.kubernetes.io/instance: RELEASE-NAME
             app.kubernetes.io/name: steadybit-extension-gatling
             steadybit.com/discovery-disabled: "true"
+            steadybit.com/extension: "true"
         spec:
           containers:
             - env:
@@ -524,6 +538,7 @@ manifest should match snapshot with priority class:
     metadata:
       labels:
         steadybit.com/discovery-disabled: "true"
+        steadybit.com/extension: "true"
       name: RELEASE-NAME-steadybit-extension-gatling
       namespace: NAMESPACE
     spec:
@@ -539,6 +554,7 @@ manifest should match snapshot with priority class:
             app.kubernetes.io/instance: RELEASE-NAME
             app.kubernetes.io/name: steadybit-extension-gatling
             steadybit.com/discovery-disabled: "true"
+            steadybit.com/extension: "true"
         spec:
           containers:
             - env:
@@ -592,6 +608,7 @@ manifest should match snapshot without TLS:
     metadata:
       labels:
         steadybit.com/discovery-disabled: "true"
+        steadybit.com/extension: "true"
       name: RELEASE-NAME-steadybit-extension-gatling
       namespace: NAMESPACE
     spec:
@@ -607,6 +624,7 @@ manifest should match snapshot without TLS:
             app.kubernetes.io/instance: RELEASE-NAME
             app.kubernetes.io/name: steadybit-extension-gatling
             steadybit.com/discovery-disabled: "true"
+            steadybit.com/extension: "true"
         spec:
           containers:
             - env:
