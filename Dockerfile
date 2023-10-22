@@ -34,7 +34,7 @@ RUN make licenses-report
 ##
 ## Runtime
 ##
-FROM azul/zulu-openjdk-debian:21
+FROM azul/zulu-openjdk-debian:17
 
 LABEL "steadybit.com.discovery-disabled"="true"
 
