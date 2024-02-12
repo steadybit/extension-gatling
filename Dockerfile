@@ -39,12 +39,13 @@ FROM azul/zulu-openjdk-debian:17
 
 LABEL "steadybit.com.discovery-disabled"="true"
 
-ENV GATLING_VERSION 3.9.5
+ENV GATLING_VERSION 3.10.3
 ENV GATLING_HOME /opt/gatling
 ENV GATLING_BIN ${GATLING_HOME}/bin
 ENV PATH ${GATLING_BIN}:$PATH
 
 RUN apt-get -qq update && \
+    apt-get -qq -y upgrade && \
     apt-get -qq -y --no-install-recommends install procps unzip zip && \
     rm -rf /var/lib/apt/lists/*
 
