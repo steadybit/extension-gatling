@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.9
+
+- Update to Gatling 3.10.3
+
 ## v1.0.8
 
 - Update dependencies
