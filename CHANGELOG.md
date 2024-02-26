@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.10
+
+- Update logo
+
 ## v1.0.9
 
 - Update to Gatling 3.10.3
