@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0.12
+
+- Update dependencies
+
+## v1.0.11
+
+- Update dependencies
+
 ## v1.0.10
 
 - Update logo
