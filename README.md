@@ -22,7 +22,7 @@ helm upgrade steadybit-extension-gatling \
     --wait \
     --timeout 5m0s \
     --create-namespace \
-    --namespace steadybit-extension \
+    --namespace steadybit-agent \
     steadybit-extension-gatling/steadybit-extension-gatling
 ```
 
