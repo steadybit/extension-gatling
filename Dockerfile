@@ -39,10 +39,10 @@ FROM azul/zulu-openjdk-debian:17
 
 LABEL "steadybit.com.discovery-disabled"="true"
 
-ENV GATLING_VERSION 3.10.3
-ENV GATLING_HOME /opt/gatling
-ENV GATLING_BIN ${GATLING_HOME}/bin
-ENV PATH ${GATLING_BIN}:$PATH
+ENV GATLING_VERSION=3.10.3
+ENV GATLING_HOME=/opt/gatling
+ENV GATLING_BIN=${GATLING_HOME}/bin
+ENV PATH=${GATLING_BIN}:$PATH
 
 RUN apt-get -qq update && \
     apt-get -qq -y upgrade && \
@@ -72,7 +72,7 @@ USER $USERNAME
 RUN mkdir -p /tmp/.java/.systemPrefs /tmp/.java/.userPrefs && \
     chmod -R 755 /tmp/.java
 
-ENV JAVA_OPTS "-Djava.util.prefs.systemRoot=/tmp/.java -Djava.util.prefs.userRoot=/tmp/.java/.userPrefs"
+ENV JAVA_OPTS="-Djava.util.prefs.systemRoot=/tmp/.java -Djava.util.prefs.userRoot=/tmp/.java/.userPrefs"
 
 WORKDIR /
 
