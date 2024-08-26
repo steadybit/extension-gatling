@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.15 (next release)
+
+- Update dependencies
+- "Fail" instead of "Error" if the Script is starting but containing some issues.
+
 ## v1.0.14
 
 - Update dependencies

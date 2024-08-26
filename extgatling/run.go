@@ -208,12 +208,17 @@ func (l *GatlingLoadTestRunAction) Status(_ context.Context, state *GatlingLoadT
 	} else if exitCode == 0 {
 		log.Info().Msgf("Gatling run completed successfully")
 		result.Completed = true
+	} else if exitCode == 2 {
+		result.Completed = true
+		result.Error = &action_kit_api.ActionKitError{
+			Status: extutil.Ptr(action_kit_api.Failed),
+			Title:  "Gatling run ended with failing assertions. Reports are attached.",
+		}
 	} else {
-		title := fmt.Sprintf("Gatling run failed, exit-code %d", exitCode)
 		result.Completed = true
 		result.Error = &action_kit_api.ActionKitError{
 			Status: extutil.Ptr(action_kit_api.Errored),
-			Title:  title,
+			Title:  fmt.Sprintf("Gatling run errored, exit-code %d", exitCode),
 		}
 	}
 
@@ -246,11 +251,23 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 
 	// read return code and send it as Message
 	exitCode := cmdState.Cmd.ProcessState.ExitCode()
+	var resultErr *action_kit_api.ActionKitError
 	if exitCode != 0 && exitCode != -1 {
 		messages = append(messages, action_kit_api.Message{
 			Level:   extutil.Ptr(action_kit_api.Error),
-			Message: fmt.Sprintf("Gatling run failed with exit code %d", exitCode),
+			Message: fmt.Sprintf("Gatling run stopped with exit code %d", exitCode),
 		})
+		if exitCode == 2 {
+			resultErr = &action_kit_api.ActionKitError{
+				Status: extutil.Ptr(action_kit_api.Failed),
+				Title:  "Gatling run ended with failing assertions. Reports are attached.",
+			}
+		} else {
+			resultErr = &action_kit_api.ActionKitError{
+				Status: extutil.Ptr(action_kit_api.Errored),
+				Title:  fmt.Sprintf("Gatling run errored, exit-code %d", exitCode),
+			}
+		}
 	}
 
 	artifacts := make([]action_kit_api.Artifact, 0)
@@ -290,6 +307,7 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 	return &action_kit_api.StopResult{
 		Artifacts: extutil.Ptr(artifacts),
 		Messages:  extutil.Ptr(messages),
+		Error:     resultErr,
 	}, nil
 }
 
