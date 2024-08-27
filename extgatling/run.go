@@ -252,7 +252,7 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 	// read return code and send it as Message
 	exitCode := cmdState.Cmd.ProcessState.ExitCode()
 	var resultErr *action_kit_api.ActionKitError
-	if exitCode != 0 && exitCode != -1 {
+	if exitCode > 0 {
 		messages = append(messages, action_kit_api.Message{
 			Level:   extutil.Ptr(action_kit_api.Error),
 			Message: fmt.Sprintf("Gatling run stopped with exit code %d", exitCode),
@@ -262,7 +262,7 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 				Status: extutil.Ptr(action_kit_api.Failed),
 				Title:  "Gatling run ended with failing assertions. Reports are attached.",
 			}
-		} else {
+		} else if exitCode != 130 { //130 is "killed by SIGINT" which is expected when you cancel a run
 			resultErr = &action_kit_api.ActionKitError{
 				Status: extutil.Ptr(action_kit_api.Errored),
 				Title:  fmt.Sprintf("Gatling run errored, exit-code %d", exitCode),
