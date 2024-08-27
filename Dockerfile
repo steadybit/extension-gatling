@@ -39,7 +39,7 @@ FROM azul/zulu-openjdk-debian:17
 
 LABEL "steadybit.com.discovery-disabled"="true"
 
-ENV GATLING_VERSION=3.10.5
+ENV GATLING_VERSION=3.10.3
 ENV GATLING_HOME=/opt/gatling
 ENV GATLING_BIN=${GATLING_HOME}/bin
 ENV PATH=${GATLING_BIN}:$PATH
