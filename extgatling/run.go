@@ -56,6 +56,7 @@ func (l *GatlingLoadTestRunAction) Describe() action_kit_api.ActionDescription {
 		Description: "Execute a Gatling load test.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(actionIcon),
+		Technology:  extutil.Ptr("Gatling"),
 		Kind:        action_kit_api.LoadTest,
 		TimeControl: action_kit_api.TimeControlInternal,
 		Hint: &action_kit_api.ActionHint{
