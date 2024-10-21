@@ -12,7 +12,7 @@ require (
 	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.9.3
 	github.com/steadybit/action-kit/go/action_kit_sdk v1.1.12
 	github.com/steadybit/action-kit/go/action_kit_test v1.2.15
-	github.com/steadybit/extension-kit v1.8.15
+	github.com/steadybit/extension-kit v1.8.18
 	github.com/stretchr/testify v1.9.0
 	go.uber.org/automaxprocs v1.6.0
 )
@@ -24,7 +24,7 @@ require (
 	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
-	github.com/elastic/go-sysinfo v1.14.1 // indirect
+	github.com/elastic/go-sysinfo v1.14.2 // indirect
 	github.com/elastic/go-windows v1.0.2 // indirect
 	github.com/emicklei/go-restful/v3 v3.11.3 // indirect
 	github.com/getkin/kin-openapi v0.128.0 // indirect
