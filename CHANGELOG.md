@@ -1,9 +1,14 @@
 # Changelog
 
+## v1.0.17
+
+- Update dependencies (go 1.23)
+
 ## v1.0.16
 
-- Update dependencies
+- Set new `Technology` property in extension description
 - "Fail" instead of "Error" if the Script is starting but containing some issues.
+- Update dependencies
 
 ## v1.0.15
 
