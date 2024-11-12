@@ -34,7 +34,7 @@ func main() {
 
 	action_kit_sdk.RegisterAction(extgatling.NewGatlingLoadTestRunAction())
 
-	action_kit_sdk.InstallSignalHandler()
+	extsignals.ActivateSignalHandlers()
 	action_kit_sdk.RegisterCoverageEndpoints()
 
 	exthealth.SetReady(true)
