@@ -9,6 +9,8 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
+	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
+	"github.com/steadybit/discovery-kit/go/discovery_kit_sdk"
 	"github.com/steadybit/extension-gatling/config"
 	"github.com/steadybit/extension-gatling/extgatling"
 	"github.com/steadybit/extension-kit/extbuild"
@@ -34,6 +36,7 @@ func main() {
 	exthttp.RegisterHttpHandler("/", exthttp.GetterAsHandler(getExtensionList))
 
 	action_kit_sdk.RegisterAction(extgatling.NewGatlingLoadTestRunAction())
+	discovery_kit_sdk.Register(extgatling.NewDiscovery())
 
 	extsignals.ActivateSignalHandlers()
 	action_kit_sdk.RegisterCoverageEndpoints()
@@ -46,11 +49,13 @@ func main() {
 }
 
 type ExtensionListResponse struct {
-	action_kit_api.ActionList `json:",inline"`
+	action_kit_api.ActionList       `json:",inline"`
+	discovery_kit_api.DiscoveryList `json:",inline"`
 }
 
 func getExtensionList() ExtensionListResponse {
 	return ExtensionListResponse{
-		ActionList: action_kit_sdk.GetActionList(),
+		ActionList:    action_kit_sdk.GetActionList(),
+		DiscoveryList: discovery_kit_sdk.GetDiscoveryList(),
 	}
 }

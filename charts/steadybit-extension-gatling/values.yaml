@@ -1,6 +1,14 @@
 # Default values for steadybit-extension-kubernetes.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+
+kubernetes:
+  # kubernetes.clusterName -- The name of the kubernetes cluster (if not set, the global.clusterName will be used)
+  clusterName: null
+
+# enableLocationSelection -- Specifies whether the extension should allow the user to select a location for the actions. This requires platform >= 2.1.25
+enableLocationSelection: false
+
 image:
   # image.name -- The container image to use for the Steadybit gatling extension.
   name: ghcr.io/steadybit/extension-gatling

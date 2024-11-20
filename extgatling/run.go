@@ -11,6 +11,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
+	"github.com/steadybit/extension-gatling/config"
 	extension_kit "github.com/steadybit/extension-kit"
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/extcmd"
@@ -50,7 +51,7 @@ func (l *GatlingLoadTestRunAction) NewEmptyState() GatlingLoadTestRunState {
 }
 
 func (l *GatlingLoadTestRunAction) Describe() action_kit_api.ActionDescription {
-	return action_kit_api.ActionDescription{
+	description := action_kit_api.ActionDescription{
 		Id:          actionId,
 		Label:       "Gatling",
 		Description: "Execute a Gatling load test.",
@@ -97,6 +98,25 @@ func (l *GatlingLoadTestRunAction) Describe() action_kit_api.ActionDescription {
 		}),
 		Stop: extutil.Ptr(action_kit_api.MutatingEndpointReference{}),
 	}
+
+	if config.Config.EnableLocationSelection {
+		description.Parameters = append(description.Parameters, action_kit_api.ActionParameter{
+			Name:  "-",
+			Label: "Filter Gatling Locations",
+			Type:  action_kit_api.ActionParameterTypeTargetSelection,
+			Order: extutil.Ptr(3),
+		})
+		description.TargetSelection = extutil.Ptr(action_kit_api.TargetSelection{
+			TargetType: targetType,
+			DefaultBlastRadius: extutil.Ptr(action_kit_api.DefaultBlastRadius{
+				Mode:  action_kit_api.DefaultBlastRadiusModeMaximum,
+				Value: 1,
+			}),
+			MissingQuerySelection: extutil.Ptr(action_kit_api.MissingQuerySelectionIncludeAll),
+		})
+	}
+
+	return description
 }
 
 type GatlingLoadTestRunConfig struct {
