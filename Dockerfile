@@ -67,7 +67,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
     && chown -R steadybit /opt/gatling
 
-USER $USERNAME
+USER $USER_UID
 
 RUN mkdir -p /tmp/.java/.systemPrefs /tmp/.java/.userPrefs && \
     chmod -R 755 /tmp/.java
