@@ -72,7 +72,7 @@ Also, the execution locations are part of Steadybit's environment concept, so yo
 
 ### Migration Guideline
 Before activating the location selection feature, be sure to follow these steps:
-1. The installed agent version needs to be >= X.XX, and - only for on-prem customers - the platform version needs to be >=X.X
+1. The installed agent version needs to be >= 2.0.47, and - only for on-prem customers - the platform version needs to be >=2.2.2
 2. Activate the location selection via environment or helm variable when deploying the latest extension version (see [configuration options](#configuration).
 3. Configure every environment that should be able to run Gatling load tests by including the execution location in the environment configuration.
 	 One option is to add the statement `or target via the query language.type="com.steadybit.extension_gatling.location"` to your existing query.
