@@ -1,8 +1,9 @@
 # Changelog
 
-## v1.0.18 (next release)
+## v1.0.18
 
 - Optional location selection (can be enabled via STEADYBIT_EXTENSION_ENABLE_LOCATION_SELECTION env var, requires platform => 2.1.27)
+- Use uid instead of name for user statement in Dockerfile
 
 ## v1.0.17
 
