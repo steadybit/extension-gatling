@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.19 (next Release)
+
+- Update dependencies
+- Update Gatling to 3.13.5
+
 ## v1.0.18
 
 - Optional location selection (can be enabled via STEADYBIT_EXTENSION_ENABLE_LOCATION_SELECTION env var, requires platform => 2.1.27)
