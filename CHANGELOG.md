@@ -3,7 +3,7 @@
 ## v1.0.19 (next Release)
 
 - Update dependencies
-- Update Gatling to 3.13.5
+- Update Gatling to 3.13.4
 
 ## v1.0.18
 
