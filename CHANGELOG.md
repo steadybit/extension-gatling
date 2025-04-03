@@ -3,11 +3,8 @@
 ## v1.0.19 (next)
 
 - Updated dependencies
-
-## v1.0.19 (next Release)
-
-- Update dependencies
-- Update Gatling to 3.13.4
+- Updated Gatling to 3.13.4
+- Removed the old bundle, call via Maven, compare to [this guide](https://docs.gatling.io/release-notes/upgrading/3.10-to-3.11/#replacing-the-hand-made-bundle-with-a-maven-wrapper-based-one)
 
 ## v1.0.18
 
