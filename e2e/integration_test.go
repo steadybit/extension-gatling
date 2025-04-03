@@ -4,9 +4,13 @@
 package e2e
 
 import (
+	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_test/client"
 	"github.com/steadybit/action-kit/go/action_kit_test/e2e"
+	"github.com/steadybit/extension-kit/extutil"
 	"github.com/stretchr/testify/require"
+	"os"
+	"path/filepath"
 	"testing"
 	"time"
 )
@@ -16,31 +20,70 @@ func TestWithMinikube(t *testing.T) {
 		Name: "extension-gatling",
 		Port: 8087,
 		ExtraArgs: func(m *e2e.Minikube) []string {
-			return []string{"--set", "logging.level=debug"}
+			return []string{
+				"--set", "logging.level=debug",
+			}
 		},
 	}
 
 	e2e.WithDefaultMinikube(t, &extFactory, []e2e.WithMinikubeTestCase{
 		{
-			Name: "run gatling",
-			Test: testRunGatling,
+			Name: "run gatling with scala",
+			Test: testRunGatlingWithScala,
+		},
+		{
+			Name: "run gatling with java",
+			Test: testRunGatlingWithJava,
+		},
+		{
+			Name: "run gatling with java zip",
+			Test: testRunGatlingWithJavaZip,
+		},
+		{
+			Name: "run gatling with kotlin",
+			Test: testRunGatlingWithKotlin,
 		},
 	})
 }
 
-func testRunGatling(t *testing.T, m *e2e.Minikube, e *e2e.Extension) {
+func readFileContent(t *testing.T, filePath string) string {
+	// Get the absolute path to ensure we can find the file
+	absPath, err := filepath.Abs(filePath)
+	require.NoError(t, err, "failed to get absolute path for: "+filePath)
+	content, err := os.ReadFile(absPath)
+	require.NoError(t, err, "failed to read file: "+absPath)
+	return string(content)
+}
+
+func testRunGatling(t *testing.T, m *e2e.Minikube, e *e2e.Extension, fileName string, filePath string) {
 	config := struct{}{}
+	context := &action_kit_api.ExecutionContext{ExperimentKey: extutil.Ptr("ADM-1"), ExecutionId: extutil.Ptr(4711)}
+	content := readFileContent(t, filePath)
 	files := []client.File{
 		{
 			ParameterName: "file",
-			FileName:      "basic.scala",
-			Content: []byte("" +
-				"package com.steadybit.gatling\n\nimport scala.concurrent.duration._\n\n\nimport io.gatling.core.Predef._\nimport io.gatling.http.Predef._\n\nclass BasicScalaSimulation extends Simulation {\n\n  val httpProtocol = http\n    .baseUrl(\"http://demo.steadybit.io/products\")\n    .acceptHeader(\"application/json\")\n    .acceptEncodingHeader(\"gzip, deflate\")\n\n  val scn = scenario(\"ExampleScalaSimulation\")\n    .exec(http(\"fetch-products\")\n      .get(\"/\"))\n    .pause(5)\n\n  setUp(\n    scn.inject(atOnceUsers(1))\n  ).protocols(httpProtocol)\n}"),
+			FileName:      fileName,
+			Content:       []byte(content),
 		},
 	}
-	exec, err := e.RunActionWithFiles("com.steadybit.extension_gatling.run", nil, config, nil, files)
+	exec, err := e.RunActionWithFiles("com.steadybit.extension_gatling.run", nil, config, context, files)
 	require.NoError(t, err)
-	e2e.AssertProcessRunningInContainer(t, m, e.Pod, "extension", "gatling.sh", true)
-	e2e.AssertLogContainsWithTimeout(t, m, e.Pod, "Simulation com.steadybit.gatling.BasicScalaSimulation started", 90*time.Second)
+	e2e.AssertLogContainsWithTimeout(t, m, e.Pod, "Simulation BasicSimulation started", 120*time.Second)
 	require.NoError(t, exec.Cancel())
+}
+
+func testRunGatlingWithScala(t *testing.T, m *e2e.Minikube, e *e2e.Extension) {
+	testRunGatling(t, m, e, "BasicSimulation.scala", "../examples/BasicSimulation.scala")
+}
+
+func testRunGatlingWithJava(t *testing.T, m *e2e.Minikube, e *e2e.Extension) {
+	testRunGatling(t, m, e, "BasicSimulation.java", "../examples/BasicSimulation.java")
+}
+
+func testRunGatlingWithJavaZip(t *testing.T, m *e2e.Minikube, e *e2e.Extension) {
+	testRunGatling(t, m, e, "BasicSimulation.zip", "../examples/BasicSimulation.zip")
+}
+
+func testRunGatlingWithKotlin(t *testing.T, m *e2e.Minikube, e *e2e.Extension) {
+	testRunGatling(t, m, e, "BasicSimulation.kt", "../examples/BasicSimulation.kt")
 }

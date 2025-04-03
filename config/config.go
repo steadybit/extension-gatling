@@ -17,7 +17,7 @@ type Specification struct {
 	KubernetesNodeName      string `json:"kubernetesNodeName" split_words:"true" required:"false"`
 	KubernetesPodName       string `json:"kubernetesPodName" split_words:"true" required:"false"`
 	KubernetesNamespace     string `json:"kubernetesNamespace" split_words:"true" required:"false"`
-	EnableLocationSelection bool   `json:"enableLocationSelection" split_words:"true" required:"false"`
+	EnableLocationSelection bool   `json:"enableLocationSelection" split_words:"true" required:"false" default:"true"`
 }
 
 var (

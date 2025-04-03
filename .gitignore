@@ -1,4 +1,5 @@
 /extension
+/gatling-maven-scaffold/target
 /coverage.out
 /e2e/e2e-coverage-docker.out
 /licenses

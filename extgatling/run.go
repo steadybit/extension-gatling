@@ -135,7 +135,10 @@ func (l *GatlingLoadTestRunAction) Prepare(_ context.Context, state *GatlingLoad
 	if err := os.Mkdir(reportFolder, 0755); err != nil {
 		return nil, extension_kit.ToError("Failed to create report folder.", err)
 	}
-	srcFolder := fmt.Sprintf("%v/src", executionRoot)
+	if err := exec.Command("cp", "-r", "gatling-maven-scaffold", executionRoot).Run(); err != nil {
+		return nil, extension_kit.ToError("Failed to copy gatling scaffold.", err)
+	}
+	srcFolder := fmt.Sprintf("%v/gatling-maven-scaffold/src/test/code", executionRoot)
 	if err := os.Mkdir(srcFolder, 0755); err != nil {
 		return nil, extension_kit.ToError("Failed to create src folder.", err)
 	}
@@ -150,33 +153,45 @@ func (l *GatlingLoadTestRunAction) Prepare(_ context.Context, state *GatlingLoad
 			return nil, extension_kit.ToError("Failed to move file.", err)
 		}
 	}
+	oldSrcFolder := srcFolder
+	if HasFileWithSuffix(srcFolder, "scala") {
+		log.Info().Msg("Detected Scala files, using Scala")
+		srcFolder = fmt.Sprintf("%v/gatling-maven-scaffold/src/test/scala", executionRoot)
+	} else if HasFileWithSuffix(srcFolder, "kt") {
+		log.Info().Msg("Detected Kotlin files, using Kotlin")
+		srcFolder = fmt.Sprintf("%v/gatling-maven-scaffold/src/test/kotlin", executionRoot)
+	} else if HasFileWithSuffix(srcFolder, "java") {
+		log.Info().Msg("Detected Java files, using Java")
+		srcFolder = fmt.Sprintf("%v/gatling-maven-scaffold/src/test/java", executionRoot)
+	} else {
+		return nil, extension_kit.ExtensionError{Title: "No source files found."}
+	}
+	err := os.Rename(oldSrcFolder, srcFolder)
+	if err != nil {
+		return nil, extension_kit.ToError("Failed to prepare source folder.", err)
+	}
+
+	//available parameters: mvn gatling:help -Ddetail=true -Dgoal=test
 
 	command := []string{
-		"gatling.sh",
-		"-rm",
-		"local",
-		"-rd",
-		"\"gatling execution by steadybit\"",
-		"-sf",
-		srcFolder,
-		"-rf",
-		reportFolder,
-		"-bf",
-		srcFolder,
-		"-rsf",
-		srcFolder,
+		"mvn",
+		"integration-test",
+		"-o", // offline
+		fmt.Sprintf("-Dgatling.runDescription=\"executed by Steadybit - Experiment %s - Execution %d  \"", *request.ExecutionContext.ExperimentKey, *request.ExecutionContext.ExecutionId),
+		"-Dgatling.resultsFolder=" + reportFolder,
 	}
 	if config.Simulation != "" {
-		command = append(command, "-s")
-		command = append(command, config.Simulation)
+		command = append(command, "-Dgatling.simulationClass="+config.Simulation)
 	}
 	if config.Parameter != nil {
-		command = append(command, "-erjo")
-		var properties string
 		for _, value := range config.Parameter {
-			properties += fmt.Sprintf("-D%v=%v ", value["key"], value["value"])
+			command = append(command, fmt.Sprintf("-D%v=%v ", value["key"], value["value"]))
 		}
-		command = append(command, properties)
+	}
+	if strings.HasSuffix(srcFolder, "kotlin") {
+		command = append(command, "-Pkotlin")
+	} else if strings.HasSuffix(srcFolder, "scala") {
+		command = append(command, "-Pscala")
 	}
 
 	state.ExecutionId = request.ExecutionId
@@ -185,10 +200,32 @@ func (l *GatlingLoadTestRunAction) Prepare(_ context.Context, state *GatlingLoad
 	return nil, nil
 }
 
+func HasFileWithSuffix(root, suffix string) bool {
+	found := false
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			log.Warn().Err(err).Msg("Error walking the path searching for gatling simulations.")
+			return nil
+		}
+		if !info.IsDir() && strings.HasSuffix(info.Name(), suffix) {
+			found = true
+			return filepath.SkipAll
+		}
+		return nil
+	})
+
+	if err != nil {
+		log.Warn().Err(err).Msg("Error walking the path searching for gatling simulations.")
+	}
+	return found
+}
+
 func (l *GatlingLoadTestRunAction) Start(_ context.Context, state *GatlingLoadTestRunState) (*action_kit_api.StartResult, error) {
 	log.Info().Msgf("Starting Gatling load test with command: %s", strings.Join(state.Command, " "))
+	executionRoot := fmt.Sprintf("/tmp/steadybit/%v", state.ExecutionId) //Folder is managed by action_kit_sdk's file download handling
 	cmd := exec.Command(state.Command[0], state.Command[1:]...)
 	cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true}
+	cmd.Dir = fmt.Sprintf("%v/gatling-maven-scaffold", executionRoot)
 	cmdState := extcmd.NewCmdState(cmd)
 	state.CmdStateID = cmdState.Id
 	err := cmd.Start()

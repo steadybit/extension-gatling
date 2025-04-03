@@ -48,25 +48,36 @@ LABEL "version"="${VERSION}"
 LABEL "revision"="${REVISION}"
 RUN echo "$VERSION" > /version.txt && echo "$REVISION" > /revision.txt
 
-ENV GATLING_VERSION=3.10.5
-ENV GATLING_HOME=/opt/gatling
-ENV GATLING_BIN=${GATLING_HOME}/bin
-ENV PATH=${GATLING_BIN}:$PATH
-
 RUN apt-get -qq update && \
     apt-get -qq -y upgrade && \
-    apt-get -qq -y --no-install-recommends install procps unzip zip && \
+    apt-get -qq -y --no-install-recommends install procps unzip zip wget tar && \
     rm -rf /var/lib/apt/lists/*
 
-# Installing jmeter
-ADD https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/${GATLING_VERSION}/gatling-charts-highcharts-bundle-${GATLING_VERSION}-bundle.zip /tmp/
-RUN mkdir -p /opt/  \
- && cd /tmp/ \
- && unzip -d /opt gatling-charts-highcharts-bundle-${GATLING_VERSION}-bundle.zip \
- && mv /opt/gatling-charts-highcharts-bundle-${GATLING_VERSION} ${GATLING_HOME} \
- && rm gatling-charts-highcharts-bundle-${GATLING_VERSION}-bundle.zip \
- && rm --recursive --force ${GATLING_HOME}/user-files/simulations/computerdatabase \
- && rm ${GATLING_HOME}/user-files/resources/search.csv
+# Install Maven
+ENV MAVEN_VERSION=3.9.6
+ENV MAVEN_BASE_URL=https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries
+ENV MAVEN_FILENAME=apache-maven-${MAVEN_VERSION}-bin.tar.gz
+RUN apt-get update && apt-get install -y wget tar && \
+    wget ${MAVEN_BASE_URL}/${MAVEN_FILENAME} -O /tmp/${MAVEN_FILENAME} && \
+    tar -xzf /tmp/${MAVEN_FILENAME} -C /opt/ && \
+    rm -rf /var/lib/apt/lists/* /tmp/${MAVEN_FILENAME} && \
+    rm -rf /opt/apache-maven-${MAVEN_VERSION}/bin/mvnDebug \
+           /opt/apache-maven-${MAVEN_VERSION}/bin/mvnyjp \
+           /opt/apache-maven-${MAVEN_VERSION}/man \
+           /opt/apache-maven-${MAVEN_VERSION}/lib/ext \
+           /opt/apache-maven-${MAVEN_VERSION}/lib/jansi-native \
+           /opt/apache-maven-${MAVEN_VERSION}/NOTICE \
+           /opt/apache-maven-${MAVEN_VERSION}/README.txt \
+           /opt/apache-maven-${MAVEN_VERSION}/doc \
+           /opt/apache-maven-${MAVEN_VERSION}/src.zip && \
+    ln -s /opt/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/bin/mvn
+ENV MAVEN_HOME=/opt/apache-maven-${MAVEN_VERSION}
+ENV PATH="${MAVEN_HOME}/bin:${PATH}"
+
+COPY gatling-maven-scaffold /gatling-maven-scaffold
+COPY examples/BasicSimulation.java /gatling-maven-scaffold/src/test/java/BasicSimulation.java
+COPY examples/BasicSimulation.kt /gatling-maven-scaffold/src/test/kotlin/BasicSimulation.kt
+COPY examples/BasicSimulation.scala /gatling-maven-scaffold/src/test/scala/BasicSimulation.scala
 
 # Setup user
 ARG USERNAME=steadybit
@@ -74,7 +85,7 @@ ARG USER_UID=10000
 ARG USER_GID=$USER_UID
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && chown -R steadybit /opt/gatling
+    && chown -R steadybit /gatling-maven-scaffold
 
 USER $USER_UID
 
@@ -82,6 +93,19 @@ RUN mkdir -p /tmp/.java/.systemPrefs /tmp/.java/.userPrefs && \
     chmod -R 755 /tmp/.java
 
 ENV JAVA_OPTS="-Djava.util.prefs.systemRoot=/tmp/.java -Djava.util.prefs.userRoot=/tmp/.java/.userPrefs"
+ENV MAVEN_OPTS="-Djava.util.prefs.systemRoot=/tmp/.java -Djava.util.prefs.userRoot=/tmp/.java/.userPrefs"
+
+# Run a simple test to pre-load all required dependencies
+RUN cd /gatling-maven-scaffold && \
+    mvn integration-test && \
+    rm -rf /gatling-maven-scaffold/target && \
+    rm -rf /gatling-maven-scaffold/src/test/java && \
+    mvn integration-test -Pkotlin && \
+    rm -rf /gatling-maven-scaffold/target && \
+    rm -rf /gatling-maven-scaffold/src/test/kotlin && \
+    mvn integration-test -Pscala && \
+    rm -rf /gatling-maven-scaffold/target && \
+    rm -rf /gatling-maven-scaffold/src/test/scala
 
 WORKDIR /
 
