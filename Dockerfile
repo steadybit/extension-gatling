@@ -89,8 +89,8 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 USER $USER_UID
 
-ENV JAVA_OPTS="-Djava.util.prefs.syncInterval=0"
-ENV MAVEN_OPTS="-Djava.util.prefs.syncInterval=0"
+ENV JAVA_OPTS="-Djava.util.prefs.syncInterval=0 -Dsteadybit.agent.disable-jvm-attachment"
+ENV MAVEN_OPTS="-Djava.util.prefs.syncInterval=0 -Dsteadybit.agent.disable-jvm-attachment"
 
 # Run a simple test to pre-load all required dependencies
 RUN cd /gatling-maven-scaffold && \

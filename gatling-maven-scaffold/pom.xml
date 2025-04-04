@@ -51,6 +51,12 @@
 				<groupId>io.gatling</groupId>
 				<artifactId>gatling-maven-plugin</artifactId>
 				<version>${gatling-maven-plugin.version}</version>
+				<configuration>
+					<jvmArgs>
+						<jvmArg>-Djava.util.prefs.syncInterval=0</jvmArg>
+						<jvmArg>-Dsteadybit.agent.disable-jvm-attachment</jvmArg>
+					</jvmArgs>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>
