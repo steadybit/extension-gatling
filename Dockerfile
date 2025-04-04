@@ -89,11 +89,8 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 USER $USER_UID
 
-RUN mkdir -p /tmp/.java/.systemPrefs /tmp/.java/.userPrefs && \
-    chmod -R 755 /tmp/.java
-
-ENV JAVA_OPTS="-Djava.util.prefs.systemRoot=/tmp/.java -Djava.util.prefs.userRoot=/tmp/.java/.userPrefs"
-ENV MAVEN_OPTS="-Djava.util.prefs.systemRoot=/tmp/.java -Djava.util.prefs.userRoot=/tmp/.java/.userPrefs"
+ENV JAVA_OPTS="-Djava.util.prefs.syncInterval=0"
+ENV MAVEN_OPTS="-Djava.util.prefs.syncInterval=0"
 
 # Run a simple test to pre-load all required dependencies
 RUN cd /gatling-maven-scaffold && \
