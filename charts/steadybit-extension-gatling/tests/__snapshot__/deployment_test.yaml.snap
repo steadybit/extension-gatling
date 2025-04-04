@@ -67,7 +67,7 @@ manifest should match snapshot using podAnnotations and Labels:
                 timeoutSeconds: 1
               resources:
                 limits:
-                  cpu: 1000m
+                  cpu: 2000m
                   memory: 1Gi
                 requests:
                   cpu: 50m
@@ -164,7 +164,7 @@ manifest should match snapshot with TLS:
                 timeoutSeconds: 1
               resources:
                 limits:
-                  cpu: 1000m
+                  cpu: 2000m
                   memory: 1Gi
                 requests:
                   cpu: 50m
@@ -271,7 +271,7 @@ manifest should match snapshot with extra env vars:
                 timeoutSeconds: 1
               resources:
                 limits:
-                  cpu: 1000m
+                  cpu: 2000m
                   memory: 1Gi
                 requests:
                   cpu: 50m
@@ -366,7 +366,7 @@ manifest should match snapshot with extra labels:
                 timeoutSeconds: 1
               resources:
                 limits:
-                  cpu: 1000m
+                  cpu: 2000m
                   memory: 1Gi
                 requests:
                   cpu: 50m
@@ -465,7 +465,7 @@ manifest should match snapshot with mutual TLS:
                 timeoutSeconds: 1
               resources:
                 limits:
-                  cpu: 1000m
+                  cpu: 2000m
                   memory: 1Gi
                 requests:
                   cpu: 50m
@@ -578,7 +578,7 @@ manifest should match snapshot with mutual TLS using containerPaths:
                 timeoutSeconds: 1
               resources:
                 limits:
-                  cpu: 1000m
+                  cpu: 2000m
                   memory: 1Gi
                 requests:
                   cpu: 50m
@@ -671,7 +671,7 @@ manifest should match snapshot with podSecurityContext:
                 timeoutSeconds: 1
               resources:
                 limits:
-                  cpu: 1000m
+                  cpu: 2000m
                   memory: 1Gi
                 requests:
                   cpu: 50m
@@ -765,7 +765,7 @@ manifest should match snapshot with priority class:
                 timeoutSeconds: 1
               resources:
                 limits:
-                  cpu: 1000m
+                  cpu: 2000m
                   memory: 1Gi
                 requests:
                   cpu: 50m
@@ -859,7 +859,7 @@ manifest should match snapshot without TLS:
                 timeoutSeconds: 1
               resources:
                 limits:
-                  cpu: 1000m
+                  cpu: 2000m
                   memory: 1Gi
                 requests:
                   cpu: 50m
@@ -954,7 +954,7 @@ should add cluster name from global values:
                 timeoutSeconds: 1
               resources:
                 limits:
-                  cpu: 1000m
+                  cpu: 2000m
                   memory: 1Gi
                 requests:
                   cpu: 50m
@@ -1049,7 +1049,7 @@ should add cluster name from local values:
                 timeoutSeconds: 1
               resources:
                 limits:
-                  cpu: 1000m
+                  cpu: 2000m
                   memory: 1Gi
                 requests:
                   cpu: 50m
@@ -1144,7 +1144,7 @@ should enable location selection:
                 timeoutSeconds: 1
               resources:
                 limits:
-                  cpu: 1000m
+                  cpu: 2000m
                   memory: 1Gi
                 requests:
                   cpu: 50m
