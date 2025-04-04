@@ -68,7 +68,8 @@ func testRunGatling(t *testing.T, m *e2e.Minikube, e *e2e.Extension, fileName st
 	}
 	exec, err := e.RunActionWithFiles("com.steadybit.extension_gatling.run", nil, config, context, files)
 	require.NoError(t, err)
-	e2e.AssertLogContainsWithTimeout(t, m, e.Pod, "Simulation BasicSimulation started", 120*time.Second)
+	e2e.AssertLogContainsWithTimeout(t, m, e.Pod, "Simulation BasicSimulation started", 60*time.Second)
+	e2e.AssertLogContainsWithTimeout(t, m, e.Pod, "BUILD SUCCESS", 60*time.Second)
 	require.NoError(t, exec.Cancel())
 }
 
