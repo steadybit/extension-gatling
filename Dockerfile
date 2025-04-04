@@ -89,8 +89,11 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 USER $USER_UID
 
-ENV JAVA_OPTS="-Djava.util.prefs.syncInterval=0 -Dsteadybit.agent.disable-jvm-attachment"
-ENV MAVEN_OPTS="-Djava.util.prefs.syncInterval=0 -Dsteadybit.agent.disable-jvm-attachment"
+RUN mkdir -p /tmp/.java/.systemPrefs /tmp/.java/.userPrefs && \
+    chmod -R 755 /tmp/.java
+
+ENV JAVA_OPTS="-Djava.util.prefs.systemRoot=/tmp/.java -Djava.util.prefs.userRoot=/tmp/.java/.userPrefs -Dsteadybit.agent.disable-jvm-attachment"
+ENV MAVEN_OPTS="-Djava.util.prefs.systemRoot=/tmp/.java -Djava.util.prefs.userRoot=/tmp/.java/.userPrefs -Dsteadybit.agent.disable-jvm-attachment"
 
 # Run a simple test to pre-load all required dependencies
 RUN cd /gatling-maven-scaffold && \

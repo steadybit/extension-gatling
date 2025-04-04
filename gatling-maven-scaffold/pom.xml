@@ -53,7 +53,8 @@
 				<version>${gatling-maven-plugin.version}</version>
 				<configuration>
 					<jvmArgs>
-						<jvmArg>-Djava.util.prefs.syncInterval=0</jvmArg>
+						<jvmArg>-Djava.util.prefs.systemRoot=/tmp/.java</jvmArg>
+						<jvmArg>-Djava.util.prefs.userRoot=/tmp/.java/.userPrefs</jvmArg>
 						<jvmArg>-Dsteadybit.agent.disable-jvm-attachment</jvmArg>
 					</jvmArgs>
 				</configuration>
