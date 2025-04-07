@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.19 (next)
+## v1.0.19
 
 - Updated dependencies
 - Updated Gatling to 3.13.4
