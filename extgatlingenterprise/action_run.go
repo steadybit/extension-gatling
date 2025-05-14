@@ -100,6 +100,7 @@ func (f RunAction) Prepare(_ context.Context, state *RunState, raw action_kit_ap
 	if raw.ExecutionContext.ExperimentKey != nil {
 		state.ExperimentKey = *raw.ExecutionContext.ExperimentKey
 	}
+	state.LastState = -1
 	return nil, nil
 }
 
@@ -238,6 +239,24 @@ func (f RunAction) Stop(_ context.Context, state *RunState) (*action_kit_api.Sto
 		return nil, extension_kit.ToError("Failed to get run info", err)
 	}
 
+	messages := make([]action_kit_api.Message, 0)
+	if len(run.Assertions) > 0 {
+		messages = append(messages, action_kit_api.Message{
+			Message: "### Assertions",
+			Type:    extutil.Ptr("GATLING"),
+		})
+		for _, assertion := range run.Assertions {
+			icon := "❌"
+			if assertion.Result {
+				icon = "✅"
+			}
+			messages = append(messages, action_kit_api.Message{
+				Message: fmt.Sprintf("- %s %s (%d)", icon, assertion.Message, assertion.ActualValue),
+				Type:    extutil.Ptr("GATLING"),
+			})
+		}
+	}
+
 	if run.Status < 4 {
 		log.Info().Str("runId", state.RunId).Msgf("Stop run")
 		abortErr := StopRun(state.RunId)
@@ -248,5 +267,5 @@ func (f RunAction) Stop(_ context.Context, state *RunState) (*action_kit_api.Sto
 		log.Debug().Str("runId", state.RunId).Msgf("Already stopped")
 	}
 
-	return &action_kit_api.StopResult{}, nil
+	return &action_kit_api.StopResult{Messages: extutil.Ptr(messages)}, nil
 }

@@ -16,7 +16,7 @@ import (
 type GatlingRunAssertion struct {
 	Message     string `json:"message"`
 	Result      bool   `json:"result"`
-	ActualValue string `json:"actualValue"`
+	ActualValue int32  `json:"actualValue"`
 }
 type GatlingRunResponse struct {
 	Status      int                   `json:"status"`
