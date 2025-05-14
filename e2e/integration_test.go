@@ -125,7 +125,7 @@ func testRunGatlingEnterpriseSimulation(t *testing.T, m *e2e.Minikube, e *e2e.Ex
 	}
 	context := &action_kit_api.ExecutionContext{ExperimentKey: extutil.Ptr("ADM-1"), ExecutionId: extutil.Ptr(4711)}
 
-	exec, err := e.RunAction("com.steadybit.extension_gatling.enterprise.simulation.run", &target, config, context)
+	exec, err := e.RunAction("com.steadybit.extension_gatling.enterprise.run", &target, config, context)
 	require.NoError(t, err)
 
 	e2e.AssertLogContainsWithTimeout(t, m, e.Pod, "Simulation ended", 60*time.Second)
