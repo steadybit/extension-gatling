@@ -1217,7 +1217,7 @@ should render enterprise api token:
                 - name: STEADYBIT_EXTENSION_ENTERPRISE_API_TOKEN
                   valueFrom:
                     secretKeyRef:
-                      key: apiToken
+                      key: api-token
                       name: steadybit-extension-gatling
                 - name: STEADYBIT_EXTENSION_ENTERPRISE_ORGANIZATION_SLUG
                   value: my-org

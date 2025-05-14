@@ -84,7 +84,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ include "gatling.secret.name" . }}
-                  key: apiToken
+                  key: api-token
             {{- end }}
             {{ if .Values.gatling.enterpriseOrganizationSlug }}
             - name: STEADYBIT_EXTENSION_ENTERPRISE_ORGANIZATION_SLUG
