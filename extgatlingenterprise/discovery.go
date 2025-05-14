@@ -33,7 +33,7 @@ func NewDiscovery() discovery_kit_sdk.TargetDiscovery {
 	)
 }
 
-func (e *gatlingEnterpriseSimulationDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
+func (d *gatlingEnterpriseSimulationDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
 		Id: targetType,
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
@@ -42,7 +42,7 @@ func (e *gatlingEnterpriseSimulationDiscovery) Describe() discovery_kit_api.Disc
 	}
 }
 
-func (e *gatlingEnterpriseSimulationDiscovery) DescribeTarget() discovery_kit_api.TargetDescription {
+func (d *gatlingEnterpriseSimulationDiscovery) DescribeTarget() discovery_kit_api.TargetDescription {
 	return discovery_kit_api.TargetDescription{
 		Id:       targetType,
 		Label:    discovery_kit_api.PluralLabel{One: "Gatling Enterprise Simulation", Other: "Gatling Enterprise Simulations"},
@@ -84,7 +84,7 @@ func (d *gatlingEnterpriseSimulationDiscovery) DescribeAttributes() []discovery_
 	}
 }
 
-func (e *gatlingEnterpriseSimulationDiscovery) DiscoverTargets(_ context.Context) ([]discovery_kit_api.Target, error) {
+func (d *gatlingEnterpriseSimulationDiscovery) DiscoverTargets(_ context.Context) ([]discovery_kit_api.Target, error) {
 	simulations := GetSimulations()
 	targets := make([]discovery_kit_api.Target, len(simulations))
 
