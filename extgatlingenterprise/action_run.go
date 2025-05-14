@@ -251,7 +251,7 @@ func (f RunAction) Stop(_ context.Context, state *RunState) (*action_kit_api.Sto
 				icon = "✅"
 			}
 			messages = append(messages, action_kit_api.Message{
-				Message: fmt.Sprintf("- %s %s (%d)", icon, assertion.Message, assertion.ActualValue),
+				Message: fmt.Sprintf("- %s %s (%.0f)", icon, assertion.Message, assertion.ActualValue),
 				Type:    extutil.Ptr("GATLING"),
 			})
 		}
