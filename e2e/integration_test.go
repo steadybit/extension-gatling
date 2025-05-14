@@ -45,22 +45,22 @@ func TestWithMinikube(t *testing.T) {
 			Name: "validate discovery",
 			Test: validateDiscovery,
 		},
-		//{
-		//	Name: "run gatling with scala",
-		//	Test: testRunGatlingWithScala,
-		//},
-		//{
-		//	Name: "run gatling with java",
-		//	Test: testRunGatlingWithJava,
-		//},
-		//{
-		//	Name: "run gatling with java zip",
-		//	Test: testRunGatlingWithJavaZip,
-		//},
-		//{
-		//	Name: "run gatling with kotlin",
-		//	Test: testRunGatlingWithKotlin,
-		//},
+		{
+			Name: "run gatling with scala",
+			Test: testRunGatlingWithScala,
+		},
+		{
+			Name: "run gatling with java",
+			Test: testRunGatlingWithJava,
+		},
+		{
+			Name: "run gatling with java zip",
+			Test: testRunGatlingWithJavaZip,
+		},
+		{
+			Name: "run gatling with kotlin",
+			Test: testRunGatlingWithKotlin,
+		},
 		{
 			Name: "run gatling enterprise simulation",
 			Test: testRunGatlingEnterpriseSimulation,
