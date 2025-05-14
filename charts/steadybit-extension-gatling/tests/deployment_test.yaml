@@ -97,3 +97,10 @@ tests:
       enableLocationSelection: true
     asserts:
       - matchSnapshot: {}
+  - it: should render enterprise api token
+    set:
+      gatling:
+        enterpriseApiToken: 111-222-333
+        enterpriseOrganizationSlug: my-org
+    asserts:
+      - matchSnapshot: {}

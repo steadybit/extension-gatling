@@ -13,6 +13,7 @@ import (
 	"github.com/steadybit/discovery-kit/go/discovery_kit_sdk"
 	"github.com/steadybit/extension-gatling/config"
 	"github.com/steadybit/extension-gatling/extgatling"
+	"github.com/steadybit/extension-gatling/extgatlingenterprise"
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthealth"
 	"github.com/steadybit/extension-kit/exthttp"
@@ -36,6 +37,10 @@ func main() {
 
 	action_kit_sdk.RegisterAction(extgatling.NewGatlingLoadTestRunAction())
 	discovery_kit_sdk.Register(extgatling.NewDiscovery())
+	if config.Config.EnterpriseApiToken != "" {
+		discovery_kit_sdk.Register(extgatlingenterprise.NewDiscovery())
+		action_kit_sdk.RegisterAction(extgatlingenterprise.NewGatlingEnterpriseRunAction())
+	}
 
 	extsignals.ActivateSignalHandlers()
 	action_kit_sdk.RegisterCoverageEndpoints()

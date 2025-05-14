@@ -13,11 +13,15 @@ import (
 // through environment variables. Learn more through the documentation of the envconfig package.
 // https://github.com/kelseyhightower/envconfig
 type Specification struct {
-	KubernetesClusterName   string `json:"kubernetesClusterName" split_words:"true" required:"false"`
-	KubernetesNodeName      string `json:"kubernetesNodeName" split_words:"true" required:"false"`
-	KubernetesPodName       string `json:"kubernetesPodName" split_words:"true" required:"false"`
-	KubernetesNamespace     string `json:"kubernetesNamespace" split_words:"true" required:"false"`
-	EnableLocationSelection bool   `json:"enableLocationSelection" split_words:"true" required:"false" default:"true"`
+	KubernetesClusterName                  string `json:"kubernetesClusterName" split_words:"true" required:"false"`
+	KubernetesNodeName                     string `json:"kubernetesNodeName" split_words:"true" required:"false"`
+	KubernetesPodName                      string `json:"kubernetesPodName" split_words:"true" required:"false"`
+	KubernetesNamespace                    string `json:"kubernetesNamespace" split_words:"true" required:"false"`
+	EnableLocationSelection                bool   `json:"enableLocationSelection" split_words:"true" required:"false" default:"true"`
+	EnterpriseApiToken                     string `json:"enterpriseApiToken" split_words:"true" required:"false"`
+	EnterpriseApiBaseUrl                   string `json:"enterpriseApiBaseUrl" split_words:"true" required:"false" default:"https://api.gatling.io/api/public"`
+	EnterpriseOrganisationSlug             string `json:"enterpriseOrganisationSlug" split_words:"true" required:"false" default:"your-organisation-slug"`
+	EnterpriseSimulationsDiscoveryInterval string `json:"enterpriseSimulationsDiscoveryInterval" split_words:"true" required:"false" default:"3h"`
 }
 
 var (

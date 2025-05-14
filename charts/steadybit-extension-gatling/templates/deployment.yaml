@@ -79,6 +79,17 @@ spec:
             {{- with .Values.extraEnv }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
+            {{ if (or (.Values.gatling.existingSecret) (.Values.gatling.enterpriseApiToken)) -}}
+            - name: STEADYBIT_EXTENSION_ENTERPRISE_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "gatling.secret.name" . }}
+                  key: apiToken
+            {{- end }}
+            {{ if .Values.gatling.enterpriseOrganizationSlug }}
+            - name: STEADYBIT_EXTENSION_ENTERPRISE_ORGANIZATION_SLUG
+              value: {{ .Values.gatling.enterpriseOrganizationSlug | quote }}
+            {{- end }}
           {{- with .Values.extraEnvFrom }}
           envFrom:
             {{- toYaml . | nindent 12 }}

@@ -2,6 +2,14 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+gatling:
+  # gatling.enterpriseApiToken -- Optional API token for the Gatling Enterprise API. If set, the extension will use this token to authenticate with the Gatling Enterprise API.
+  enterpriseApiToken: null
+  # gatling.enterpriseOrganizationSlug -- Optional slug of the Gatling Enterprise organization. If set, the extension will use this slug to identify the organization in the Gatling Enterprise API.
+  enterpriseOrganizationSlug: null
+  # gatling.existingSecret -- If defined, will skip secret creation and instead assume that the referenced secret contains the enterpriseApiToken
+  existingSecret: null
+
 kubernetes:
   # kubernetes.clusterName -- The name of the kubernetes cluster (if not set, the global.clusterName will be used)
   clusterName: null
