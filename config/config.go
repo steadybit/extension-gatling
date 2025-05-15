@@ -20,7 +20,7 @@ type Specification struct {
 	EnableLocationSelection                bool   `json:"enableLocationSelection" split_words:"true" required:"false" default:"true"`
 	EnterpriseApiToken                     string `json:"enterpriseApiToken" split_words:"true" required:"false"`
 	EnterpriseApiBaseUrl                   string `json:"enterpriseApiBaseUrl" split_words:"true" required:"false" default:"https://api.gatling.io/api/public"`
-	EnterpriseOrganisationSlug             string `json:"enterpriseOrganisationSlug" split_words:"true" required:"false" default:"your-organisation-slug"`
+	EnterpriseOrganizationSlug             string `json:"enterpriseOrganizationSlug" split_words:"true" required:"false" default:"your-organization-slug"`
 	EnterpriseSimulationsDiscoveryInterval string `json:"enterpriseSimulationsDiscoveryInterval" split_words:"true" required:"false" default:"3h"`
 }
 

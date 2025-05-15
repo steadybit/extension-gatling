@@ -114,15 +114,15 @@ func (f RunAction) Start(_ context.Context, state *RunState) (*action_kit_api.St
 	result := &action_kit_api.StartResult{
 		Messages: &[]action_kit_api.Message{
 			{
-				Message: fmt.Sprintf("[Open Summary](https://cloud.gatling.io/o/%s/simulations/%s/runs/%s)", config.Config.EnterpriseOrganisationSlug, state.SimulationId, state.RunId),
+				Message: fmt.Sprintf("[Open Summary](https://cloud.gatling.io/o/%s/simulations/%s/runs/%s)", config.Config.EnterpriseOrganizationSlug, state.SimulationId, state.RunId),
 				Type:    extutil.Ptr("GATLING"),
 			},
 			{
-				Message: fmt.Sprintf("[Open Report](https://cloud.gatling.io/o/%s/simulations/%s/runs/%s/details)", config.Config.EnterpriseOrganisationSlug, state.SimulationId, state.RunId),
+				Message: fmt.Sprintf("[Open Report](https://cloud.gatling.io/o/%s/simulations/%s/runs/%s/details)", config.Config.EnterpriseOrganizationSlug, state.SimulationId, state.RunId),
 				Type:    extutil.Ptr("GATLING"),
 			},
 			{
-				Message: fmt.Sprintf("[Open Logs](https://cloud.gatling.io/o/%s/simulations/%s/runs/%s/logs)", config.Config.EnterpriseOrganisationSlug, state.SimulationId, state.RunId),
+				Message: fmt.Sprintf("[Open Logs](https://cloud.gatling.io/o/%s/simulations/%s/runs/%s/logs)", config.Config.EnterpriseOrganizationSlug, state.SimulationId, state.RunId),
 				Type:    extutil.Ptr("GATLING"),
 			},
 		},
