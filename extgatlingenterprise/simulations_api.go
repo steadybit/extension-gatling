@@ -13,10 +13,16 @@ import (
 	"net/url"
 )
 
+type GatlingStartSimulationRequest struct {
+	Title                     string            `json:"title"`
+	Description               string            `json:"description"`
+	ExtraSystemProperties     map[string]string `json:"extraSystemProperties"`
+	ExtraEnvironmentVariables map[string]string `json:"extraEnvironmentVariables"`
+}
 type GatlingRunAssertion struct {
-	Message     string `json:"message"`
-	Result      bool   `json:"result"`
-	ActualValue float64  `json:"actualValue"`
+	Message     string  `json:"message"`
+	Result      bool    `json:"result"`
+	ActualValue float64 `json:"actualValue"`
 }
 type GatlingRunResponse struct {
 	Status      int                   `json:"status"`
@@ -94,7 +100,7 @@ func GetSimulations() []GatlingSimulation {
 	return result
 }
 
-func RunSimulation(simulationId string, title string, description string) (*string, error) {
+func RunSimulation(simulationId string, title string, description string, systemProperties map[string]string, environmentVariables map[string]string) (*string, error) {
 	var specification = config.Config
 	var apiToken = specification.EnterpriseApiToken
 	runSimulationUrl, err := url.Parse(specification.EnterpriseApiBaseUrl)
@@ -109,9 +115,20 @@ func RunSimulation(simulationId string, title string, description string) (*stri
 	q.Add("simulation", simulationId)
 	runSimulationUrl.RawQuery = q.Encode()
 
-	body := fmt.Sprintf("{\"title\":\"%s\",\"description\":\"%s\"}", title, description)
-	log.Debug().Str("url", runSimulationUrl.String()).Str("body", body).Msg("Starting gatling simulation....")
-	req, err := http.NewRequest("POST", runSimulationUrl.String(), bytes.NewBufferString(body))
+	body := &GatlingStartSimulationRequest{
+		Title:                     title,
+		Description:               description,
+		ExtraSystemProperties:     systemProperties,
+		ExtraEnvironmentVariables: environmentVariables,
+	}
+	bodyBytes, err := json.Marshal(body)
+	if err != nil {
+		log.Error().Msgf("Failed to prepare start request. Got error: %s", err)
+		return nil, err
+	}
+
+	log.Debug().Str("url", runSimulationUrl.String()).Str("body", string(bodyBytes)).Msg("Starting gatling simulation....")
+	req, err := http.NewRequest("POST", runSimulationUrl.String(), bytes.NewBuffer(bodyBytes))
 	if err != nil {
 		return nil, err
 	}

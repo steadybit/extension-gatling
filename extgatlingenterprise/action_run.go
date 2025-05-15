@@ -20,11 +20,13 @@ type RunAction struct {
 }
 
 type RunState struct {
-	ExperimentKey string `json:"experimentKey"`
-	ExecutionId   int    `json:"executionId"`
-	SimulationId  string `json:"simulationId"`
-	RunId         string `json:"runId"`
-	LastState     int    `json:"lastState"`
+	ExperimentKey        string            `json:"experimentKey"`
+	ExecutionId          int               `json:"executionId"`
+	SimulationId         string            `json:"simulationId"`
+	RunId                string            `json:"runId"`
+	LastState            int               `json:"lastState"`
+	SystemProperties     map[string]string `json:"systemProperties"`
+	EnvironmentVariables map[string]string `json:"environmentVariables"`
 }
 
 func NewGatlingEnterpriseRunAction() action_kit_sdk.Action[RunState] {
@@ -69,6 +71,22 @@ func (f RunAction) Describe() action_kit_api.ActionDescription {
 				Required:     extutil.Ptr(true),
 				Type:         action_kit_api.Duration,
 			},
+			{
+				Name:        "systemProperties",
+				Label:       "Java System Properties",
+				Description: extutil.Ptr("Java System Properties passed to the simulation"),
+				Type:        action_kit_api.KeyValue,
+				Required:    extutil.Ptr(false),
+				Advanced:    extutil.Ptr(true),
+			},
+			{
+				Name:        "environmentVariables",
+				Label:       "Environment variables",
+				Description: extutil.Ptr("Environment variables passed to the simulation"),
+				Type:        action_kit_api.KeyValue,
+				Required:    extutil.Ptr(false),
+				Advanced:    extutil.Ptr(true),
+			},
 		},
 		Prepare: action_kit_api.MutatingEndpointReference{},
 		Start:   action_kit_api.MutatingEndpointReference{},
@@ -100,12 +118,27 @@ func (f RunAction) Prepare(_ context.Context, state *RunState, raw action_kit_ap
 	if raw.ExecutionContext.ExperimentKey != nil {
 		state.ExperimentKey = *raw.ExecutionContext.ExperimentKey
 	}
+	if (raw.Config["systemProperties"]) != nil {
+		systemProperties, err := extutil.ToKeyValue(raw.Config, "systemProperties")
+		if err != nil {
+			return nil, err
+		}
+		state.SystemProperties = systemProperties
+	}
+	if (raw.Config["environmentVariables"]) != nil {
+		environmentVariables, err := extutil.ToKeyValue(raw.Config, "environmentVariables")
+		if err != nil {
+			return nil, err
+		}
+		state.EnvironmentVariables = environmentVariables
+	}
+
 	state.LastState = -1
 	return nil, nil
 }
 
 func (f RunAction) Start(_ context.Context, state *RunState) (*action_kit_api.StartResult, error) {
-	runId, err := RunSimulation(state.SimulationId, fmt.Sprintf("Steadybit - %s - %d", state.ExperimentKey, state.ExecutionId), fmt.Sprintf("Executed by Steadybit Experiment %s, Execution %d", state.ExperimentKey, state.ExecutionId))
+	runId, err := RunSimulation(state.SimulationId, fmt.Sprintf("Steadybit - %s - %d", state.ExperimentKey, state.ExecutionId), fmt.Sprintf("Executed by Steadybit Experiment %s, Execution %d", state.ExperimentKey, state.ExecutionId), state.SystemProperties, state.EnvironmentVariables)
 	if err != nil {
 		return nil, extension_kit.ToError("Failed to run simulation", err)
 	}
