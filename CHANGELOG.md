@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.20
+
+- Support Gatling Enterprise
+- Updated dependencies
+
 ## v1.0.19
 
 - Updated dependencies
