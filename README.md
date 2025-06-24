@@ -82,10 +82,46 @@ Before activating the location selection feature, be sure to follow these steps:
 	 One option is to add the statement `or target via the query language.type="com.steadybit.extension_gatling.location"` to your existing query.
 	 You can also filter the available execution locations down, e.g., via the clustername by using `(target.type="com.steadybit.extension_gatling.location" and k8s.cluster-name="CLUSTER-NAME")`
 
+## Importing your own certificates
+
+You may want to import your own certificates for connecting to Gatling Enterprise with self-signed certificates. This can be done in two ways:
+
+### Option 1: Using InsecureSkipVerify
+
+The extension provides the `insecureSkipVerify` option which disables TLS certificate verification. This is suitable for testing but not recommended for production environments.
+
+```yaml
+gatling:
+  insecureSkipVerify: true
+```
+
+### Option 2: Mounting custom certificates
+
+Mount a volume with your custom certificates and reference it in `extraVolumeMounts` and `extraVolumes` in the helm chart.
+
+This example uses a config map to store the `*.crt`-files:
+
+```shell
+kubectl create configmap -n steadybit-agent gatling-self-signed-ca --from-file=./self-signed-ca.crt
+```
+
+```yaml
+extraVolumeMounts:
+  - name: extra-certs
+    mountPath: /etc/ssl/extra-certs
+    readOnly: true
+extraVolumes:
+  - name: extra-certs
+    configMap:
+      name: gatling-self-signed-ca
+extraEnv:
+  - name: SSL_CERT_DIR
+    value: /etc/ssl/extra-certs:/etc/ssl/certs
+```
+
 ## Version and Revision
 
 The version and revision of the extension:
 - are printed during the startup of the extension
 - are added as a Docker label to the image
 - are available via the `version.txt`/`revision.txt` files in the root of the image
-

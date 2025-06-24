@@ -22,6 +22,7 @@ type Specification struct {
 	EnterpriseApiBaseUrl                   string `json:"enterpriseApiBaseUrl" split_words:"true" required:"false" default:"https://api.gatling.io/api/public"`
 	EnterpriseOrganizationSlug             string `json:"enterpriseOrganizationSlug" split_words:"true" required:"false" default:"your-organization-slug"`
 	EnterpriseSimulationsDiscoveryInterval string `json:"enterpriseSimulationsDiscoveryInterval" split_words:"true" required:"false" default:"3h"`
+	InsecureSkipVerify                     bool   `json:"insecureSkipVerify" split_words:"true" default:"false"`
 }
 
 var (
