@@ -2,6 +2,7 @@ package extgatlingenterprise
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"github.com/rs/zerolog/log"
@@ -109,7 +110,7 @@ func RunSimulation(simulationId string, title string, description string, system
 		return nil, err
 	}
 
-	client := &http.Client{}
+	client := getClient()
 	runSimulationUrl.Path += "/simulations/start"
 	q := runSimulationUrl.Query()
 	q.Add("simulation", simulationId)
@@ -175,7 +176,7 @@ func GetRun(runId string) (*GatlingRunResponse, error) {
 		return nil, err
 	}
 
-	client := &http.Client{}
+	client := getClient()
 	runUrl.Path += "/run"
 	q := runUrl.Query()
 	q.Add("run", runId)
@@ -215,6 +216,19 @@ func GetRun(runId string) (*GatlingRunResponse, error) {
 	}
 
 	return extutil.Ptr(result), nil
+}
+
+func getClient() *http.Client {
+	if config.Config.InsecureSkipVerify {
+		log.Debug().Msg("InsecureSkipVerify is enabled. This is not recommended for production use.")
+		transport := &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: config.Config.InsecureSkipVerify,
+			},
+		}
+		return &http.Client{Transport: transport}
+	}
+	return &http.Client{}
 }
 
 func StopRun(runId string) error {

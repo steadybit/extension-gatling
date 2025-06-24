@@ -54,7 +54,7 @@ RUN apt-get -qq update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Maven
-ENV MAVEN_VERSION=3.9.6
+ENV MAVEN_VERSION=3.9.10
 ENV MAVEN_BASE_URL=https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries
 ENV MAVEN_FILENAME=apache-maven-${MAVEN_VERSION}-bin.tar.gz
 RUN apt-get update && apt-get install -y wget tar && \

@@ -22,8 +22,16 @@ import (
 
 func TestWithMinikube(t *testing.T) {
 	extlogging.InitZeroLog()
-	server := createGatlingEnterpriseMock()
+
+	// Generate self-signed certificate for testing
+	cleanup, err := generateSelfSignedCert()
+	require.NoError(t, err)
+	defer cleanup()
+	// Create HTTPS mock server with self-signed certificates
+	server, err := createGatlingEnterpriseMock()
+	require.NoError(t, err, "Failed to create Gatling Enterprise mock server")
 	defer server.Close()
+
 	split := strings.SplitAfter(server.URL, ":")
 	port := split[len(split)-1]
 
@@ -34,8 +42,9 @@ func TestWithMinikube(t *testing.T) {
 			return []string{
 				"--set", "logging.level=debug",
 				"--set", "gatling.enterpriseApiToken=testToken",
+				"--set", "gatling.insecureSkipVerify=true", // Enable insecureSkipVerify to trust self-signed cert
 				"--set", "extraEnv[0].name=STEADYBIT_EXTENSION_ENTERPRISE_API_BASE_URL",
-				"--set", fmt.Sprintf("extraEnv[0].value=%s:%s", "http://host.minikube.internal", port),
+				"--set", fmt.Sprintf("extraEnv[0].value=%s:%s", "https://host.minikube.internal", port),
 			}
 		},
 	}
@@ -63,6 +72,63 @@ func TestWithMinikube(t *testing.T) {
 		},
 		{
 			Name: "run gatling enterprise simulation",
+			Test: testRunGatlingEnterpriseSimulation,
+		},
+	})
+}
+
+func TestWithMinikubeCustomCerts(t *testing.T) {
+	extlogging.InitZeroLog()
+
+	// Generate self-signed certificate for testing
+	cleanup, err := generateSelfSignedCert()
+	require.NoError(t, err)
+	defer cleanup()
+
+	// Create HTTPS mock server with self-signed certificates
+	server, err := createGatlingEnterpriseMock()
+	require.NoError(t, err, "Failed to create Gatling Enterprise mock server")
+	defer server.Close()
+
+	split := strings.SplitAfter(server.URL, ":")
+	port := split[len(split)-1]
+
+	// Set the certificate file path for the installConfigMap function
+	certFile := os.Getenv("CERT_FILE")
+	require.NotEmpty(t, certFile, "Certificate file path not found")
+	os.Setenv("TEST_CERT_FILE", certFile) // Store for use in installConfigMap
+
+	extFactory := e2e.HelmExtensionFactory{
+		Name: "extension-gatling",
+		Port: 8087,
+		ExtraArgs: func(m *e2e.Minikube) []string {
+			return []string{
+				"--set", "logging.level=debug",
+				"--set", "gatling.enterpriseApiToken=testToken",
+				"--set", "gatling.insecureSkipVerify=false", // Not using insecureSkipVerify
+				"--set", "extraEnv[0].name=STEADYBIT_EXTENSION_ENTERPRISE_API_BASE_URL",
+				"--set", fmt.Sprintf("extraEnv[0].value=%s:%s", "https://host.minikube.internal", port),
+				// Add SSL_CERT_DIR environment variable
+				"--set", "extraEnv[1].name=SSL_CERT_DIR",
+				"--set", "extraEnv[1].value=/etc/ssl/extra-certs:/etc/ssl/certs",
+				// Mount the certificate as a volume
+				"--set", "extraVolumeMounts[0].name=extra-certs",
+				"--set", "extraVolumeMounts[0].mountPath=/etc/ssl/extra-certs",
+				"--set", "extraVolumeMounts[0].readOnly=true",
+				"--set", "extraVolumes[0].name=extra-certs",
+				"--set", "extraVolumes[0].configMap.name=gatling-self-signed-ca",
+			}
+		},
+	}
+
+	// Use the AfterStart callback to install the ConfigMap
+	e2e.WithMinikube(t, e2e.DefaultMinikubeOpts().AfterStart(installConfigMap), &extFactory, []e2e.WithMinikubeTestCase{
+		{
+			Name: "validate discovery with custom certificates",
+			Test: validateDiscovery,
+		},
+		{
+			Name: "run gatling enterprise simulation with custom certificates",
 			Test: testRunGatlingEnterpriseSimulation,
 		},
 	})

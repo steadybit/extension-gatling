@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.21
+
+- Add support for self-signed certificates in Gatling Enterprise
+- Updated dependencies
+
 ## v1.0.20
 
 - Support Gatling Enterprise

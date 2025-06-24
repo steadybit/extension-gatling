@@ -104,3 +104,26 @@ tests:
         enterpriseOrganizationSlug: my-org
     asserts:
       - matchSnapshot: {}
+  - it: manifest should match snapshot with insecureSkipVerify enabled
+    set:
+      gatling:
+        insecureSkipVerify: true
+    asserts:
+      - matchSnapshot: { }
+  - it: manifest should match snapshot with insecureSkipVerify and custom certificates
+    set:
+      gatling:
+        insecureSkipVerify: true
+      extraVolumeMounts:
+        - name: extra-certs
+          mountPath: /etc/ssl/extra-certs
+          readOnly: true
+      extraVolumes:
+        - name: extra-certs
+          configMap:
+            name: gatling-self-signed-ca
+      extraEnv:
+        - name: SSL_CERT_DIR
+          value: /etc/ssl/extra-certs:/etc/ssl/certs
+    asserts:
+      - matchSnapshot: { }

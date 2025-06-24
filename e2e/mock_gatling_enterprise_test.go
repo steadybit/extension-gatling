@@ -1,39 +1,55 @@
 package e2e
 
 import (
+	"crypto/tls"
 	"fmt"
 	"github.com/rs/zerolog/log"
 	"net"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 )
 
 const simulationId = "27161d73-816c-480d-ae3d-c8bacd57e661"
 
-func createGatlingEnterpriseMock() *httptest.Server {
+func createGatlingEnterpriseMock() (*httptest.Server, error) {
+	// Load certificate from environment variables (set by generateSelfSignedCert)
+	serverCert, err := tls.LoadX509KeyPair(os.Getenv("CERT_FILE"), os.Getenv("KEY_FILE"))
+	if err != nil {
+		panic(fmt.Sprintf("httptest: failed to load certificate: %v", err))
+	}
+
 	listener, err := net.Listen("tcp", "0.0.0.0:0")
 	if err != nil {
-		panic(fmt.Sprintf("httptest: failed to listen: %v", err))
+		return nil, fmt.Errorf("httptest: failed to listen: %v", err)
 	}
+
 	server := httptest.Server{
 		Listener: listener,
-		Config: &http.Server{Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			log.Info().Str("path", r.URL.Path).Str("method", r.Method).Str("query", r.URL.RawQuery).Msg("Request received")
-			if strings.Contains(r.URL.Path, "/simulations/start") {
-				w.WriteHeader(http.StatusOK)
-				w.Write(startResponse())
-			} else if strings.Contains(r.URL.Path, "/run") {
-				w.WriteHeader(http.StatusOK)
-				w.Write(getRun())
-			} else {
-				w.WriteHeader(http.StatusBadRequest)
-			}
-		})},
+		Config: &http.Server{
+			Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				log.Info().Str("path", r.URL.Path).Str("method", r.Method).Str("query", r.URL.RawQuery).Msg("Request received")
+				if strings.Contains(r.URL.Path, "/simulations/start") {
+					w.WriteHeader(http.StatusOK)
+					w.Write(startResponse())
+				} else if strings.Contains(r.URL.Path, "/run") {
+					w.WriteHeader(http.StatusOK)
+					w.Write(getRun())
+				} else {
+					w.WriteHeader(http.StatusBadRequest)
+				}
+			}),
+			TLSConfig: &tls.Config{},
+		},
+		TLS: &tls.Config{
+			Certificates: []tls.Certificate{serverCert},
+		},
 	}
-	server.Start()
-	log.Info().Str("url", server.URL).Msg("Started Mock-Server")
-	return &server
+	server.StartTLS()
+	log.Info().Str("url", server.URL).Msg("Started HTTPS Mock-Server")
+
+	return &server, nil
 }
 
 func startResponse() []byte {
