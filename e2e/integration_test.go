@@ -124,11 +124,27 @@ func TestWithMinikubeCustomCerts(t *testing.T) {
 	// Use the AfterStart callback to install the ConfigMap
 	e2e.WithMinikube(t, e2e.DefaultMinikubeOpts().AfterStart(installConfigMap), &extFactory, []e2e.WithMinikubeTestCase{
 		{
-			Name: "validate discovery with custom certificates",
+			Name: "validate discovery",
 			Test: validateDiscovery,
 		},
 		{
-			Name: "run gatling enterprise simulation with custom certificates",
+			Name: "run gatling with scala",
+			Test: testRunGatlingWithScala,
+		},
+		{
+			Name: "run gatling with java",
+			Test: testRunGatlingWithJava,
+		},
+		{
+			Name: "run gatling with java zip",
+			Test: testRunGatlingWithJavaZip,
+		},
+		{
+			Name: "run gatling with kotlin",
+			Test: testRunGatlingWithKotlin,
+		},
+		{
+			Name: "run gatling enterprise simulation",
 			Test: testRunGatlingEnterpriseSimulation,
 		},
 	})
