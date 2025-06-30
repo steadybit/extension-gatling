@@ -144,8 +144,9 @@ func (f RunAction) Start(_ context.Context, state *RunState) (*action_kit_api.St
 	}
 	state.RunId = *runId
 
-	result := &action_kit_api.StartResult{
-		Messages: &[]action_kit_api.Message{
+	messages := []action_kit_api.Message{}
+	if config.Config.EnterpriseApiBaseUrl == config.DefaultEnterpriseApiBaseUrl {
+		messages = []action_kit_api.Message{
 			{
 				Message: fmt.Sprintf("[Open Summary](https://cloud.gatling.io/o/%s/simulations/%s/runs/%s)", config.Config.EnterpriseOrganizationSlug, state.SimulationId, state.RunId),
 				Type:    extutil.Ptr("GATLING"),
@@ -158,7 +159,11 @@ func (f RunAction) Start(_ context.Context, state *RunState) (*action_kit_api.St
 				Message: fmt.Sprintf("[Open Logs](https://cloud.gatling.io/o/%s/simulations/%s/runs/%s/logs)", config.Config.EnterpriseOrganizationSlug, state.SimulationId, state.RunId),
 				Type:    extutil.Ptr("GATLING"),
 			},
-		},
+		}
+	}
+
+	result := &action_kit_api.StartResult{
+		Messages: &messages,
 	}
 	return result, nil
 }

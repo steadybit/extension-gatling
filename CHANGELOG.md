@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.22
+
+- Show links in experiment logs only for Gatling Enterprise SaaS
+
 ## v1.0.21
 
 - Add support for self-signed certificates in Gatling Enterprise

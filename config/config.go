@@ -9,6 +9,8 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+const DefaultEnterpriseApiBaseUrl = "https://api.gatling.io/api/public"
+
 // Specification is the configuration specification for the extension. Configuration values can be applied
 // through environment variables. Learn more through the documentation of the envconfig package.
 // https://github.com/kelseyhightower/envconfig
