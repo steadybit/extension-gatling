@@ -1,8 +1,12 @@
 # Changelog
 
+## v1.0.24
+
+- fix: add missing content-type header to POST requests
+
 ## v1.0.23
 
-- fix support for self-signed certificates in Gatling Enterprise
+- feat: Add support to ignore tls verification
 
 ## v1.0.22
 
