@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.24
+## v1.0.25
 
 - fix: add missing content-type header to POST requests
 
