@@ -63,7 +63,7 @@ func GetSimulations() []GatlingSimulation {
 		return nil
 	}
 
-	client := &http.Client{}
+	client := getClient()
 	simulationsUrl.Path += "/simulations"
 	req, err := http.NewRequest("GET", simulationsUrl.String(), nil)
 	if err != nil {
@@ -240,7 +240,7 @@ func StopRun(runId string) error {
 		return err
 	}
 
-	client := &http.Client{}
+	client := getClient()
 	abortRunUrl.Path += "/simulations/abort"
 	q := abortRunUrl.Query()
 	q.Add("run", runId)

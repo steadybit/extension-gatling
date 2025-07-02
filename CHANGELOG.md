@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.23
+
+- fix support for self-signed certificates in Gatling Enterprise
+
 ## v1.0.22
 
 - Show links in experiment logs only for Gatling Enterprise SaaS
