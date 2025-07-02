@@ -1,3 +1,5 @@
+// Copyright 2025 steadybit GmbH. All rights reserved.
+
 package extgatlingenterprise
 
 import (
@@ -135,6 +137,7 @@ func RunSimulation(simulationId string, title string, description string, system
 	}
 	req.Header.Add("Authorization", apiToken)
 	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("User-Agent", fmt.Sprintf("steadybit-extension-gatling/%s", extbuild.GetSemverVersionStringOrUnknown()))
 
 	response, err := client.Do(req)
@@ -252,6 +255,7 @@ func StopRun(runId string) error {
 	}
 	req.Header.Add("Authorization", apiToken)
 	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("User-Agent", fmt.Sprintf("steadybit-extension-gatling/%s", extbuild.GetSemverVersionStringOrUnknown()))
 
 	response, err := client.Do(req)
