@@ -53,7 +53,7 @@ func (f RunAction) Describe() action_kit_api.ActionDescription {
 		Technology:  extutil.Ptr("Gatling"),
 		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
 			TargetType:          targetType,
-			QuantityRestriction: extutil.Ptr(action_kit_api.ExactlyOne),
+			QuantityRestriction: extutil.Ptr(action_kit_api.QuantityRestrictionExactlyOne),
 			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 				{
 					Label: "simulation name",
@@ -69,13 +69,13 @@ func (f RunAction) Describe() action_kit_api.ActionDescription {
 				DefaultValue: extutil.Ptr("30s"),
 				Description:  extutil.Ptr("The step will run as long as needed. You can set this estimation to size the step in the experiment editor for a better understanding of the time schedule."),
 				Required:     extutil.Ptr(true),
-				Type:         action_kit_api.Duration,
+				Type:         action_kit_api.ActionParameterTypeDuration,
 			},
 			{
 				Name:        "systemProperties",
 				Label:       "Java System Properties",
 				Description: extutil.Ptr("Java System Properties passed to the simulation"),
-				Type:        action_kit_api.KeyValue,
+				Type:        action_kit_api.ActionParameterTypeKeyValue,
 				Required:    extutil.Ptr(false),
 				Advanced:    extutil.Ptr(true),
 			},
@@ -83,7 +83,7 @@ func (f RunAction) Describe() action_kit_api.ActionDescription {
 				Name:        "environmentVariables",
 				Label:       "Environment variables",
 				Description: extutil.Ptr("Environment variables passed to the simulation"),
-				Type:        action_kit_api.KeyValue,
+				Type:        action_kit_api.ActionParameterTypeKeyValue,
 				Required:    extutil.Ptr(false),
 				Advanced:    extutil.Ptr(true),
 			},
