@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.0.28
+- Update dependencies
+
 ## v1.0.27
 - Update dependencies
 
