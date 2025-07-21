@@ -86,3 +86,16 @@ run: tidy build
 .PHONY: container
 container:
 	docker build --build-arg ADDITIONAL_BUILD_PARAMS="-cover -covermode=atomic" --build-arg SKIP_LICENSES_REPORT="true" -t extension-gatling:latest .
+
+## container-amd64: build the container image for AMD64 platform (for local Snyk compatibility)
+.PHONY: container-amd64
+container-amd64:
+	docker build --platform linux/amd64 --build-arg ADDITIONAL_BUILD_PARAMS="-cover -covermode=atomic" --build-arg SKIP_LICENSES_REPORT="true" -t extension-gatling:amd64 .
+
+## snyk-container-test: test the container image for vulnerabilities using Snyk
+.PHONY: snyk-container-test
+snyk-container-test: container-amd64
+	@echo "Verifying Docker image exists..."
+	docker images extension-gatling:amd64
+	@echo "Testing with Snyk..."
+	snyk container test extension-gatling:amd64
