@@ -1,15 +1,24 @@
 # Changelog
 
+## v1.0.30
+
+- Update dependencies
+- Parameters are optional
+
 ## v1.0.29
+
 - Update dependencies
 
 ## v1.0.28
+
 - Update dependencies
 
 ## v1.0.27
+
 - Update dependencies
 
 ## v1.0.26
+
 - Update dependencies
 
 ## v1.0.25
