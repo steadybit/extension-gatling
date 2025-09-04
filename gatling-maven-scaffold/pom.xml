@@ -19,7 +19,7 @@
 		<kotlin.version>2.1.20</kotlin.version>
 		<scala-maven-plugin.version>4.9.5</scala-maven-plugin.version>
 		<commons-lang3.version>3.18.0</commons-lang3.version> <!-- remove when included in later update -->
-		<netty.version>4.2.4.Final</netty.version> <!-- remove when included in later update -->
+		<netty.version>4.2.5.Final</netty.version> <!-- remove when included in later update -->
 	</properties>
 
 	<dependencies>
