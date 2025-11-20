@@ -1,0 +1,4 @@
+vulnerabilities:
+  - id: CVE-2024-47554
+    statement: Ignore commons-io somewhere in the maven dependency tree, recheck end of the year
+    expired_at: 2025-12-31
