@@ -1,0 +1,2 @@
+# Ignore commons-io somewhere in the maven dependency tree
+CVE-2024-47554
