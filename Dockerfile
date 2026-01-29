@@ -58,7 +58,7 @@ ENV MAVEN_VERSION=3.9.11
 ENV MAVEN_BASE_URL=https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries
 ENV MAVEN_FILENAME=apache-maven-${MAVEN_VERSION}-bin.tar.gz
 RUN apt-get update && apt-get install -y wget tar && \
-    wget ${MAVEN_BASE_URL}/${MAVEN_FILENAME} -O /tmp/${MAVEN_FILENAME} && \
+    wget ${MAVEN_BASE_URL}/${MAVEN_FILENAME} --max-redirect=0 -O /tmp/${MAVEN_FILENAME} && \
     tar -xzf /tmp/${MAVEN_FILENAME} -C /opt/ && \
     rm -rf /var/lib/apt/lists/* /tmp/${MAVEN_FILENAME} && \
     rm -rf /opt/apache-maven-${MAVEN_VERSION}/bin/mvnDebug \
