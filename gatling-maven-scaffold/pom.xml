@@ -11,13 +11,13 @@
 		<maven.compiler.release>21</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<gatling.version>3.14.9</gatling.version>
-		<gatling-maven-plugin.version>4.20.8</gatling-maven-plugin.version>
+		<gatling-maven-plugin.version>4.21.0</gatling-maven-plugin.version>
 		<maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-		<maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+		<maven-resources-plugin.version>3.4.0</maven-resources-plugin.version>
 		<maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
 		<maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
-		<kotlin.version>2.1.20</kotlin.version>
-		<scala-maven-plugin.version>4.9.7</scala-maven-plugin.version>
+		<kotlin.version>2.2.21</kotlin.version>
+		<scala-maven-plugin.version>4.9.9</scala-maven-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -45,7 +45,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${maven-surefire-plugin.version}</version>
+					<version>${maven-surefire-plugin.version}</version>
 			</plugin>
 			<plugin>
 				<groupId>io.gatling</groupId>
