@@ -89,9 +89,10 @@ RUN groupadd --gid $USER_GID $USERNAME \
 
 USER $USER_UID
 
-RUN mkdir -p /tmp/.java/.systemPrefs /tmp/.java/.userPrefs && \
-    chmod -R 755 /tmp/.java
+RUN mkdir -p /tmp/.java/.systemPrefs /tmp/.java/.userPrefs /tmp/.kotlin && \
+    chmod -R 755 /tmp/.java /tmp/.kotlin
 
+ENV KOTLIN_USER_HOME=/tmp/.kotlin
 ENV JAVA_OPTS="-Djava.util.prefs.systemRoot=/tmp/.java -Djava.util.prefs.userRoot=/tmp/.java/.userPrefs -Dsteadybit.agent.disable-jvm-attachment"
 ENV MAVEN_OPTS="-Djava.util.prefs.systemRoot=/tmp/.java -Djava.util.prefs.userRoot=/tmp/.java/.userPrefs -Dsteadybit.agent.disable-jvm-attachment"
 
