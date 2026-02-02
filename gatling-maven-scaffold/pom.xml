@@ -17,6 +17,7 @@
 		<maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
 		<maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
 		<kotlin.version>2.2.21</kotlin.version>
+		<kotlin.compiler.daemon>false</kotlin.compiler.daemon>
 		<scala-maven-plugin.version>4.9.9</scala-maven-plugin.version>
 	</properties>
 
