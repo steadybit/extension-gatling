@@ -1,4 +1,7 @@
 vulnerabilities:
   - id: CVE-2024-47554
     statement: Ignore commons-io somewhere in the maven dependency tree
-    expired_at: 2026-01-31
+    expired_at: 2026-03-01
+  - id: CVE-2026-0861
+    statement: Wait for new libc version in base image
+    expired_at: 2026-03-01
