@@ -11,6 +11,35 @@ entries:
         - name: Steadybit reliability hub
           url: https://hub.steadybit.com
     apiVersion: v2
+    appVersion: v1.0.39
+    created: "2026-02-05T06:25:20.867185013Z"
+    dependencies:
+    - name: extensionlib
+      repository: https://steadybit.github.io/helm-charts
+      version: ^1.4.4
+    description: Steadybit gatling extension Helm chart for Kubernetes.
+    digest: 938e5177875e422894f3e28c433db6ff755b1b94ba0d1311827d406349d1ebef
+    home: https://www.steadybit.com/
+    icon: https://steadybit-website-assets.s3.amazonaws.com/logo-symbol-transparent.png
+    maintainers:
+    - email: daniel.reuter@steadybit.com
+      name: reuda
+    name: steadybit-extension-gatling
+    sources:
+    - https://github.com/steadybit/extension-gatling
+    urls:
+    - https://github.com/steadybit/extension-gatling/releases/download/steadybit-extension-gatling-1.1.41/steadybit-extension-gatling-1.1.41.tgz
+    version: 1.1.41
+  - annotations:
+      artifacthub.io/images: |
+        - name: logo
+          image: https://steadybit-website-assets.s3.amazonaws.com/logo-symbol-transparent.png
+      artifacthub.io/links: |-
+        - name: Steadybit website
+          url: https://www.steadybit.com
+        - name: Steadybit reliability hub
+          url: https://hub.steadybit.com
+    apiVersion: v2
     appVersion: v1.0.38
     created: "2026-01-12T10:50:51.812615458Z"
     dependencies:
@@ -1712,4 +1741,4 @@ entries:
     urls:
     - https://github.com/steadybit/extension-gatling/releases/download/steadybit-extension-gatling-1.0.0/steadybit-extension-gatling-1.0.0.tgz
     version: 1.0.0
-generated: "2026-01-12T10:50:51.812766228Z"
+generated: "2026-02-05T06:25:20.86748578Z"
