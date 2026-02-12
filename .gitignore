@@ -4,3 +4,5 @@
 /e2e/e2e-coverage-docker.out
 /licenses
 /snyk.sarif
+
+.env
