@@ -1,22 +1,19 @@
 vulnerabilities:
   - id: CVE-2024-47554
     statement: Ignore commons-io somewhere in the maven dependency tree
-    expired_at: 2026-05-01
+    expired_at: 2026-06-01
   - id: CVE-2025-67721
     statement: Ignore aircompressor until updated
-    expired_at: 2026-05-01
+    expired_at: 2026-06-01
   - id: CVE-2026-0861
     statement: Wait for upstream fix in debian
-    expired_at: 2026-05-01
+    expired_at: 2026-06-01
   - id: CVE-2023-45853
     statement: Wait for upstream fix in debian
-    expired_at: 2026-05-01
-  - id: CVE-2026-22695
-    statement: Wait for upstream fix in debian
-    expired_at: 2026-05-01
-  - id: CVE-2026-22801
-    statement: Wait for upstream fix in debian
-    expired_at: 2026-05-01
-  - id: CVE-2026-25646
-    statement: Wait for upstream fix in debian
-    expired_at: 2026-05-01
+    expired_at: 2026-06-01
+  - id: GHSA-72hv-8253-57qq
+    statement: Ignore
+    expired_at: 2026-06-01
+    paths:
+      - home/steadybit/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.20.1/jackson-core-2.20.1.jar
+      - home/steadybit/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.21.0/jackson-core-2.21.0.jar
