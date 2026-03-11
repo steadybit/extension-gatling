@@ -17,3 +17,6 @@ vulnerabilities:
     paths:
       - home/steadybit/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.20.1/jackson-core-2.20.1.jar
       - home/steadybit/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.21.0/jackson-core-2.21.0.jar
+  - id: CVE-2026-25210
+    statement: Wait for upstream fix in debian
+    expired_at: 2026-09-01
