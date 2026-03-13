@@ -5,6 +5,8 @@
 package main
 
 import (
+	"time"
+
 	_ "github.com/KimMachineGun/automemlimit" // By default, it sets `GOMEMLIMIT` to 90% of cgroup's memory limit.
 	"github.com/rs/zerolog"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
@@ -22,6 +24,8 @@ import (
 	"github.com/steadybit/extension-kit/extsignals"
 )
 
+var startedAt = time.Now().Format(time.RFC3339)
+
 func main() {
 	extlogging.InitZeroLog()
 	extbuild.PrintBuildInformation()
@@ -32,13 +36,13 @@ func main() {
 	config.ParseConfiguration()
 	config.ValidateConfiguration()
 
-	exthttp.RegisterHttpHandler("/", exthttp.GetterAsHandler(getExtensionList))
-
 	action_kit_sdk.RegisterAction(extgatling.NewGatlingLoadTestRunAction())
 	discovery_kit_sdk.Register(extgatling.NewDiscovery())
 	if config.Config.EnterpriseApiToken != "" {
 		discovery_kit_sdk.Register(extgatlingenterprise.NewDiscovery())
 		action_kit_sdk.RegisterAction(extgatlingenterprise.NewGatlingEnterpriseRunAction())
+
+		exthttp.RegisterHttpHandler("/", exthttp.IfNoneMatchHandler(func() string { return startedAt }, exthttp.GetterAsHandler(getExtensionList)))
 	}
 
 	extsignals.ActivateSignalHandlers()
