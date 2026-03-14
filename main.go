@@ -41,9 +41,9 @@ func main() {
 	if config.Config.EnterpriseApiToken != "" {
 		discovery_kit_sdk.Register(extgatlingenterprise.NewDiscovery())
 		action_kit_sdk.RegisterAction(extgatlingenterprise.NewGatlingEnterpriseRunAction())
-
-		exthttp.RegisterHttpHandler("/", exthttp.IfNoneMatchHandler(func() string { return startedAt }, exthttp.GetterAsHandler(getExtensionList)))
 	}
+
+	exthttp.RegisterHttpHandler("/", exthttp.IfNoneMatchHandler(func() string { return startedAt }, exthttp.GetterAsHandler(getExtensionList)))
 
 	extsignals.ActivateSignalHandlers()
 	action_kit_sdk.RegisterCoverageEndpoints()
