@@ -1,8 +1,10 @@
 # Changelog
 
-## (next)
+## v1.0.41
 
+- fix: move index handler outside conditional block
 - Support if-none-match for the extension list endpoint
+- Update dependencies
 
 ## v1.0.40
 
