@@ -38,7 +38,7 @@ RUN make licenses-report
 ##
 ## Runtime
 ##
-FROM azul/zulu-openjdk-debian:25
+FROM azul/zulu-openjdk-debian:26
 
 ARG VERSION=unknown
 ARG REVISION=unknown
