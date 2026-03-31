@@ -11,12 +11,24 @@ vulnerabilities:
   - id: CVE-2023-45853
     statement: Wait for upstream fix in debian
     expired_at: 2026-06-01
-  - id: GHSA-72hv-8253-57qq
-    statement: Ignore
-    expired_at: 2026-06-01
-    paths:
-      - home/steadybit/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.20.1/jackson-core-2.20.1.jar
-      - home/steadybit/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.21.0/jackson-core-2.21.0.jar
+  - id: CVE-2025-69720
+    statement: Wait for upstream fix in debian (ncurses)
+    expired_at: 2026-09-01
+  - id: CVE-2026-33416
+    statement: Wait for upstream fix in debian (libpng)
+    expired_at: 2026-09-01
+  - id: CVE-2026-33636
+    statement: Wait for upstream fix in debian (libpng)
+    expired_at: 2026-09-01
+  - id: CVE-2026-29111
+    statement: Wait for upstream fix in debian (systemd)
+    expired_at: 2026-09-01
+  - id: CVE-2026-33871
+    statement: Wait for upstream netty fix
+    expired_at: 2026-09-01
+  - id: CVE-2025-67030
+    statement: Wait for upstream plexus-utils fix
+    expired_at: 2026-09-01
   - id: CVE-2026-25210
     statement: Wait for upstream fix in debian
     expired_at: 2026-09-01
