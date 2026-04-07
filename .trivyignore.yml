@@ -37,4 +37,4 @@ vulnerabilities:
     expired_at: 2026-09-01
   - id: CVE-2026-33870
     statement: Wait for upstream gatling fix
-    expired_at: 2026-05-07
+    expired_at: 2026-09-01
