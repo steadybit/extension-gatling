@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.42
+
+- Update dependencies
+
 ## v1.0.41
 
 - fix: move index handler outside conditional block
