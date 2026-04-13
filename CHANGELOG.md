@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.43
+
+- Bump Go to 1.25.9
+
 ## v1.0.42
 
 - Update dependencies
