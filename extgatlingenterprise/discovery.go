@@ -10,7 +10,6 @@ import (
 	"github.com/steadybit/discovery-kit/go/discovery_kit_sdk"
 	"github.com/steadybit/extension-gatling/config"
 	"github.com/steadybit/extension-kit/extbuild"
-	"github.com/steadybit/extension-kit/extutil"
 	"time"
 )
 
@@ -37,7 +36,7 @@ func (d *gatlingEnterpriseSimulationDiscovery) Describe() discovery_kit_api.Disc
 	return discovery_kit_api.DiscoveryDescription{
 		Id: targetType,
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
-			CallInterval: extutil.Ptr("1m"),
+			CallInterval: new("1m"),
 		},
 	}
 }
@@ -46,9 +45,9 @@ func (d *gatlingEnterpriseSimulationDiscovery) DescribeTarget() discovery_kit_ap
 	return discovery_kit_api.TargetDescription{
 		Id:       targetType,
 		Label:    discovery_kit_api.PluralLabel{One: "Gatling Enterprise Simulation", Other: "Gatling Enterprise Simulations"},
-		Category: extutil.Ptr("Gatling"),
+		Category: new("Gatling"),
 		Version:  extbuild.GetSemverVersionStringOrUnknown(),
-		Icon:     extutil.Ptr(targetIcon),
+		Icon:     new(targetIcon),
 
 		Table: discovery_kit_api.Table{
 			Columns: []discovery_kit_api.Column{

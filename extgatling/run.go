@@ -56,8 +56,8 @@ func (l *GatlingLoadTestRunAction) Describe() action_kit_api.ActionDescription {
 		Label:       "Gatling",
 		Description: "Execute a Gatling load test.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
-		Icon:        extutil.Ptr(actionIcon),
-		Technology:  extutil.Ptr("Gatling"),
+		Icon:        new(actionIcon),
+		Technology:  new("Gatling"),
 		Kind:        action_kit_api.LoadTest,
 		TimeControl: action_kit_api.TimeControlInternal,
 		Hint: &action_kit_api.ActionHint{
@@ -68,10 +68,10 @@ func (l *GatlingLoadTestRunAction) Describe() action_kit_api.ActionDescription {
 			{
 				Name:        "file",
 				Label:       "Gatling Sources",
-				Description: extutil.Ptr("Upload your Gatling Sources. zip files will be extracted."),
+				Description: new("Upload your Gatling Sources. zip files will be extracted."),
 				Type:        action_kit_api.ActionParameterTypeFile,
-				Required:    extutil.Ptr(true),
-				AcceptedFileTypes: extutil.Ptr([]string{
+				Required:    new(true),
+				AcceptedFileTypes: new([]string{
 					".zip",
 					".java",
 					".scala",
@@ -81,22 +81,22 @@ func (l *GatlingLoadTestRunAction) Describe() action_kit_api.ActionDescription {
 			{
 				Name:        "parameter",
 				Label:       "Parameter",
-				Description: extutil.Ptr("Parameters will be accessible from your Gatling Source via Java System Properties, e.g. System.getProperty(\"myParameter\")"),
+				Description: new("Parameters will be accessible from your Gatling Source via Java System Properties, e.g. System.getProperty(\"myParameter\")"),
 				Type:        action_kit_api.ActionParameterTypeKeyValue,
-				Required:    extutil.Ptr(false),
+				Required:    new(false),
 			},
 			{
 				Name:        "simulation",
 				Label:       "Simulation",
-				Description: extutil.Ptr("ClassName of the Simulation to execute. Can be omitted if there is only one simulation in the source files."),
+				Description: new("ClassName of the Simulation to execute. Can be omitted if there is only one simulation in the source files."),
 				Type:        action_kit_api.ActionParameterTypeString,
-				Required:    extutil.Ptr(false),
+				Required:    new(false),
 			},
 		},
-		Status: extutil.Ptr(action_kit_api.MutatingEndpointReferenceWithCallInterval{
-			CallInterval: extutil.Ptr("5s"),
+		Status: new(action_kit_api.MutatingEndpointReferenceWithCallInterval{
+			CallInterval: new("5s"),
 		}),
-		Stop: extutil.Ptr(action_kit_api.MutatingEndpointReference{}),
+		Stop: new(action_kit_api.MutatingEndpointReference{}),
 	}
 
 	if config.Config.EnableLocationSelection {
@@ -104,11 +104,11 @@ func (l *GatlingLoadTestRunAction) Describe() action_kit_api.ActionDescription {
 			Name:  "-",
 			Label: "Filter Gatling Locations",
 			Type:  action_kit_api.ActionParameterTypeTargetSelection,
-			Order: extutil.Ptr(3),
+			Order: new(3),
 		})
-		description.TargetSelection = extutil.Ptr(action_kit_api.TargetSelection{
+		description.TargetSelection = new(action_kit_api.TargetSelection{
 			TargetType: targetType,
-			DefaultBlastRadius: extutil.Ptr(action_kit_api.DefaultBlastRadius{
+			DefaultBlastRadius: new(action_kit_api.DefaultBlastRadius{
 				Mode:  action_kit_api.DefaultBlastRadiusModeMaximum,
 				Value: 1,
 			}),
@@ -283,7 +283,7 @@ func (l *GatlingLoadTestRunAction) Status(_ context.Context, state *GatlingLoadT
 	messages := stdOutToMessages(stdOut)
 	log.Debug().Msgf("Returning %d messages", len(messages))
 
-	result.Messages = extutil.Ptr(messages)
+	result.Messages = new(messages)
 	return &result, nil
 }
 
@@ -363,8 +363,8 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 
 	log.Debug().Msgf("Returning %d messages", len(messages))
 	return &action_kit_api.StopResult{
-		Artifacts: extutil.Ptr(artifacts),
-		Messages:  extutil.Ptr(messages),
+		Artifacts: new(artifacts),
+		Messages:  new(messages),
 		Error:     resultErr,
 	}, nil
 }
