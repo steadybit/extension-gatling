@@ -10,7 +10,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/steadybit/extension-gatling/config"
 	"github.com/steadybit/extension-kit/extbuild"
-	"github.com/steadybit/extension-kit/extutil"
 	"io"
 	"net/http"
 	"net/url"
@@ -167,7 +166,7 @@ func RunSimulation(simulationId string, title string, description string, system
 
 	log.Info().Msgf("Successfully started simulation: %+v", result)
 
-	return extutil.Ptr(result.RunId), nil
+	return new(result.RunId), nil
 }
 
 func GetRun(runId string) (*GatlingRunResponse, error) {
@@ -218,7 +217,7 @@ func GetRun(runId string) (*GatlingRunResponse, error) {
 		return nil, err
 	}
 
-	return extutil.Ptr(result), nil
+	return new(result), nil
 }
 
 func getClient() *http.Client {

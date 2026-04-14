@@ -49,12 +49,12 @@ func (f RunAction) Describe() action_kit_api.ActionDescription {
 		Description: "Run a simulation via Gatling Enterprise",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Kind:        action_kit_api.LoadTest,
-		Icon:        extutil.Ptr(actionIcon),
-		Technology:  extutil.Ptr("Gatling"),
-		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
+		Icon:        new(actionIcon),
+		Technology:  new("Gatling"),
+		TargetSelection: new(action_kit_api.TargetSelection{
 			TargetType:          targetType,
 			QuantityRestriction: extutil.Ptr(action_kit_api.QuantityRestrictionExactlyOne),
-			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
+			SelectionTemplates: new([]action_kit_api.TargetSelectionTemplate{
 				{
 					Label: "simulation name",
 					Query: "gatling.simulation.name=\"\"",
@@ -66,33 +66,33 @@ func (f RunAction) Describe() action_kit_api.ActionDescription {
 			{
 				Name:         "duration",
 				Label:        "Estimated duration",
-				DefaultValue: extutil.Ptr("30s"),
-				Description:  extutil.Ptr("The step will run as long as needed. You can set this estimation to size the step in the experiment editor for a better understanding of the time schedule."),
-				Required:     extutil.Ptr(true),
+				DefaultValue: new("30s"),
+				Description:  new("The step will run as long as needed. You can set this estimation to size the step in the experiment editor for a better understanding of the time schedule."),
+				Required:     new(true),
 				Type:         action_kit_api.ActionParameterTypeDuration,
 			},
 			{
 				Name:        "systemProperties",
 				Label:       "Java System Properties",
-				Description: extutil.Ptr("Java System Properties passed to the simulation"),
+				Description: new("Java System Properties passed to the simulation"),
 				Type:        action_kit_api.ActionParameterTypeKeyValue,
-				Required:    extutil.Ptr(false),
-				Advanced:    extutil.Ptr(true),
+				Required:    new(false),
+				Advanced:    new(true),
 			},
 			{
 				Name:        "environmentVariables",
 				Label:       "Environment variables",
-				Description: extutil.Ptr("Environment variables passed to the simulation"),
+				Description: new("Environment variables passed to the simulation"),
 				Type:        action_kit_api.ActionParameterTypeKeyValue,
-				Required:    extutil.Ptr(false),
-				Advanced:    extutil.Ptr(true),
+				Required:    new(false),
+				Advanced:    new(true),
 			},
 		},
 		Prepare: action_kit_api.MutatingEndpointReference{},
 		Start:   action_kit_api.MutatingEndpointReference{},
-		Status:  extutil.Ptr(action_kit_api.MutatingEndpointReferenceWithCallInterval{}),
-		Stop:    extutil.Ptr(action_kit_api.MutatingEndpointReference{}),
-		Widgets: extutil.Ptr([]action_kit_api.Widget{
+		Status:  new(action_kit_api.MutatingEndpointReferenceWithCallInterval{}),
+		Stop:    new(action_kit_api.MutatingEndpointReference{}),
+		Widgets: new([]action_kit_api.Widget{
 			action_kit_api.MarkdownWidget{
 				Type:        action_kit_api.ComSteadybitWidgetMarkdown,
 				Title:       "Gatling Enterprise",
@@ -149,15 +149,15 @@ func (f RunAction) Start(_ context.Context, state *RunState) (*action_kit_api.St
 		messages = []action_kit_api.Message{
 			{
 				Message: fmt.Sprintf("[Open Summary](https://cloud.gatling.io/o/%s/simulations/%s/runs/%s)", config.Config.EnterpriseOrganizationSlug, state.SimulationId, state.RunId),
-				Type:    extutil.Ptr("GATLING"),
+				Type:    new("GATLING"),
 			},
 			{
 				Message: fmt.Sprintf("[Open Report](https://cloud.gatling.io/o/%s/simulations/%s/runs/%s/details)", config.Config.EnterpriseOrganizationSlug, state.SimulationId, state.RunId),
-				Type:    extutil.Ptr("GATLING"),
+				Type:    new("GATLING"),
 			},
 			{
 				Message: fmt.Sprintf("[Open Logs](https://cloud.gatling.io/o/%s/simulations/%s/runs/%s/logs)", config.Config.EnterpriseOrganizationSlug, state.SimulationId, state.RunId),
-				Type:    extutil.Ptr("GATLING"),
+				Type:    new("GATLING"),
 			},
 		}
 	}
@@ -180,14 +180,14 @@ func (f RunAction) Status(_ context.Context, state *RunState) (*action_kit_api.S
 
 	if state.LastState != run.Status {
 		log.Info().Str("state", statusToString(run.Status)).Msg("Simulation state changed")
-		result.Messages = extutil.Ptr([]action_kit_api.Message{
+		result.Messages = new([]action_kit_api.Message{
 			{
 				Level:   extutil.Ptr(action_kit_api.Info),
 				Message: fmt.Sprintf("Simulation state: %s", statusToString(run.Status)),
 			},
 			{
 				Message: "- " + statusToString(run.Status) + appendDots(run.Status),
-				Type:    extutil.Ptr("GATLING"),
+				Type:    new("GATLING"),
 			},
 		})
 		state.LastState = run.Status
@@ -281,7 +281,7 @@ func (f RunAction) Stop(_ context.Context, state *RunState) (*action_kit_api.Sto
 	if len(run.Assertions) > 0 {
 		messages = append(messages, action_kit_api.Message{
 			Message: "### Assertions",
-			Type:    extutil.Ptr("GATLING"),
+			Type:    new("GATLING"),
 		})
 		for _, assertion := range run.Assertions {
 			icon := "❌"
@@ -290,7 +290,7 @@ func (f RunAction) Stop(_ context.Context, state *RunState) (*action_kit_api.Sto
 			}
 			messages = append(messages, action_kit_api.Message{
 				Message: fmt.Sprintf("- %s %s (%.0f)", icon, assertion.Message, assertion.ActualValue),
-				Type:    extutil.Ptr("GATLING"),
+				Type:    new("GATLING"),
 			})
 		}
 	}
@@ -305,5 +305,5 @@ func (f RunAction) Stop(_ context.Context, state *RunState) (*action_kit_api.Sto
 		log.Debug().Str("runId", state.RunId).Msgf("Already stopped")
 	}
 
-	return &action_kit_api.StopResult{Messages: extutil.Ptr(messages)}, nil
+	return &action_kit_api.StopResult{Messages: new(messages)}, nil
 }

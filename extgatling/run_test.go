@@ -8,7 +8,6 @@ import (
 	"context"
 	"github.com/google/uuid"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
-	"github.com/steadybit/extension-kit/extutil"
 	"os"
 	"path/filepath"
 	"testing"
@@ -158,14 +157,14 @@ func TestPrepare(t *testing.T) {
 	// Create a minimal prepare request
 	request := action_kit_api.PrepareActionRequestBody{
 		ExecutionId: execId,
-		Config: map[string]interface{}{
+		Config: map[string]any{
 			"file":       "/tmp/test.scala",
 			"parameter":  []map[string]string{{"key": "users", "value": "10"}},
 			"simulation": "TestSimulation",
 		},
 		ExecutionContext: &action_kit_api.ExecutionContext{
-			ExperimentKey: extutil.Ptr("test-experiment"),
-			ExecutionId:   extutil.Ptr(1),
+			ExperimentKey: new("test-experiment"),
+			ExecutionId:   new(1),
 		},
 	}
 
@@ -182,4 +181,3 @@ func TestPrepare(t *testing.T) {
 		t.Logf("Prepare error (expected): %v", err)
 	}
 }
-

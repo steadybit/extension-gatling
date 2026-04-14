@@ -10,7 +10,6 @@ import (
 	"github.com/steadybit/action-kit/go/action_kit_test/e2e"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_test/validate"
 	"github.com/steadybit/extension-kit/extlogging"
-	"github.com/steadybit/extension-kit/extutil"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"os"
@@ -165,7 +164,7 @@ func readFileContent(t *testing.T, filePath string) string {
 
 func testRunGatling(t *testing.T, m *e2e.Minikube, e *e2e.Extension, fileName string, filePath string) {
 	config := struct{}{}
-	context := &action_kit_api.ExecutionContext{ExperimentKey: extutil.Ptr("ADM-1"), ExecutionId: extutil.Ptr(4711)}
+	context := &action_kit_api.ExecutionContext{ExperimentKey: new("ADM-1"), ExecutionId: new(4711)}
 	content := readFileContent(t, filePath)
 	files := []client.File{
 		{
@@ -205,7 +204,7 @@ func testRunGatlingEnterpriseSimulation(t *testing.T, m *e2e.Minikube, e *e2e.Ex
 			"gatling.simulation.id": {simulationId},
 		},
 	}
-	context := &action_kit_api.ExecutionContext{ExperimentKey: extutil.Ptr("ADM-1"), ExecutionId: extutil.Ptr(4711)}
+	context := &action_kit_api.ExecutionContext{ExperimentKey: new("ADM-1"), ExecutionId: new(4711)}
 
 	exec, err := e.RunAction("com.steadybit.extension_gatling.enterprise.run", &target, config, context)
 	require.NoError(t, err)
