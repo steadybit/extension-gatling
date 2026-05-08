@@ -78,9 +78,8 @@ Also, the execution locations are part of Steadybit's environment concept, so yo
 Before activating the location selection feature, be sure to follow these steps:
 1. The installed agent version needs to be >= 2.0.47, and - only for on-prem customers - the platform version needs to be >=2.2.2
 2. Activate the location selection via environment or helm variable when deploying the latest extension version (see [configuration options](#configuration).
-3. Configure every environment that should be able to run Gatling load tests by including the execution location in the environment configuration.
-	 One option is to add the statement `or target via the query language.type="com.steadybit.extension_gatling.location"` to your existing query.
-	 You can also filter the available execution locations down, e.g., via the clustername by using `(target.type="com.steadybit.extension_gatling.location" and k8s.cluster-name="CLUSTER-NAME")`
+3. Configure every environment/service that should be able to run Gatling load tests by including the execution location in the environment/service scope.
+   Simply add via query language `OR target.type ="com.steadybit.extension_gatling.location"` or better, specify a Kubernetes cluster like `OR (target.type ="com.steadybit.extension_gatling.location" AND k8s.cluster-name="<your-cluster-name>")` to filter the available execution locations.
 
 ## Importing your own certificates
 
