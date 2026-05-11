@@ -68,6 +68,15 @@ vulnerabilities:
   - id: CVE-2026-42577
     statement: Wait for upstream gatling fix
     expired_at: 2026-09-01
+  - id: CVE-2026-3833
+    statement: Wait for upstream fix in debian
+    expired_at: 2026-09-01
+  - id: CVE-2026-42010
+    statement: Wait for upstream fix in debian
+    expired_at: 2026-09-01
+  - id: CVE-2026-42011
+    statement: Wait for upstream fix in debian
+    expired_at: 2026-09-01
 
 
 
