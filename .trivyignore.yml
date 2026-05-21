@@ -5,23 +5,11 @@ vulnerabilities:
   - id: CVE-2025-67721
     statement: Ignore aircompressor until updated
     expired_at: 2026-06-01
-  - id: CVE-2026-0861
-    statement: Wait for upstream fix in debian
-    expired_at: 2026-06-01
   - id: CVE-2023-45853
     statement: Wait for upstream fix in debian
     expired_at: 2026-06-01
   - id: CVE-2025-69720
     statement: Wait for upstream fix in debian (ncurses)
-    expired_at: 2026-09-01
-  - id: CVE-2026-33416
-    statement: Wait for upstream fix in debian (libpng)
-    expired_at: 2026-09-01
-  - id: CVE-2026-33636
-    statement: Wait for upstream fix in debian (libpng)
-    expired_at: 2026-09-01
-  - id: CVE-2026-29111
-    statement: Wait for upstream fix in debian (systemd)
     expired_at: 2026-09-01
   - id: CVE-2026-33871
     statement: Wait for upstream netty fix
@@ -32,25 +20,7 @@ vulnerabilities:
   - id: CVE-2026-25210
     statement: Wait for upstream fix in debian
     expired_at: 2026-09-01
-  - id: CVE-2026-4046
-    statement: Wait for upstream fix in debian
-    expired_at: 2026-09-01
-  - id: CVE-2026-33870
-    statement: Wait for upstream gatling fix
-    expired_at: 2026-09-01
   - id: CVE-2026-41989
-    statement: Wait for upstream fix in debian
-    expired_at: 2026-09-01
-  - id: CVE-2026-4878
-    statement: Wait for upstream gatling fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-33845
-    statement: Wait for upstream fix in debian
-    expired_at: 2026-09-01
-  - id: CVE-2026-33846
-    statement: Wait for upstream fix in debian
-    expired_at: 2026-09-01
-  - id: CVE-2026-33846
     statement: Wait for upstream fix in debian
     expired_at: 2026-09-01
   - id: CVE-2026-42583
@@ -68,18 +38,6 @@ vulnerabilities:
   - id: CVE-2026-42577
     statement: Wait for upstream gatling fix
     expired_at: 2026-09-01
-  - id: CVE-2026-3833
-    statement: Wait for upstream fix in debian
-    expired_at: 2026-09-01
-  - id: CVE-2026-42010
-    statement: Wait for upstream fix in debian
-    expired_at: 2026-09-01
-  - id: CVE-2026-42011
-    statement: Wait for upstream fix in debian
-    expired_at: 2026-09-01
   - id: CVE-2026-45186
     statement: Waiting for debian upstream fix
     expired_at: 2026-09-01
-
-
-
