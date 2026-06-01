@@ -1,13 +1,10 @@
 vulnerabilities:
   - id: CVE-2024-47554
     statement: Ignore commons-io somewhere in the maven dependency tree
-    expired_at: 2026-06-01
+    expired_at: 2026-09-01
   - id: CVE-2025-67721
     statement: Ignore aircompressor until updated
-    expired_at: 2026-06-01
-  - id: CVE-2023-45853
-    statement: Wait for upstream fix in debian
-    expired_at: 2026-06-01
+    expired_at: 2026-09-01
   - id: CVE-2025-69720
     statement: Wait for upstream fix in debian (ncurses)
     expired_at: 2026-09-01
@@ -18,9 +15,6 @@ vulnerabilities:
     statement: Wait for upstream plexus-utils fix
     expired_at: 2026-09-01
   - id: CVE-2026-25210
-    statement: Wait for upstream fix in debian
-    expired_at: 2026-09-01
-  - id: CVE-2026-41989
     statement: Wait for upstream fix in debian
     expired_at: 2026-09-01
   - id: CVE-2026-42583
@@ -54,5 +48,8 @@ vulnerabilities:
     statement: Waiting for debian upstream fix
     expired_at: 2026-09-01
   - id: CVE-2026-9538
+    statement: Waiting for debian upstream fix
+    expired_at: 2026-09-01
+  - id: CVE-2026-48962
     statement: Waiting for debian upstream fix
     expired_at: 2026-09-01
