@@ -1,5 +1,9 @@
 # Changelog
 
+## (next)
+
+- Update Gatling to 3.15.1 and gatling-maven-plugin to 4.21.7
+
 ## v1.0.45
 
 - Support discovery group attribute via `STEADYBIT_EXTENSION_DISCOVERY_GROUP` env var (or `discovery.group` Helm value) — when set, the extension adds `steadybit.group=<value>` to every discovered target
