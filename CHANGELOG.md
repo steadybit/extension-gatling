@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0.46
+
+- chore: add CVE-2026-48959 and CVE-2026-45447 to trivyignore
+- chore: re-add CVE-2023-45853 to trivyignore
+- chore: update gatling to 3.15.1 and ignore new netty CVEs (#129)
+- chore: update to go 1.26.4
+- feat: add weekly auto patch-release workflow
+
 ## (next)
 
 - Update Gatling to 3.15.1 and gatling-maven-plugin to 4.21.7
