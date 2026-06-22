@@ -8,9 +8,6 @@ vulnerabilities:
   - id: CVE-2025-69720
     statement: Wait for upstream fix in debian (ncurses)
     expired_at: 2026-09-01
-  - id: CVE-2026-33871
-    statement: Wait for upstream netty fix
-    expired_at: 2026-09-01
   - id: CVE-2025-67030
     statement: Wait for upstream plexus-utils fix
     expired_at: 2026-09-01
@@ -18,18 +15,6 @@ vulnerabilities:
     statement: Wait for upstream fix in debian
     expired_at: 2026-09-01
   - id: CVE-2026-42583
-    statement: Wait for upstream gatling fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-42579
-    statement: Wait for upstream gatling fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-42584
-    statement: Wait for upstream gatling fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-42587
-    statement: Wait for upstream gatling fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-42577
     statement: Wait for upstream gatling fix
     expired_at: 2026-09-01
   - id: CVE-2026-45186
@@ -68,12 +53,21 @@ vulnerabilities:
   - id: CVE-2026-45416
     statement: Wait for upstream netty fix
     expired_at: 2026-09-01
-  - id: CVE-2026-48959
-    statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-45447
-    statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
   - id: CVE-2026-50010
     statement: Wait for upstream netty fix
     expired_at: 2026-09-01
+  - id: GHSA-2r2c-cx56-8933
+    statement: Wait for upstream netty fix
+    expired_at: 2026-09-01
+  - id: GHSA-47qp-hqvx-6r3f
+    statement: Wait for upstream netty fix
+    expired_at: 2026-09-01
+
+
+
+
+
+
+
+
+
