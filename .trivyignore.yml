@@ -62,6 +62,12 @@ vulnerabilities:
   - id: GHSA-47qp-hqvx-6r3f
     statement: Wait for upstream netty fix
     expired_at: 2026-09-01
+  - id: CVE-2026-54512
+    statement: Wait for upstream jackson-databind fix
+    expired_at: 2026-09-01
+  - id: CVE-2026-54513
+    statement: Wait for upstream jackson-databind fix
+    expired_at: 2026-09-01
 
 
 
