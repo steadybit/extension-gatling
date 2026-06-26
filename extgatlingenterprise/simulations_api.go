@@ -13,6 +13,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 type GatlingStartSimulationRequest struct {
@@ -221,6 +222,9 @@ func GetRun(runId string) (*GatlingRunResponse, error) {
 }
 
 func getClient() *http.Client {
+	// A timeout bounds every Gatling Enterprise API call so a slow or unresponsive endpoint
+	// cannot block discovery, status checks or the run lifecycle indefinitely.
+	const timeout = 30 * time.Second
 	if config.Config.InsecureSkipVerify {
 		log.Debug().Msg("InsecureSkipVerify is enabled. This is not recommended for production use.")
 		transport := &http.Transport{
@@ -228,9 +232,9 @@ func getClient() *http.Client {
 				InsecureSkipVerify: config.Config.InsecureSkipVerify,
 			},
 		}
-		return &http.Client{Transport: transport}
+		return &http.Client{Transport: transport, Timeout: timeout}
 	}
-	return &http.Client{}
+	return &http.Client{Timeout: timeout}
 }
 
 func StopRun(runId string) error {

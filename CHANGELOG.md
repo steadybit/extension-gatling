@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- fix: set a timeout on the Gatling Enterprise HTTP client so a slow or unresponsive API cannot block discovery, status checks or the run lifecycle indefinitely
+
 ## v1.0.47
 
 - chore(deps): bump golang.org/x/net to v0.55.0 (CVE-2026-39821) (#132)
