@@ -3,6 +3,7 @@
 ## Unreleased
 
 - fix: set a timeout on the Gatling Enterprise HTTP client so a slow or unresponsive API cannot block discovery, status checks or the run lifecycle indefinitely
+- fix: resolve the data race on the Gatling process exit code between the process-reaping goroutine and the status/stop handlers
 
 ## v1.0.47
 
