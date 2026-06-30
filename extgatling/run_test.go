@@ -9,47 +9,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"sync"
 	"testing"
-	"time"
 )
-
-func TestWatchProcessPublishesExitCodeWithoutRacingProcessState(t *testing.T) {
-	cmd := exec.Command("sh", "-c", "exit 7")
-	if err := cmd.Start(); err != nil {
-		t.Fatalf("failed to start command: %v", err)
-	}
-
-	const id = "test-watch-process"
-	t.Cleanup(func() { processExitCodes.Delete(id) })
-
-	watchProcess(cmd, id)
-
-	// Several concurrent readers, as Status/Stop/gracefulKill do, must read the exit
-	// code via exitCodeFor without racing the watchProcess goroutine's cmd.Wait()
-	// (caught by `go test -race`).
-	deadline := time.Now().Add(5 * time.Second)
-	var wg sync.WaitGroup
-	for r := 0; r < 4; r++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			for exitCodeFor(id) == -1 {
-				if time.Now().After(deadline) {
-					return
-				}
-				time.Sleep(time.Millisecond)
-			}
-		}()
-	}
-	wg.Wait()
-
-	if got := exitCodeFor(id); got != 7 {
-		t.Fatalf("expected published exit code 7, got %d", got)
-	}
-}
 
 func TestHasFileWithSuffix(t *testing.T) {
 	// Create temporary test directory

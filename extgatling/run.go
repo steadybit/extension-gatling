@@ -22,8 +22,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"sync"
-	"sync/atomic"
 	"syscall"
 	"time"
 )
@@ -43,41 +41,6 @@ var (
 	_ action_kit_sdk.ActionWithStatus[GatlingLoadTestRunState] = (*GatlingLoadTestRunAction)(nil)
 	_ action_kit_sdk.ActionWithStop[GatlingLoadTestRunState]   = (*GatlingLoadTestRunAction)(nil)
 )
-
-// processExitCodes maps a CmdState id to the exit code of its Gatling process.
-// The goroutine that calls cmd.Wait() is the only writer of cmd.ProcessState; it
-// records the exit code here once the process ends. Status/Stop/gracefulKill read
-// it from here instead of racing on cmd.ProcessState. The value is -1 while the
-// process is still running, matching os.ProcessState.ExitCode()'s running sentinel.
-//
-// It is a package-level registry (rather than a field on the action state) because
-// the state is JSON-serialized between handler calls and cannot carry the live value
-// the watchProcess goroutine updates. The entry shares the CmdState lifecycle: both
-// are removed in Stop (alongside extcmd.RemoveCmdState), which ActionKit calls for
-// every started action.
-var processExitCodes sync.Map
-
-func exitCodeFor(cmdStateID string) int {
-	if v, ok := processExitCodes.Load(cmdStateID); ok {
-		return int(v.(*atomic.Int32).Load())
-	}
-	return -1
-}
-
-// watchProcess reaps an already-started command in a goroutine and publishes its
-// exit code under cmdStateID. That goroutine is the sole reader of cmd.ProcessState,
-// so the handlers can read the exit code via exitCodeFor without racing cmd.Wait().
-func watchProcess(cmd *exec.Cmd, cmdStateID string) {
-	exitCode := &atomic.Int32{}
-	exitCode.Store(-1)
-	processExitCodes.Store(cmdStateID, exitCode)
-	go func() {
-		if cmdErr := cmd.Wait(); cmdErr != nil {
-			log.Error().Msgf("Failed to execute gatling: %s", cmdErr)
-		}
-		exitCode.Store(int32(cmd.ProcessState.ExitCode()))
-	}()
-}
 
 func NewGatlingLoadTestRunAction() action_kit_sdk.Action[GatlingLoadTestRunState] {
 	return &GatlingLoadTestRunAction{}
@@ -271,7 +234,11 @@ func (l *GatlingLoadTestRunAction) Start(_ context.Context, state *GatlingLoadTe
 	}
 
 	state.Pid = cmd.Process.Pid
-	watchProcess(cmd, cmdState.Id)
+	go func() {
+		if cmdErr := cmdState.Wait(); cmdErr != nil {
+			log.Error().Msgf("Failed to execute gatling: %s", cmdErr)
+		}
+	}()
 	log.Info().Msgf("Started load test.")
 
 	state.Command = nil
@@ -289,7 +256,7 @@ func (l *GatlingLoadTestRunAction) Status(_ context.Context, state *GatlingLoadT
 	var result action_kit_api.StatusResult
 
 	// check if gatling is still running
-	exitCode := exitCodeFor(state.CmdStateID)
+	exitCode := cmdState.ExitCode()
 	stdOut := cmdState.GetLines(false)
 	stdOutToLog(stdOut)
 	if exitCode == -1 {
@@ -324,7 +291,6 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 		log.Info().Msg("Gatling not yet started, nothing to stop.")
 		return nil, nil
 	}
-	defer processExitCodes.Delete(state.CmdStateID)
 
 	cmdState, err := extcmd.GetCmdState(state.CmdStateID)
 	if err != nil {
@@ -333,7 +299,7 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 	extcmd.RemoveCmdState(state.CmdStateID)
 
 	// kill Gatling if it is still running
-	gracefulKill(state.Pid, state.CmdStateID)
+	gracefulKill(state.Pid, cmdState)
 
 	// read Stout and Stderr and send it as Messages
 	stdOut := cmdState.GetLines(true)
@@ -341,7 +307,7 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 	messages := stdOutToMessages(stdOut)
 
 	// read return code and send it as Message
-	exitCode := exitCodeFor(state.CmdStateID)
+	exitCode := cmdState.ExitCode()
 	var resultErr *action_kit_api.ActionKitError
 	if exitCode > 0 {
 		messages = append(messages, action_kit_api.Message{
@@ -402,8 +368,8 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 	}, nil
 }
 
-func gracefulKill(pid int, cmdStateID string) {
-	if exitCodeFor(cmdStateID) != -1 {
+func gracefulKill(pid int, cmdState *extcmd.CmdState) {
+	if cmdState.ExitCode() != -1 {
 		return
 	}
 
@@ -418,7 +384,7 @@ func gracefulKill(pid int, cmdStateID string) {
 			_ = syscall.Kill(-pid, syscall.SIGKILL)
 			return
 		case <-time.After(1000 * time.Millisecond):
-			if exitCodeFor(cmdStateID) != -1 {
+			if cmdState.ExitCode() != -1 {
 				log.Info().Msg("Gatling process stopped (SIGINT).")
 				return
 			}
