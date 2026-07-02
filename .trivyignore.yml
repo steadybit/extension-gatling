@@ -83,3 +83,6 @@ vulnerabilities:
 
 
 
+  - id: CVE-2026-41992
+    statement: Waiting for debian upstream fix
+    expired_at: 2026-09-01
