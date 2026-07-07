@@ -1,9 +1,16 @@
 # Changelog
 
-## Unreleased
+## v1.0.48
 
-- fix: set a timeout on the Gatling Enterprise HTTP client so a slow or unresponsive API cannot block discovery, status checks or the run lifecycle indefinitely
+- build(deps): bump github.com/steadybit/action-kit/go/action_kit_sdk
+- build(deps): bump github.com/steadybit/discovery-kit/go/discovery_kit_sdk
+- build(deps): bump github.com/steadybit/extension-kit
+- chore: add Claude Code workflows (#136)
+- chore: silence SonarQube finding on secrets: inherit in Claude workflows
+- fix: resolve data race on the Gatling process exit code (#138)
 - fix: resolve the data race on the Gatling process exit code between the process-reaping goroutine and the status/stop handlers
+- fix: set a timeout on the Gatling Enterprise HTTP client (#137)
+- fix: set a timeout on the Gatling Enterprise HTTP client so a slow or unresponsive API cannot block discovery, status checks or the run lifecycle indefinitely
 
 ## v1.0.47
 
