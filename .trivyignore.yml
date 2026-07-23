@@ -11,6 +11,9 @@ vulnerabilities:
   - id: CVE-2025-67030
     statement: Wait for upstream plexus-utils fix
     expired_at: 2026-09-01
+  - id: GHSA-r7wm-3cxj-wff9
+    statement: jackson-core pulled transitively by a maven build plugin (not controllable via project dependencyManagement); fixed in 2.22.1
+    expired_at: 2026-09-01
   - id: CVE-2026-25210
     statement: Wait for upstream fix in debian
     expired_at: 2026-09-01
