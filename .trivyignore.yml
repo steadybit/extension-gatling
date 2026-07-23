@@ -38,27 +38,6 @@ vulnerabilities:
   - id: CVE-2023-45853
     statement: Wait for upstream fix in debian
     expired_at: 2026-09-01
-  - id: CVE-2026-44249
-    statement: Wait for upstream netty fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-47691
-    statement: Wait for upstream netty fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-45674
-    statement: Wait for upstream netty fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-45416
-    statement: Wait for upstream netty fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-50010
-    statement: Wait for upstream netty fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-54512
-    statement: Wait for upstream jackson-databind fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-54513
-    statement: Wait for upstream jackson-databind fix
-    expired_at: 2026-09-01
   - id: CVE-2026-54369
     statement: Waiting for debian upstream fix
     expired_at: 2026-09-01
@@ -90,9 +69,6 @@ vulnerabilities:
     statement: Waiting for debian upstream fix
     expired_at: 2026-09-01
   - id: CVE-2026-57433
-    statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
-  - id: GHSA-r7wm-3cxj-wff9
     statement: Waiting for debian upstream fix
     expired_at: 2026-09-01
   - id: CVE-2026-56741
