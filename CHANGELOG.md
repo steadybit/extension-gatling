@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.51
+
+- chore(deps): update dependencies
+- fix: force netty 4.2.16 and jackson 2.21.4 to resolve transitive CVEs
+
 ## v1.0.50
 
 - ci: skip build on .trivyignore.yml-only changes [skip ci]
