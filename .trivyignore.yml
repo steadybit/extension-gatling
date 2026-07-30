@@ -80,3 +80,18 @@ vulnerabilities:
   - id: CVE-2026-56740
     statement: Waiting for debian upstream fix
     expired_at: 2026-09-01
+  - id: CVE-2026-55831
+    statement: Waiting for gatling release with netty fix
+    expired_at: 2027-01-01
+  - id: CVE-2026-55833
+    statement: Waiting for gatling release with netty fix
+    expired_at: 2027-01-01
+  - id: CVE-2026-56745
+    statement: Waiting for gatling release with netty fix
+    expired_at: 2027-01-01
+  - id: CVE-2026-56819
+    statement: Waiting for gatling release with netty fix
+    expired_at: 2027-01-01
+  - id: CVE-2026-59901
+    statement: Waiting for gatling release with netty fix
+    expired_at: 2027-01-01
