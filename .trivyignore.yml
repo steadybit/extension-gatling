@@ -95,3 +95,6 @@ vulnerabilities:
   - id: CVE-2026-59901
     statement: Waiting for gatling release with netty fix
     expired_at: 2027-01-01
+  - id: CVE-2026-58050
+    statement: Waiting for debian upstream fix
+    expired_at: 2027-01-01
