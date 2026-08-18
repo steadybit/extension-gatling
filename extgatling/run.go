@@ -351,7 +351,7 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 			simulationLog := fmt.Sprintf("%v/%v/simulation.log", reportFolder, file.Name())
 			_, err = os.Stat(simulationLog)
 			if err == nil { // file exists
-				zippedReport := fmt.Sprintf("%v/report.zip", reportFolder)
+				zippedReport := fmt.Sprintf("%v/%v.zip", reportFolder, file.Name())
 				log.Info().Msgf("Zipping report %s to %s", file.Name(), zippedReport)
 				if err := zipDir(fmt.Sprintf("%v/%v", reportFolder, file.Name()), zippedReport); err != nil {
 					return nil, extension_kit.ToError("Failed to zip report", err)
@@ -361,7 +361,11 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 					return nil, err
 				}
 				artifacts = append(artifacts, action_kit_api.Artifact{
-					Label: "$(experimentKey)_$(executionId)_report.zip",
+					// Gatling names the report folder "<simulation>-<timestamp>";
+					// including it keeps the artifacts of a run that produced
+					// several reports apart -- they would otherwise all be
+					// attached under the same label.
+					Label: fmt.Sprintf("$(experimentKey)_$(executionId)_%s_report.zip", file.Name()),
 					Data:  content,
 				})
 			}
