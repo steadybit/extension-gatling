@@ -341,11 +341,8 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 			_, err = os.Stat(simulationLog)
 			if err == nil { // file exists
 				zippedReport := fmt.Sprintf("%v/report.zip", reportFolder)
-				log.Info().Msgf("Zip report with command: %s %s %s %s", "zip", "-r", zippedReport, ".")
-				zipCommand := exec.Command("zip", "-r", zippedReport, ".")
-				zipCommand.Dir = fmt.Sprintf("%v/%v", reportFolder, file.Name())
-				zipErr := zipCommand.Run()
-				if zipErr != nil {
+				log.Info().Msgf("Zipping report %s to %s", file.Name(), zippedReport)
+				if err := zipDir(fmt.Sprintf("%v/%v", reportFolder, file.Name()), zippedReport); err != nil {
 					return nil, extension_kit.ToError("Failed to zip report", err)
 				}
 				content, err := extfile.File2Base64(zippedReport)
