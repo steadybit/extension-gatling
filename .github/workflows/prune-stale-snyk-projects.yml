@@ -1,0 +1,76 @@
+# Snyk registers one project per jar directory in the pre-warmed maven repository, and those paths
+# embed the version - so every dependency bump orphans the previous project. Snyk never retires them,
+# so they keep reporting findings against jars this image no longer contains. New projects only appear
+# when `ci` runs `snyk monitor`, which happens on tag builds, so that is when we prune.
+name: Prune stale Snyk projects
+
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        type: boolean
+        default: true
+        description: Only report what would be deleted
+
+permissions:
+  contents: read
+
+# Deleting is not safe to run twice at once: the loser of the race gets 404s on projects the winner
+# already removed.
+concurrency:
+  group: prune-stale-snyk-projects
+  cancel-in-progress: false
+
+jobs:
+  prune:
+    name: Prune
+    # Only a tag push on this repo runs `snyk monitor`, and only that can create new projects. `ci`
+    # also runs for pull_request, where head_branch is the PR source branch - a branch named
+    # `v2-migration`, including one from a fork, must not reach a destructive prune.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_repository.full_name == github.repository &&
+       startsWith(github.event.workflow_run.head_branch, 'v'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # Same CLI (and pinned version) the release uses to monitor, so the sbom enumerates exactly the
+      # scan targets snyk turns into projects. Installed via npm rather than the snyk docker action
+      # for the same reason as in extension-kit: that image is amd64-only.
+      - name: Install snyk CLI
+        run: npm install -g --ignore-scripts snyk@1.1306.1
+
+      - name: Log in to ghcr.io
+        uses: docker/login-action@v3 # NOSONAR githubactions:S7637 - verified action creator
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prune stale Snyk projects
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_ORG_ID: ${{ vars.SNYK_ORG_ID }}
+          IMAGE: ghcr.io/${{ github.repository }}:latest
+          PROJECT: ${{ github.repository }}
+          # A manual run reports by default; the release path always deletes.
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+          TAG: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          # The `v` prefix above is not enough on its own - require a real release tag.
+          if [ "$GITHUB_EVENT_NAME" = "workflow_run" ] &&
+             ! printf '%s' "$TAG" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::notice::$TAG is not a release tag - nothing to prune"
+            exit 0
+          fi
+          set -- --image "$IMAGE" --project "$PROJECT" --refs latest,release-candidate
+          if [ "$DRY_RUN" != "true" ]; then set -- "$@" --apply; fi
+          python3 .github/scripts/prune-stale-snyk-projects.py "$@"
