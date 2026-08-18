@@ -143,10 +143,18 @@ func (l *GatlingLoadTestRunAction) Prepare(_ context.Context, state *GatlingLoad
 		return nil, extension_kit.ToError("Failed to create src folder.", err)
 	}
 
+	var messages []action_kit_api.Message
 	if filepath.Ext(config.File) == ".zip" {
-		log.Info().Msgf("Unzip with command: %s %s %s %s", "unzip", config.File, "-d", srcFolder)
-		if err := exec.Command("unzip", config.File, "-d", srcFolder).Run(); err != nil {
+		log.Info().Msgf("Extracting %s to %s", config.File, srcFolder)
+		skipped, err := unzip(config.File, srcFolder)
+		if err != nil {
 			return nil, extension_kit.ToError("Failed to unzip file.", err)
+		}
+		if len(skipped) > 0 {
+			messages = append(messages, action_kit_api.Message{
+				Level:   extutil.Ptr(action_kit_api.Warn),
+				Message: fmt.Sprintf("Not extracted from %s, neither a file nor a folder: %s", filepath.Base(config.File), strings.Join(skipped, ", ")),
+			})
 		}
 	} else {
 		if err := exec.Command("mv", config.File, srcFolder).Run(); err != nil {
@@ -197,7 +205,10 @@ func (l *GatlingLoadTestRunAction) Prepare(_ context.Context, state *GatlingLoad
 	state.ExecutionId = request.ExecutionId
 	state.Command = command
 
-	return nil, nil
+	if len(messages) == 0 {
+		return nil, nil
+	}
+	return &action_kit_api.PrepareResult{Messages: extutil.Ptr(messages)}, nil
 }
 
 func HasFileWithSuffix(root, suffix string) bool {

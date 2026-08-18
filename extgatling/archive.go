@@ -6,6 +6,7 @@ package extgatling
 
 import (
 	"archive/zip"
+	"fmt"
 	"io"
 	"io/fs"
 	"os"
@@ -67,4 +68,75 @@ func zipDir(dir, dst string) (err error) {
 		_, err = io.Copy(target, in)
 		return err
 	})
+}
+
+// unzip extracts the zip archive at src into dst and returns the names of the
+// entries it did not extract, so the caller can decide whether that is a
+// problem. Entries that would escape dst are rejected outright; entries that are
+// neither a regular file nor a directory are the skipped ones. Extracted files
+// get mode 0644, directories 0755 -- the archive's own mode bits are ignored, as
+// they are frequently missing or meaningless depending on the system the archive
+// was built on.
+func unzip(src, dst string) (skipped []string, err error) {
+	r, err := zip.OpenReader(src)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = r.Close() }()
+
+	for _, f := range r.File {
+		path, err := resolveWithin(dst, f.Name)
+		if err != nil {
+			return nil, err
+		}
+
+		if f.FileInfo().IsDir() {
+			if err := os.MkdirAll(path, 0755); err != nil {
+				return nil, err
+			}
+			continue
+		}
+		if !f.FileInfo().Mode().IsRegular() {
+			skipped = append(skipped, f.Name)
+			continue
+		}
+
+		if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+			return nil, err
+		}
+		if err := copyOutOfArchive(f, path); err != nil {
+			return nil, err
+		}
+	}
+
+	return skipped, nil
+}
+
+func copyOutOfArchive(f *zip.File, path string) error {
+	in, err := f.Open()
+	if err != nil {
+		return err
+	}
+	defer func() { _ = in.Close() }()
+
+	out, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = out.Close() }()
+
+	if _, err := io.Copy(out, in); err != nil {
+		return err
+	}
+	return out.Close()
+}
+
+// resolveWithin joins name onto dir, refusing names that would end up outside of
+// it (zip slip).
+func resolveWithin(dir, name string) (string, error) {
+	local := filepath.FromSlash(name)
+	if !filepath.IsLocal(local) {
+		return "", fmt.Errorf("archive entry %q would be extracted outside of %s", name, dir)
+	}
+	return filepath.Join(dir, local), nil
 }
