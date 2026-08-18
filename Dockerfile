@@ -50,7 +50,7 @@ RUN echo "$VERSION" > /version.txt && echo "$REVISION" > /revision.txt
 
 RUN apt-get -qq update && \
     apt-get -qq -y upgrade && \
-    apt-get -qq -y --no-install-recommends install procps unzip zip wget tar && \
+    apt-get -qq -y --no-install-recommends install procps wget tar && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Maven

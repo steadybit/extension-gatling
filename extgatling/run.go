@@ -143,10 +143,18 @@ func (l *GatlingLoadTestRunAction) Prepare(_ context.Context, state *GatlingLoad
 		return nil, extension_kit.ToError("Failed to create src folder.", err)
 	}
 
+	var messages []action_kit_api.Message
 	if filepath.Ext(config.File) == ".zip" {
-		log.Info().Msgf("Unzip with command: %s %s %s %s", "unzip", config.File, "-d", srcFolder)
-		if err := exec.Command("unzip", config.File, "-d", srcFolder).Run(); err != nil {
+		log.Info().Msgf("Extracting %s to %s", config.File, srcFolder)
+		skipped, err := unzip(config.File, srcFolder)
+		if err != nil {
 			return nil, extension_kit.ToError("Failed to unzip file.", err)
+		}
+		if len(skipped) > 0 {
+			messages = append(messages, action_kit_api.Message{
+				Level:   extutil.Ptr(action_kit_api.Warn),
+				Message: fmt.Sprintf("Not extracted from %s, neither a file nor a folder: %s", filepath.Base(config.File), strings.Join(skipped, ", ")),
+			})
 		}
 	} else {
 		if err := exec.Command("mv", config.File, srcFolder).Run(); err != nil {
@@ -197,7 +205,10 @@ func (l *GatlingLoadTestRunAction) Prepare(_ context.Context, state *GatlingLoad
 	state.ExecutionId = request.ExecutionId
 	state.Command = command
 
-	return nil, nil
+	if len(messages) == 0 {
+		return nil, nil
+	}
+	return &action_kit_api.PrepareResult{Messages: extutil.Ptr(messages)}, nil
 }
 
 func HasFileWithSuffix(root, suffix string) bool {
@@ -340,12 +351,9 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 			simulationLog := fmt.Sprintf("%v/%v/simulation.log", reportFolder, file.Name())
 			_, err = os.Stat(simulationLog)
 			if err == nil { // file exists
-				zippedReport := fmt.Sprintf("%v/report.zip", reportFolder)
-				log.Info().Msgf("Zip report with command: %s %s %s %s", "zip", "-r", zippedReport, ".")
-				zipCommand := exec.Command("zip", "-r", zippedReport, ".")
-				zipCommand.Dir = fmt.Sprintf("%v/%v", reportFolder, file.Name())
-				zipErr := zipCommand.Run()
-				if zipErr != nil {
+				zippedReport := fmt.Sprintf("%v/%v.zip", reportFolder, file.Name())
+				log.Info().Msgf("Zipping report %s to %s", file.Name(), zippedReport)
+				if err := zipDir(fmt.Sprintf("%v/%v", reportFolder, file.Name()), zippedReport); err != nil {
 					return nil, extension_kit.ToError("Failed to zip report", err)
 				}
 				content, err := extfile.File2Base64(zippedReport)
@@ -353,7 +361,11 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 					return nil, err
 				}
 				artifacts = append(artifacts, action_kit_api.Artifact{
-					Label: "$(experimentKey)_$(executionId)_report.zip",
+					// Gatling names the report folder "<simulation>-<timestamp>";
+					// including it keeps the artifacts of a run that produced
+					// several reports apart -- they would otherwise all be
+					// attached under the same label.
+					Label: fmt.Sprintf("$(experimentKey)_$(executionId)_%s_report.zip", file.Name()),
 					Data:  content,
 				})
 			}
