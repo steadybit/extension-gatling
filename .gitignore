@@ -6,3 +6,5 @@
 /snyk.sarif
 
 .env
+
+__pycache__/
