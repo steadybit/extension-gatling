@@ -17,6 +17,7 @@ on:
 
 permissions:
   contents: read
+  packages: read
 
 # Deleting is not safe to run twice at once: the loser of the race gets 404s on projects the winner
 # already removed.
