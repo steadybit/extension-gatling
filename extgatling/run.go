@@ -133,10 +133,6 @@ func (l *GatlingLoadTestRunAction) Prepare(_ context.Context, state *GatlingLoad
 		return nil, extension_kit.ToError("Failed to unmarshal the config.", err)
 	}
 	executionRoot := fmt.Sprintf("/tmp/steadybit/%v", request.ExecutionId) //Folder is managed by action_kit_sdk's file download handling
-	reportFolder := fmt.Sprintf("%v/report", executionRoot)
-	if err := os.Mkdir(reportFolder, 0755); err != nil {
-		return nil, extension_kit.ToError("Failed to create report folder.", err)
-	}
 	if err := exec.Command("cp", "-r", "gatling-maven-scaffold", executionRoot).Run(); err != nil {
 		return nil, extension_kit.ToError("Failed to copy gatling scaffold.", err)
 	}
@@ -188,7 +184,6 @@ func (l *GatlingLoadTestRunAction) Prepare(_ context.Context, state *GatlingLoad
 		"integration-test",
 		"-o", // offline
 		fmt.Sprintf("-Dgatling.runDescription=\"executed by Steadybit - Experiment %s - Execution %d  \"", *request.ExecutionContext.ExperimentKey, *request.ExecutionContext.ExecutionId),
-		"-Dgatling.resultsFolder=" + reportFolder,
 	}
 	if config.Simulation != "" {
 		command = append(command, "-Dgatling.simulationClass="+config.Simulation)
@@ -409,9 +404,9 @@ func gracefulKill(pid int, cmdState *extcmd.CmdState) {
 
 // findReportFolders returns every directory below root that holds a simulation.log.
 //
-// It searches rather than computing the path because gatling-maven-plugin 4.21.9 ignores the
-// -Dgatling.resultsFolder we pass and writes to the maven project's target/gatling instead. Reading
-// the folder we asked for therefore found nothing and silently attached no report at all.
+// It searches rather than computing the path because the location is Gatling's to choose, not ours:
+// the plugin declares resultsFolder as @Parameter(defaultValue = "${project.build.directory}/gatling",
+// readonly = true), so it can be set neither by a -D property nor from the pom.
 func findReportFolders(root string) ([]string, error) {
 	var reports []string
 	err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, err error) error {
