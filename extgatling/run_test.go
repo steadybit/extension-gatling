@@ -8,6 +8,8 @@ import (
 	"context"
 	"github.com/google/uuid"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"os"
 	"path/filepath"
 	"testing"
@@ -180,4 +182,32 @@ func TestPrepare(t *testing.T) {
 		// This is expected since we didn't set up the file system
 		t.Logf("Prepare error (expected): %v", err)
 	}
+}
+
+func TestFindReportFolders(t *testing.T) {
+	// Gatling writes reports under the maven project's target/gatling; the resultsFolder we ask for
+	// would put them under report/. Which one is used is Gatling's decision, so both must be found.
+	root := t.TempDir()
+	viaTarget := filepath.Join(root, "gatling-maven-scaffold", "target", "gatling", "basicsimulation-20260824180012345")
+	viaResultsFolder := filepath.Join(root, "report", "basicsimulation-20260824180067890")
+	for _, report := range []string{viaTarget, viaResultsFolder} {
+		require.NoError(t, os.MkdirAll(filepath.Join(report, "js"), 0755))
+		require.NoError(t, os.WriteFile(filepath.Join(report, "simulation.log"), []byte("RUN\n"), 0600))
+	}
+	require.NoError(t, os.MkdirAll(filepath.Join(root, "gatling-maven-scaffold", "target", "classes"), 0755))
+
+	reports, err := findReportFolders(root)
+	require.NoError(t, err)
+	assert.Equal(t, []string{viaTarget, viaResultsFolder}, reports)
+}
+
+func TestFindReportFoldersWithoutAnyReport(t *testing.T) {
+	// The shape of the original bug: os.ReadDir on an empty report folder succeeds, so nothing
+	// surfaced an error and the run attached no report.
+	root := t.TempDir()
+	require.NoError(t, os.MkdirAll(filepath.Join(root, "report"), 0755))
+
+	reports, err := findReportFolders(root)
+	require.NoError(t, err)
+	assert.Empty(t, reports)
 }

@@ -4,6 +4,7 @@
 package e2e
 
 import (
+	"encoding/base64"
 	"fmt"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_test/client"
@@ -175,9 +176,21 @@ func testRunGatling(t *testing.T, m *e2e.Minikube, e *e2e.Extension, fileName st
 	}
 	exec, err := e.RunActionWithFiles("com.steadybit.extension_gatling.run", nil, config, context, files)
 	require.NoError(t, err)
-	e2e.AssertLogContainsWithTimeout(t, m, e.Pod, "Simulation BasicSimulation started", 60*time.Second)
-	e2e.AssertLogContainsWithTimeout(t, m, e.Pod, "BUILD SUCCESS", 60*time.Second)
-	require.NoError(t, exec.Cancel())
+	// Cancelling would SIGINT the run and leave the report unfinished, so there would be nothing to
+	// attach. This also replaces log assertions that could match an earlier sub-test's output: the
+	// extension pod is shared and findLog looks 180s back.
+	require.NoError(t, exec.Wait())
+
+	// Labels embed Gatling's "<simulation>-<timestamp>" report folder name, so match on shape.
+	artifacts := exec.Artifacts()
+	require.NotEmpty(t, artifacts, "the run must hand back at least one gatling report")
+	for _, artifact := range artifacts {
+		assert.True(t, strings.HasSuffix(artifact.Label, "_report.zip"), "unexpected artifact label %s", artifact.Label)
+		report, err := base64.StdEncoding.DecodeString(artifact.Data)
+		require.NoError(t, err, "artifact %s must be valid base64", artifact.Label)
+		require.Greater(t, len(report), 4, "artifact %s must not be empty", artifact.Label)
+		assert.Equal(t, []byte("PK\x03\x04"), report[:4], "artifact %s must be a zip archive", artifact.Label)
+	}
 }
 
 func testRunGatlingWithScala(t *testing.T, m *e2e.Minikube, e *e2e.Extension) {
