@@ -1,85 +1,76 @@
 vulnerabilities:
   - id: CVE-2024-47554
     statement: Ignore commons-io somewhere in the maven dependency tree
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2025-67721
     statement: Ignore aircompressor until updated
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2025-69720
     statement: Wait for upstream fix in debian (ncurses)
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2025-67030
     statement: Wait for upstream plexus-utils fix
-    expired_at: 2026-09-01
-  - id: GHSA-r7wm-3cxj-wff9
-    statement: jackson-core pulled transitively by a maven build plugin (not controllable via project dependencyManagement); fixed in 2.22.1
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-25210
     statement: Wait for upstream fix in debian
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-45186
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2025-59375
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-42496
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-8376
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-42497
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-9538
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-48962
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2023-45853
     statement: Wait for upstream fix in debian
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-54369
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-41992
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-53615
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-56131
-    statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
-  - id: CVE-2026-56407
-    statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-56408
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-58471
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-58472
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-13221
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-57432
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-57433
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-56741
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-56740
     statement: Waiting for debian upstream fix
-    expired_at: 2026-09-01
+    expired_at: 2027-02-01
   - id: CVE-2026-55831
     statement: Waiting for gatling release with netty fix
     expired_at: 2027-01-01
