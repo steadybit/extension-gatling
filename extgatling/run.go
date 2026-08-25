@@ -18,9 +18,11 @@ import (
 	"github.com/steadybit/extension-kit/extconversion"
 	"github.com/steadybit/extension-kit/extfile"
 	"github.com/steadybit/extension-kit/extutil"
+	"io/fs"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strings"
 	"syscall"
 	"time"
@@ -340,36 +342,37 @@ func (l *GatlingLoadTestRunAction) Stop(_ context.Context, state *GatlingLoadTes
 
 	artifacts := make([]action_kit_api.Artifact, 0)
 	executionRoot := fmt.Sprintf("/tmp/steadybit/%v", state.ExecutionId) //Folder is managed by action_kit_sdk's file download handling
-	reportFolder := fmt.Sprintf("%v/report", executionRoot)
-	files, err := os.ReadDir(reportFolder)
+	reports, err := findReportFolders(executionRoot)
 	if err != nil {
-		return nil, extension_kit.ToError("Failed to read report folder", err)
+		return nil, extension_kit.ToError("Failed to look for gatling reports", err)
+	}
+	if len(reports) == 0 {
+		messages = append(messages, action_kit_api.Message{
+			Level:   extutil.Ptr(action_kit_api.Warn),
+			Message: fmt.Sprintf("Found no gatling report below %s, so none is attached to this run.", executionRoot),
+		})
 	}
 
-	for _, file := range files {
-		if file.IsDir() {
-			simulationLog := fmt.Sprintf("%v/%v/simulation.log", reportFolder, file.Name())
-			_, err = os.Stat(simulationLog)
-			if err == nil { // file exists
-				zippedReport := fmt.Sprintf("%v/%v.zip", reportFolder, file.Name())
-				log.Info().Msgf("Zipping report %s to %s", file.Name(), zippedReport)
-				if err := zipDir(fmt.Sprintf("%v/%v", reportFolder, file.Name()), zippedReport); err != nil {
-					return nil, extension_kit.ToError("Failed to zip report", err)
-				}
-				content, err := extfile.File2Base64(zippedReport)
-				if err != nil {
-					return nil, err
-				}
-				artifacts = append(artifacts, action_kit_api.Artifact{
-					// Gatling names the report folder "<simulation>-<timestamp>";
-					// including it keeps the artifacts of a run that produced
-					// several reports apart -- they would otherwise all be
-					// attached under the same label.
-					Label: fmt.Sprintf("$(experimentKey)_$(executionId)_%s_report.zip", file.Name()),
-					Data:  content,
-				})
-			}
+	for _, report := range reports {
+		name := filepath.Base(report)
+		// Keep the zip outside the folder being zipped.
+		zippedReport := filepath.Join(executionRoot, name+".zip")
+		log.Info().Msgf("Zipping report %s to %s", report, zippedReport)
+		if err := zipDir(report, zippedReport); err != nil {
+			return nil, extension_kit.ToError("Failed to zip report", err)
 		}
+		content, err := extfile.File2Base64(zippedReport)
+		if err != nil {
+			return nil, err
+		}
+		artifacts = append(artifacts, action_kit_api.Artifact{
+			// Gatling names the report folder "<simulation>-<timestamp>";
+			// including it keeps the artifacts of a run that produced
+			// several reports apart -- they would otherwise all be
+			// attached under the same label.
+			Label: fmt.Sprintf("$(experimentKey)_$(executionId)_%s_report.zip", name),
+			Data:  content,
+		})
 	}
 
 	log.Debug().Msgf("Returning %d messages", len(messages))
@@ -402,4 +405,31 @@ func gracefulKill(pid int, cmdState *extcmd.CmdState) {
 			}
 		}
 	}
+}
+
+// findReportFolders returns every directory below root that holds a simulation.log.
+//
+// It searches rather than computing the path because gatling-maven-plugin 4.21.9 ignores the
+// -Dgatling.resultsFolder we pass and writes to the maven project's target/gatling instead. Reading
+// the folder we asked for therefore found nothing and silently attached no report at all.
+func findReportFolders(root string) ([]string, error) {
+	var reports []string
+	err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if !entry.IsDir() {
+			return nil
+		}
+		if _, err := os.Stat(filepath.Join(path, "simulation.log")); err == nil {
+			reports = append(reports, path)
+			return fs.SkipDir
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	sort.Strings(reports)
+	return reports, nil
 }
