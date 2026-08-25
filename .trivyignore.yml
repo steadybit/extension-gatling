@@ -104,3 +104,12 @@ vulnerabilities:
   - id: CVE-2026-53613
     statement: Waiting for debian upstream fix
     expired_at: 2027-02-01
+  - id: CVE-2026-75595
+    statement: waiting for update
+    expired_at: 2027-02-01
+  - id: CVE-2026-59903
+    statement: waiting for update
+    expired_at: 2027-02-01
+  - id: CVE-2026-62243
+    statement: waiting for update
+    expired_at: 2027-02-01
