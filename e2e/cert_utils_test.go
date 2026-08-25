@@ -113,6 +113,7 @@ func generateSelfSignedCert() (func(), error) {
 
 	return cleanup, nil
 }
+
 // installConfigMap creates a ConfigMap with the self-signed certificate in the minikube cluster
 func installConfigMap(m *e2e.Minikube) error {
 	err := m.CreateConfigMap("default", "gatling-self-signed-ca", os.Getenv("CERT_FILE"))
