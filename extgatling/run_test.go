@@ -185,12 +185,13 @@ func TestPrepare(t *testing.T) {
 }
 
 func TestFindReportFolders(t *testing.T) {
-	// Gatling writes reports under the maven project's target/gatling; the resultsFolder we ask for
-	// would put them under report/. Which one is used is Gatling's decision, so both must be found.
+	// Gatling writes reports under the maven project's target/gatling, and the path is its to choose:
+	// the plugin's resultsFolder is readonly. The second location stands for anywhere else a report
+	// could land, which the search has to find just the same.
 	root := t.TempDir()
 	viaTarget := filepath.Join(root, "gatling-maven-scaffold", "target", "gatling", "basicsimulation-20260824180012345")
-	viaResultsFolder := filepath.Join(root, "report", "basicsimulation-20260824180067890")
-	for _, report := range []string{viaTarget, viaResultsFolder} {
+	elsewhere := filepath.Join(root, "report", "basicsimulation-20260824180067890")
+	for _, report := range []string{viaTarget, elsewhere} {
 		require.NoError(t, os.MkdirAll(filepath.Join(report, "js"), 0755))
 		require.NoError(t, os.WriteFile(filepath.Join(report, "simulation.log"), []byte("RUN\n"), 0600))
 	}
@@ -198,7 +199,7 @@ func TestFindReportFolders(t *testing.T) {
 
 	reports, err := findReportFolders(root)
 	require.NoError(t, err)
-	assert.Equal(t, []string{viaTarget, viaResultsFolder}, reports)
+	assert.Equal(t, []string{viaTarget, elsewhere}, reports)
 }
 
 func TestFindReportFoldersWithoutAnyReport(t *testing.T) {
