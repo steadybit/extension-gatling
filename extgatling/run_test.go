@@ -212,3 +212,9 @@ func TestFindReportFoldersWithoutAnyReport(t *testing.T) {
 	require.NoError(t, err)
 	assert.Empty(t, reports)
 }
+
+func TestStopWithoutStartedCommand(t *testing.T) {
+	result, err := (&GatlingLoadTestRunAction{}).Stop(context.Background(), &GatlingLoadTestRunState{})
+	require.NoError(t, err)
+	assert.Nil(t, result)
+}
