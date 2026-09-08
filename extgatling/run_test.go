@@ -218,3 +218,14 @@ func TestStopWithoutStartedCommand(t *testing.T) {
 	require.NoError(t, err)
 	assert.Nil(t, result)
 }
+
+func TestRunDescription(t *testing.T) {
+	assert.Equal(t, "executed by Steadybit", runDescription(nil))
+	assert.Equal(t, "executed by Steadybit - Execution 7", runDescription(&action_kit_api.ExecutionContext{
+		ExecutionId: new(7),
+	}))
+	assert.Equal(t, "executed by Steadybit - Experiment ADM-1 - Execution 7", runDescription(&action_kit_api.ExecutionContext{
+		ExperimentKey: new("ADM-1"),
+		ExecutionId:   new(7),
+	}))
+}

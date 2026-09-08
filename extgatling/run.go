@@ -183,7 +183,7 @@ func (l *GatlingLoadTestRunAction) Prepare(_ context.Context, state *GatlingLoad
 		"mvn",
 		"integration-test",
 		"-o", // offline
-		fmt.Sprintf("-Dgatling.runDescription=\"executed by Steadybit - Experiment %s - Execution %d  \"", *request.ExecutionContext.ExperimentKey, *request.ExecutionContext.ExecutionId),
+		fmt.Sprintf("-Dgatling.runDescription=\"%s\"", runDescription(request.ExecutionContext)),
 	}
 	if config.Simulation != "" {
 		command = append(command, "-Dgatling.simulationClass="+config.Simulation)
@@ -427,4 +427,20 @@ func findReportFolders(root string) ([]string, error) {
 	}
 	sort.Strings(reports)
 	return reports, nil
+}
+
+// runDescription labels the Gatling run with what the platform told us about the execution. A run without an
+// experiment behind it (a standalone execution) has no experiment key, so every field is optional here.
+func runDescription(ctx *action_kit_api.ExecutionContext) string {
+	description := "executed by Steadybit"
+	if ctx == nil {
+		return description
+	}
+	if ctx.ExperimentKey != nil {
+		description = fmt.Sprintf("%s - Experiment %s", description, *ctx.ExperimentKey)
+	}
+	if ctx.ExecutionId != nil {
+		description = fmt.Sprintf("%s - Execution %d", description, *ctx.ExecutionId)
+	}
+	return description
 }
