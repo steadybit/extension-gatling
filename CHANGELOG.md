@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.55
+
+- Tolerate a prepare request without an experiment key
+- Update dependencies
+
 ## v1.0.54
 
 - build(deps): bump docker/login-action from 3 to 4
