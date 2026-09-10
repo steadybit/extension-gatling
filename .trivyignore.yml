@@ -44,12 +44,6 @@ vulnerabilities:
   - id: CVE-2026-41992
     statement: Waiting for debian upstream fix
     expired_at: 2027-02-01
-  - id: CVE-2026-53615
-    statement: Waiting for debian upstream fix
-    expired_at: 2027-02-01
-  - id: CVE-2026-56408
-    statement: Waiting for debian upstream fix
-    expired_at: 2027-02-01
   - id: CVE-2026-58471
     statement: Waiting for debian upstream fix
     expired_at: 2027-02-01
@@ -71,41 +65,11 @@ vulnerabilities:
   - id: CVE-2026-56740
     statement: Waiting for debian upstream fix
     expired_at: 2027-02-01
-  - id: CVE-2026-55831
-    statement: Waiting for gatling release with netty fix
-    expired_at: 2027-01-01
-  - id: CVE-2026-55833
-    statement: Waiting for gatling release with netty fix
-    expired_at: 2027-01-01
-  - id: CVE-2026-56745
-    statement: Waiting for gatling release with netty fix
-    expired_at: 2027-01-01
-  - id: CVE-2026-56819
-    statement: Waiting for gatling release with netty fix
-    expired_at: 2027-01-01
-  - id: CVE-2026-59901
-    statement: Waiting for gatling release with netty fix
-    expired_at: 2027-01-01
-  - id: CVE-2026-58050
-    statement: Waiting for debian upstream fix
-    expired_at: 2027-01-01
-  - id: CVE-2026-14456
-    statement: Waiting for debian upstream fix
-    expired_at: 2027-02-01
   - id: CVE-2026-53613
     statement: Waiting for debian upstream fix
     expired_at: 2027-02-01
   - id: CVE-2026-75595
     statement: waiting for update
-    expired_at: 2027-02-01
-  - id: CVE-2026-59903
-    statement: waiting for update
-    expired_at: 2027-02-01
-  - id: CVE-2026-62243
-    statement: waiting for update
-    expired_at: 2027-02-01
-  - id: CVE-2026-66046
-    statement: Waiting for debian upstream fix
     expired_at: 2027-02-01
   - id: CVE-2026-16742
     statement: Waiting for debian upstream fix
@@ -120,8 +84,5 @@ vulnerabilities:
     statement: Waiting for debian upstream fix
     expired_at: 2027-02-01
   - id: CVE-2026-78410
-    statement: Waiting for debian upstream fix
-    expired_at: 2027-02-01
-  - id: CVE-2026-85091
     statement: Waiting for debian upstream fix
     expired_at: 2027-02-01
