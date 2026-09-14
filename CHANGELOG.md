@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.56
+
+- chore(deps): bump github.com/KimMachineGun/automemlimit from 0.7.5 to 1.0.0
+- chore: remove fixed CVEs from ignore list
+
 ## v1.0.55
 
 - Tolerate a prepare request without an experiment key
