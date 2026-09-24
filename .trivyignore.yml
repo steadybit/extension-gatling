@@ -98,3 +98,11 @@ vulnerabilities:
   - id: CVE-2026-88807
     statement: Waiting for debian upstream fix
     expired_at: 2027-02-01
+  - id: CVE-2026-77422
+    paths:
+      - home/steadybit/.m2/repository/org/jline/jline/3.27.1/jline-3.27.1-jdk8.jar
+      - home/steadybit/.m2/repository/org/jline/jline/3.29.0/jline-3.29.0-jdk8.jar
+    statement: |
+      jline 3.27.1 / 3.29.0 are pulled in by the Gatling scaffold profiles (fixed in 3.30.15 / 4.3.1).
+      Waiting for an upstream Gatling release that bumps the dependency.
+    expired_at: 2027-02-01
