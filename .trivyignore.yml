@@ -11,15 +11,6 @@ vulnerabilities:
   - id: CVE-2025-67030
     statement: Wait for upstream plexus-utils fix
     expired_at: 2027-02-01
-  - id: CVE-2026-25210
-    statement: Wait for upstream fix in debian
-    expired_at: 2027-02-01
-  - id: CVE-2026-45186
-    statement: Waiting for debian upstream fix
-    expired_at: 2027-02-01
-  - id: CVE-2025-59375
-    statement: Waiting for debian upstream fix
-    expired_at: 2027-02-01
   - id: CVE-2026-42496
     statement: Waiting for debian upstream fix
     expired_at: 2027-02-01
@@ -86,12 +77,6 @@ vulnerabilities:
   - id: CVE-2026-78410
     statement: Waiting for debian upstream fix
     expired_at: 2027-02-01
-  - id: CVE-2026-66046
-    statement: Waiting for debian upstream fix
-    expired_at: 2027-02-01
-  - id: CVE-2026-93990
-    statement: Waiting for debian upstream fix
-    expired_at: 2027-02-01
   - id: CVE-2026-88806
     statement: Waiting for debian upstream fix
     expired_at: 2027-02-01
@@ -106,3 +91,27 @@ vulnerabilities:
       jline 3.27.1 / 3.29.0 are pulled in by the Gatling scaffold profiles (fixed in 3.30.15 / 4.3.1).
       Waiting for an upstream Gatling release that bumps the dependency.
     expired_at: 2027-02-01
+  - id: CVE-2026-103111
+    statement: Waiting for debian upstream fix
+    expired_at: 2027-04-01
+  - id: CVE-2026-84782
+    statement: Waiting for debian upstream fix
+    expired_at: 2027-04-01
+  - id: CVE-2026-94286
+    statement: Waiting for debian upstream fix
+    expired_at: 2027-04-01
+  - id: CVE-2026-68497
+    paths:
+      - home/steadybit/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.22.0/jackson-databind-2.22.0.jar
+    statement: jackson-databind 2.22.0 is pulled in by the Gatling maven plugin; waiting for an upstream Gatling release
+    expired_at: 2027-04-01
+  - id: CVE-2026-91776
+    paths:
+      - home/steadybit/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.22.0/jackson-databind-2.22.0.jar
+    statement: jackson-databind 2.22.0 is pulled in by the Gatling maven plugin; waiting for an upstream Gatling release
+    expired_at: 2027-04-01
+  - id: CVE-2026-91777
+    paths:
+      - home/steadybit/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.22.0/jackson-databind-2.22.0.jar
+    statement: jackson-databind 2.22.0 is pulled in by the Gatling maven plugin; waiting for an upstream Gatling release
+    expired_at: 2027-04-01
