@@ -51,6 +51,23 @@ MAX_ATTEMPTS = 5
 # stale, so anything strict enough to catch drift would also block genuine cleanups.
 MAX_PRUNE_RATIO = 0.95
 
+# Both values end up as `snyk` CLI arguments. Restricting them to plain image references / org ids
+# means neither can start with `-` or smuggle in extra options.
+IMAGE_PATTERN = re.compile(r"^[a-z0-9][a-z0-9._/-]*(:[A-Za-z0-9_][A-Za-z0-9_.-]*)?(@sha256:[a-f0-9]{64})?$")
+ORG_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
+
+
+def validate_image(image):
+    if not IMAGE_PATTERN.match(image):
+        raise ValueError(f"invalid image reference: {image!r}")
+    return image
+
+
+def validate_org(org):
+    if not ORG_PATTERN.match(org):
+        raise ValueError(f"invalid snyk org id: {org!r}")
+    return org
+
 
 def image_paths(image, org):
     """Every path in the image that snyk treats as its own scan target.
@@ -62,6 +79,7 @@ def image_paths(image, org):
 
     An SBOM rather than `monitor`/`test` output because we want the inventory alone, with no findings.
     """
+    image, org = validate_image(image), validate_org(org)
     out = subprocess.run(
         ["snyk", "container", "sbom", f"--org={org}", "--format=cyclonedx1.6+json", image],
         check=True, capture_output=True, text=True,
@@ -154,6 +172,11 @@ def main():
         sys.exit("SNYK_TOKEN and SNYK_ORG_ID must be set")
     if not args.project:
         sys.exit("--project is required when GITHUB_REPOSITORY is unset")
+    try:
+        validate_image(args.image)
+        validate_org(org)
+    except ValueError as e:
+        sys.exit(str(e))
 
     live = image_paths(args.image, org)
     if not live:
