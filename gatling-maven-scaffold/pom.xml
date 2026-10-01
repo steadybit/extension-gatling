@@ -20,7 +20,7 @@
 		<kotlin.compiler.daemon>false</kotlin.compiler.daemon>
 		<scala-maven-plugin.version>4.9.9</scala-maven-plugin.version>
 		<netty.version>4.2.16.Final</netty.version>
-		<jackson.version>2.21.4</jackson.version>
+		<jackson.version>2.21.7</jackson.version>
 	</properties>
 
 	<dependencyManagement>
@@ -33,7 +33,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			<!-- Force jackson >= 2.21.4 to resolve CVEs pulled in transitively via gatling -->
+			<!-- Force jackson >= 2.21.7 to resolve CVEs pulled in transitively via gatling -->
 			<dependency>
 				<groupId>com.fasterxml.jackson</groupId>
 				<artifactId>jackson-bom</artifactId>
