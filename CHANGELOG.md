@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0.58
+
+- build(deps): bump github.com/steadybit/action-kit/go/action_kit_test
+- chore(deps): bump golang.org/x/net to v0.61.0
+- chore(deps): bump jackson to 2.21.7 in gatling maven scaffold
+- chore(deps): bump jackson to 2.22.3, including on the gatling maven plugin classpath
+- fix: validate image and org before passing them to the snyk cli
+
 ## v1.0.57
 
 - Add OpenTelemetry tracing support
