@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.59
+
+- chore(deps): bump gatling to 3.16.0 and gatling-maven-plugin to 4.21.12
+- chore: ignore util-linux CVE-2026-53615 until debian ships a fix
+- chore: remove stale trivyignore entry for netty CVE-2026-75595
+
 ## v1.0.58
 
 - build(deps): bump github.com/steadybit/action-kit/go/action_kit_test
