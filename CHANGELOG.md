@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.60
+
+- chore(deps): bump action_kit_test to v1.4.13 (#160)
+
 ## v1.0.59
 
 - chore(deps): bump gatling to 3.16.0 and gatling-maven-plugin to 4.21.12
