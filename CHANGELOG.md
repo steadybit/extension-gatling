@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.61
+
+- build(deps): bump github.com/KimMachineGun/automemlimit
+- build(deps): bump github.com/steadybit/extension-kit
+
 ## v1.0.60
 
 - chore(deps): bump action_kit_test to v1.4.13 (#160)
