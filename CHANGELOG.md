@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- feat: the Gatling Enterprise run shows its Java system properties and environment variables in a "Simulation Inputs" group on platforms that support parameter groups
+
 ## v1.0.61
 
 - build(deps): bump github.com/KimMachineGun/automemlimit
