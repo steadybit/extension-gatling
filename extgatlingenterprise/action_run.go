@@ -61,7 +61,8 @@ func (f RunAction) Describe() action_kit_api.ActionDescription {
 				},
 			}),
 		}),
-		TimeControl: action_kit_api.TimeControlInternal,
+		TimeControl:     action_kit_api.TimeControlInternal,
+		ParameterGroups: new([]action_kit_api.ParameterGroup{simulationInputsGroup}),
 		Parameters: []action_kit_api.ActionParameter{
 			{
 				Name:         "duration",
@@ -78,6 +79,7 @@ func (f RunAction) Describe() action_kit_api.ActionDescription {
 				Type:        action_kit_api.ActionParameterTypeKeyValue,
 				Required:    new(false),
 				Advanced:    new(true),
+				Group:       new(groupSimulationInputs),
 			},
 			{
 				Name:        "environmentVariables",
@@ -86,6 +88,7 @@ func (f RunAction) Describe() action_kit_api.ActionDescription {
 				Type:        action_kit_api.ActionParameterTypeKeyValue,
 				Required:    new(false),
 				Advanced:    new(true),
+				Group:       new(groupSimulationInputs),
 			},
 		},
 		Prepare: action_kit_api.MutatingEndpointReference{},
