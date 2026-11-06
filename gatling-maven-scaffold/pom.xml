@@ -19,8 +19,29 @@
 		<kotlin.version>2.2.21</kotlin.version>
 		<kotlin.compiler.daemon>false</kotlin.compiler.daemon>
 		<scala-maven-plugin.version>4.9.9</scala-maven-plugin.version>
-		<jackson.version>2.22.3</jackson.version>
+		<jackson.version>2.22.4</jackson.version>
+		<!-- CVE-2026-111497: gatling-http-client 3.16.0 brings 1.23.0; remove once it brings >= 1.24.0 -->
+		<brotli4j.version>1.24.0</brotli4j.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.fasterxml.jackson</groupId>
+				<artifactId>jackson-bom</artifactId>
+				<version>${jackson.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.aayushatharva.brotli4j</groupId>
+				<artifactId>brotli4j-bom</artifactId>
+				<version>${brotli4j.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -53,7 +74,7 @@
 				<groupId>io.gatling</groupId>
 				<artifactId>gatling-maven-plugin</artifactId>
 				<version>${gatling-maven-plugin.version}</version>
-				<!-- Force jackson >= 2.22.3 on the plugin classpath, the dependencyManagement above does not apply to plugins -->
+				<!-- Force jackson.version on the plugin classpath, the dependencyManagement above does not apply to plugins -->
 				<dependencies>
 					<dependency>
 						<groupId>com.fasterxml.jackson.core</groupId>
