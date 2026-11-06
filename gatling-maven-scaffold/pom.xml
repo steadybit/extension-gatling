@@ -12,13 +12,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<gatling.version>3.16.0</gatling.version>
 		<gatling-maven-plugin.version>4.21.12</gatling-maven-plugin.version>
-		<maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+		<maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
 		<maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>
-		<maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
-		<maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
-		<kotlin.version>2.2.21</kotlin.version>
+		<maven-jar-plugin.version>3.5.1</maven-jar-plugin.version>
+		<maven-surefire-plugin.version>3.6.1</maven-surefire-plugin.version>
+		<kotlin.version>2.4.21</kotlin.version>
 		<kotlin.compiler.daemon>false</kotlin.compiler.daemon>
-		<scala-maven-plugin.version>4.9.9</scala-maven-plugin.version>
+		<scala-maven-plugin.version>4.10.0</scala-maven-plugin.version>
 		<jackson.version>2.22.4</jackson.version>
 		<!-- CVE-2026-111497: gatling-http-client 3.16.0 brings 1.23.0; remove once it brings >= 1.24.0 -->
 		<brotli4j.version>1.24.0</brotli4j.version>
