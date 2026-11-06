@@ -12,3 +12,11 @@ updates:
   directory: "/"
   schedule:
     interval: "weekly"
+- package-ecosystem: "maven"
+  directory: "/gatling-maven-scaffold"
+  schedule:
+    interval: "weekly"
+  groups:
+    gatling-maven-scaffold:
+      patterns:
+        - "*"
