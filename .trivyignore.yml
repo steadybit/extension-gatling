@@ -1,10 +1,4 @@
 vulnerabilities:
-  - id: CVE-2024-47554
-    statement: Ignore commons-io somewhere in the maven dependency tree
-    expired_at: 2027-02-01
-  - id: CVE-2025-67721
-    statement: Ignore aircompressor until updated
-    expired_at: 2027-02-01
   - id: CVE-2025-69720
     statement: Wait for upstream fix in debian (ncurses)
     expired_at: 2027-02-01
