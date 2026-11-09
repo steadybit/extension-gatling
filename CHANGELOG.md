@@ -1,7 +1,11 @@
 # Changelog
 
-## Unreleased
+## v1.0.62
 
+- build(deps): bump the gatling-maven-scaffold group
+- chore(deps): bump golang.org/x/net to v0.62.0
+- chore(deps): bump jackson to 2.22.4 and force brotli4j 1.24.0 in gatling maven scaffold (#165)
+- feat: show Gatling Enterprise simulation inputs in a parameter group (#164)
 - feat: the Gatling Enterprise run shows its Java system properties and environment variables in a "Simulation Inputs" group on platforms that support parameter groups
 
 ## v1.0.61
