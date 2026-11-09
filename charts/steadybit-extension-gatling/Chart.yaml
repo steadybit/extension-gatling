@@ -1,8 +1,8 @@
 apiVersion: v2
 name: steadybit-extension-gatling
 description: Steadybit gatling extension Helm chart for Kubernetes.
-version: 1.1.71
-appVersion: v1.0.61
+version: 1.1.72
+appVersion: v1.0.62
 home: https://www.steadybit.com/
 icon: https://steadybit-website-assets.s3.amazonaws.com/logo-symbol-transparent.png
 maintainers:
