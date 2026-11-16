@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.63
+
+- ci: install the Snyk CLI for the prune with extension-kit's setup-snyk action
+- fix(deps): pin plexus-archiver for maven-jar-plugin to drop zstd-jni 1.5.7-9
+
 ## v1.0.62
 
 - build(deps): bump the gatling-maven-scaffold group
