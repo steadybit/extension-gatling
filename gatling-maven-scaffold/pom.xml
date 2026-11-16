@@ -16,12 +16,12 @@
 		<maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>
 		<maven-jar-plugin.version>3.5.1</maven-jar-plugin.version>
 		<!-- CVE-2026-87795 et al.: maven-jar-plugin 3.5.1 brings plexus-archiver 4.12.0 with zstd-jni 1.5.7-9; remove once it brings zstd-jni >= 1.5.7-14 -->
-		<plexus-archiver.version>4.14.0</plexus-archiver.version>
+		<plexus-archiver.version>4.15.0</plexus-archiver.version>
 		<maven-surefire-plugin.version>3.6.1</maven-surefire-plugin.version>
 		<kotlin.version>2.4.21</kotlin.version>
 		<kotlin.compiler.daemon>false</kotlin.compiler.daemon>
 		<scala-maven-plugin.version>4.10.0</scala-maven-plugin.version>
-		<jackson.version>2.22.4</jackson.version>
+		<jackson.version>2.23.0</jackson.version>
 		<!-- CVE-2026-111497: gatling-http-client 3.16.0 brings 1.23.0; remove once it brings >= 1.24.0 -->
 		<brotli4j.version>1.24.0</brotli4j.version>
 	</properties>
