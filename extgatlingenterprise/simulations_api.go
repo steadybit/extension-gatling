@@ -80,11 +80,6 @@ func GetSimulations() []GatlingSimulation {
 		log.Error().Msgf("Failed to get simulations from gatling enterprise api. Got error: %s", err)
 		return nil
 	}
-	if response.StatusCode != 200 {
-		log.Error().Msgf("Failed to get simulations from gatling enterprise api. Got status code: %s", response.Status)
-		return nil
-	}
-
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
@@ -92,6 +87,11 @@ func GetSimulations() []GatlingSimulation {
 			return
 		}
 	}(response.Body)
+
+	if response.StatusCode != 200 {
+		log.Error().Msgf("Failed to get simulations from gatling enterprise api. Got status code: %s", response.Status)
+		return nil
+	}
 
 	var result []GatlingSimulation
 	err = json.NewDecoder(response.Body).Decode(&result)
@@ -145,11 +145,6 @@ func RunSimulation(simulationId string, title string, description string, system
 		log.Error().Msgf("Failed to start simulation via gatling enterprise api. Got error: %s", err)
 		return nil, err
 	}
-	if response.StatusCode != 200 {
-		log.Error().Msgf("Failed to start simulation via gatling enterprise api. Got status code: %s", response.Status)
-		return nil, fmt.Errorf("failed to start simulation via gatling enterprise api. Got status code: %s", response.Status)
-	}
-
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
@@ -157,6 +152,11 @@ func RunSimulation(simulationId string, title string, description string, system
 			return
 		}
 	}(response.Body)
+
+	if response.StatusCode != 200 {
+		log.Error().Msgf("Failed to start simulation via gatling enterprise api. Got status code: %s", response.Status)
+		return nil, fmt.Errorf("failed to start simulation via gatling enterprise api. Got status code: %s", response.Status)
+	}
 
 	var result GatlingStartResponse
 	err = json.NewDecoder(response.Body).Decode(&result)
@@ -198,11 +198,6 @@ func GetRun(runId string) (*GatlingRunResponse, error) {
 		log.Error().Msgf("Failed to get run via gatling enterprise api. Got error: %s", err)
 		return nil, err
 	}
-	if response.StatusCode != 200 {
-		log.Error().Msgf("Failed to get run via gatling enterprise api. Got status code: %s", response.Status)
-		return nil, fmt.Errorf("failed to get run via gatling enterprise api. Got status code: %s", response.Status)
-	}
-
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
@@ -210,6 +205,11 @@ func GetRun(runId string) (*GatlingRunResponse, error) {
 			return
 		}
 	}(response.Body)
+
+	if response.StatusCode != 200 {
+		log.Error().Msgf("Failed to get run via gatling enterprise api. Got status code: %s", response.Status)
+		return nil, fmt.Errorf("failed to get run via gatling enterprise api. Got status code: %s", response.Status)
+	}
 
 	var result GatlingRunResponse
 	err = json.NewDecoder(response.Body).Decode(&result)
@@ -266,6 +266,12 @@ func StopRun(runId string) error {
 		log.Error().Msgf("Failed to abort run via gatling enterprise api. Got error: %s", err)
 		return err
 	}
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Error().Msgf("Failed to close response body. Got error: %s", err)
+		}
+	}(response.Body)
 	if response.StatusCode != 200 {
 		log.Error().Msgf("Failed to abort run via gatling enterprise api. Got status code: %s", response.Status)
 		return fmt.Errorf("failed to abort run via gatling enterprise api. Got status code: %s", response.Status)
