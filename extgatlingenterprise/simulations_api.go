@@ -80,13 +80,7 @@ func GetSimulations() []GatlingSimulation {
 		log.Error().Msgf("Failed to get simulations from gatling enterprise api. Got error: %s", err)
 		return nil
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			log.Error().Msgf("Failed to close response body. Got error: %s", err)
-			return
-		}
-	}(response.Body)
+	defer closeBody(response.Body)
 
 	if response.StatusCode != 200 {
 		log.Error().Msgf("Failed to get simulations from gatling enterprise api. Got status code: %s", response.Status)
@@ -145,13 +139,7 @@ func RunSimulation(simulationId string, title string, description string, system
 		log.Error().Msgf("Failed to start simulation via gatling enterprise api. Got error: %s", err)
 		return nil, err
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			log.Error().Msgf("Failed to close response body. Got error: %s", err)
-			return
-		}
-	}(response.Body)
+	defer closeBody(response.Body)
 
 	if response.StatusCode != 200 {
 		log.Error().Msgf("Failed to start simulation via gatling enterprise api. Got status code: %s", response.Status)
@@ -198,13 +186,7 @@ func GetRun(runId string) (*GatlingRunResponse, error) {
 		log.Error().Msgf("Failed to get run via gatling enterprise api. Got error: %s", err)
 		return nil, err
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			log.Error().Msgf("Failed to close response body. Got error: %s", err)
-			return
-		}
-	}(response.Body)
+	defer closeBody(response.Body)
 
 	if response.StatusCode != 200 {
 		log.Error().Msgf("Failed to get run via gatling enterprise api. Got status code: %s", response.Status)
@@ -266,15 +248,16 @@ func StopRun(runId string) error {
 		log.Error().Msgf("Failed to abort run via gatling enterprise api. Got error: %s", err)
 		return err
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			log.Error().Msgf("Failed to close response body. Got error: %s", err)
-		}
-	}(response.Body)
+	defer closeBody(response.Body)
 	if response.StatusCode != 200 {
 		log.Error().Msgf("Failed to abort run via gatling enterprise api. Got status code: %s", response.Status)
 		return fmt.Errorf("failed to abort run via gatling enterprise api. Got status code: %s", response.Status)
 	}
 	return nil
+}
+
+func closeBody(body io.ReadCloser) {
+	if err := body.Close(); err != nil {
+		log.Error().Msgf("Failed to close response body. Got error: %s", err)
+	}
 }
